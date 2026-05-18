@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de sanciones fiscales — NormaAlerta</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f5f7f5;
+    color: #1a1a1a;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+  .container { max-width: 680px; margin: 0 auto; }
+
+  .header { text-align: center; margin-bottom: 2rem; }
+  .logo { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 1rem; }
+  .logo svg { width: 52px; height: 52px; }
+  .logo-text { font-size: 28px; font-weight: 700; color: #1a1a1a; }
+  .logo-text span { color: #1a7a4a; }
+  .header h1 { font-size: 22px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; }
+  .header p { font-size: 15px; color: #555; }
+
+  .card {
+    background: white;
+    border: 1px solid #e0e8e0;
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 1rem; }
+
+  @media (max-width: 480px) {
+    .grid2 { grid-template-columns: 1fr; }
+    .grid3 { grid-template-columns: 1fr; }
+  }
+
+  label { font-size: 13px; color: #555; display: block; margin-bottom: 6px; font-weight: 500; }
+
+  select, input[type=number] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d0e0d0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #1a1a1a;
+    background: white;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  select:focus, input[type=number]:focus { border-color: #1a7a4a; }
+
+  .metric {
+    background: #f5f7f5;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .metric-label { font-size: 12px; color: #777; margin-bottom: 4px; }
+  .metric-val { font-size: 20px; font-weight: 600; }
+  .metric-val.danger { color: #a32d2d; }
+  .metric-val.warn { color: #854f0b; }
+  .metric-val.ok { color: #0f6e56; }
+  .metric-val.neutral { color: #1a1a1a; }
+
+  .result-card {
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    display: none;
+  }
+  .result-card.danger { background: #fcebeb; border: 1px solid #f09595; }
+  .result-card.warn { background: #faeeda; border: 1px solid #ef9f27; }
+  .result-card.ok { background: #e1f5ee; border: 1px solid #5dcaa5; }
+
+  .result-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .result-title.danger { color: #791f1f; }
+  .result-title.warn { color: #633806; }
+  .result-title.ok { color: #085041; }
+
+  .result-text { font-size: 13px; line-height: 1.6; }
+  .result-text.danger { color: #a32d2d; }
+  .result-text.warn { color: #854f0b; }
+  .result-text.ok { color: #0f6e56; }
+
+  hr { border: none; border-top: 1px solid #e8ede8; margin: 1rem 0; }
+
+  .footnote { font-size: 12px; color: #888; line-height: 1.6; }
+
+  .cta {
+    background: #1a7a4a;
+    color: white;
+    text-align: center;
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .cta p { font-size: 14px; margin-bottom: 12px; opacity: 0.9; }
+  .cta a {
+    display: inline-block;
+    background: white;
+    color: #1a7a4a;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+  }
+  .cta a:hover { opacity: 0.9; }
+  .cta h3 { font-size: 17px; margin-bottom: 6px; }
+
+  .badge {
+    display: inline-block;
+    background: #e1f5ee;
+    color: #085041;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 99px;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="logo">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#1a7a4a" stroke-width="3"/>
+        <path d="M50 18 C38 18 28 28 28 40 L28 57 L22 63 L22 66 L78 66 L78 63 L72 57 L72 40 C72 28 62 18 50 18Z" fill="none" stroke="#1a7a4a" stroke-width="3" stroke-linejoin="round"/>
+        <ellipse cx="50" cy="70" rx="8" ry="8" fill="none" stroke="#1a7a4a" stroke-width="3"/>
+        <circle cx="74" cy="22" r="14" fill="#f59e0b"/>
+        <text x="74" y="27" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="white" text-anchor="middle">!</text>
+      </svg>
+      <div class="logo-text">Norma<span>Alerta</span></div>
+    </div>
+    <h1>Calculadora de sanciones fiscales</h1>
+    <p>Estima el coste real de presentar un modelo fuera de plazo</p>
+  </div>
+
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <label>Modelo fiscal</label>
+        <select id="modelo">
+          <option value="303">Modelo 303 — IVA trimestral</option>
+          <option value="130">Modelo 130 — IRPF trimestral</option>
+          <option value="111">Modelo 111 — Retenciones trabajadores</option>
+          <option value="115">Modelo 115 — Retenciones alquiler</option>
+          <option value="200">Modelo 200 — Impuesto de Sociedades</option>
+          <option value="347">Modelo 347 — Operaciones terceros</option>
+          <option value="390">Modelo 390 — Resumen anual IVA</option>
+          <option value="190">Modelo 190 — Resumen anual retenciones</option>
+        </select>
+      </div>
+      <div>
+        <label>Días de retraso</label>
+        <input type="number" id="dias" min="1" max="3650" value="30" />
+      </div>
+    </div>
+    <div class="grid2">
+      <div>
+        <label>Importe a ingresar (€)</label>
+        <input type="number" id="importe" min="0" value="1000" step="10" />
+      </div>
+      <div>
+        <label>¿Presentación voluntaria?</label>
+        <select id="voluntaria">
+          <option value="si">Sí — sin requerimiento previo</option>
+          <option value="no">No — con requerimiento de Hacienda</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid3">
+    <div class="metric">
+      <div class="metric-label">Recargo / sanción</div>
+      <div class="metric-val danger" id="m-sancion">—</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Intereses de demora</div>
+      <div class="metric-val warn" id="m-intereses">—</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Total a pagar</div>
+      <div class="metric-val neutral" id="m-total">—</div>
+    </div>
+  </div>
+
+  <div id="resultado-card" class="result-card">
+    <div class="result-title" id="res-titulo"></div>
+    <div class="result-text" id="res-texto"></div>
+  </div>
+
+  <div class="card">
+    <hr style="margin-top:0">
+    <p class="footnote">
+      Cálculo orientativo según el art. 27 LGT (recargos por presentación extemporánea) y art. 191 LGT (infracciones tributarias). Interés de demora 2026: 4,0625% anual. Este resultado es una estimación — consulta siempre con tu gestor o asesor fiscal para casos específicos.
+    </p>
+  </div>
+
+  <div class="cta">
+    <span class="badge">NormaAlerta</span>
+    <h3>No te pillen por sorpresa</h3>
+    <p>Recibe alertas normativas y recordatorios de plazos fiscales antes de que sea tarde.</p>
+    <a href="https://normaalerta.vercel.app" target="_blank">Ver planes desde 9€/mes</a>
+  </div>
+
+</div>
+
+<script>
+function fmt(n) {
+  return n.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+}
+
+function calcular() {
+  const dias = Math.max(1, parseInt(document.getElementById('dias').value) || 1);
+  const importe = Math.max(0, parseFloat(document.getElementById('importe').value) || 0);
+  const voluntaria = document.getElementById('voluntaria').value;
+  const tasaInteres = 0.040625;
+
+  let recargo = 0;
+  let intereses = 0;
+  let nivel = 'ok';
+  let titulo = '';
+  let texto = '';
+  const tieneImporte = importe > 0;
+
+  if (voluntaria === 'si') {
+    if (dias <= 30) {
+      recargo = tieneImporte ? importe * 0.01 : 0;
+      nivel = 'ok';
+      titulo = 'Recargo reducido del 1%';
+      texto = 'Al presentar en los primeros 30 días sin requerimiento previo, el recargo es únicamente del 1%, sin intereses de demora ni sanción adicional. Es el mejor escenario posible.';
+    } else if (dias <= 60) {
+      recargo = tieneImporte ? importe * 0.02 : 0;
+      nivel = 'ok';
+      titulo = 'Recargo del 2%';
+      texto = 'Entre 31 y 60 días sin requerimiento, el recargo es del 2% sin intereses. Sigue siendo muy favorable actuar voluntariamente cuanto antes.';
+    } else if (dias <= 90) {
+      recargo = tieneImporte ? importe * 0.03 : 0;
+      nivel = 'warn';
+      titulo = 'Recargo del 3%';
+      texto = 'Entre 61 y 90 días, el recargo es del 3% sin intereses de demora. Sin sanción formal por presentación voluntaria, pero el coste ya sube.';
+    } else if (dias <= 180) {
+      recargo = tieneImporte ? importe * 0.05 : 0;
+      intereses = tieneImporte ? importe * tasaInteres * (dias / 365) : 0;
+      nivel = 'warn';
+      titulo = 'Recargo del 5% + intereses de demora';
+      texto = 'Entre 91 y 180 días se aplica el 5% de recargo más intereses de demora. Presenta cuanto antes para no agravar la situación.';
+    } else if (dias <= 365) {
+      recargo = tieneImporte ? importe * 0.10 : 0;
+      intereses = tieneImporte ? importe * tasaInteres * (dias / 365) : 0;
+      nivel = 'warn';
+      titulo = 'Recargo del 10% + intereses de demora';
+      texto = 'Entre 6 y 12 meses de retraso: 10% de recargo más intereses. Sigue siendo mejor que esperar a un requerimiento de Hacienda.';
+    } else {
+      recargo = tieneImporte ? importe * 0.20 : 0;
+      intereses = tieneImporte ? importe * tasaInteres * (dias / 365) : 0;
+      nivel = 'danger';
+      titulo = 'Recargo del 20% + intereses de demora';
+      texto = 'Más de 12 meses de retraso: 20% de recargo más intereses. Aun así, es preferible presentar voluntariamente antes de recibir un requerimiento de Hacienda.';
+    }
+  } else {
+    intereses = tieneImporte ? importe * tasaInteres * (dias / 365) : 0;
+    if (!tieneImporte) {
+      recargo = 200;
+      nivel = 'danger';
+      titulo = 'Infracción leve — sanción mínima 200 €';
+      texto = 'Sin importe a ingresar y con requerimiento previo, la no presentación es infracción leve con sanción mínima de 200 €.';
+    } else if (importe < 3000) {
+      recargo = Math.max(importe * 0.50, 150);
+      nivel = 'danger';
+      titulo = 'Infracción grave — sanción del 50%';
+      texto = 'Con requerimiento previo de Hacienda, la sanción es del 50% del importe más intereses de demora. Muy superior a presentar voluntariamente.';
+    } else {
+      recargo = importe * 0.50;
+      nivel = 'danger';
+      titulo = 'Infracción grave — sanción del 50% + intereses';
+      texto = 'Requerimiento de Hacienda con importe elevado: sanción del 50% más intereses. Busca asesoramiento fiscal urgente.';
+    }
+  }
+
+  const total = importe + recargo + intereses;
+  const colorMap = { ok: '#0f6e56', warn: '#854f0b', danger: '#a32d2d' };
+
+  document.getElementById('m-sancion').textContent = fmt(recargo);
+  document.getElementById('m-sancion').className = 'metric-val ' + nivel;
+  document.getElementById('m-intereses').textContent = fmt(intereses);
+  document.getElementById('m-total').textContent = fmt(total);
+  document.getElementById('m-total').style.color = colorMap[nivel];
+
+  const card = document.getElementById('resultado-card');
+  card.className = 'result-card ' + nivel;
+  card.style.display = 'block';
+
+  const rt = document.getElementById('res-titulo');
+  rt.className = 'result-title ' + nivel;
+  rt.textContent = titulo;
+
+  const rx = document.getElementById('res-texto');
+  rx.className = 'result-text ' + nivel;
+  rx.textContent = texto;
+}
+
+document.querySelectorAll('select, input').forEach(el => el.addEventListener('input', calcular));
+calcular();
+</script>
+</body>
+</html>
