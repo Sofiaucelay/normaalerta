@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modelo 303 — Calculadora IVA | NormaAlerta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #1a7a4a;
+  --green-mid: #22a07a;
+  --green-light: #e0f0ea;
+  --green-dark: #0f5235;
+  --ink: #1c1b18;
+  --ink2: #4a4944;
+  --ink3: #8c8b84;
+  --paper: #f7f5ee;
+  --paper2: #edeae0;
+  --paper3: #e2ded2;
+  --white: #ffffff;
+  --border: rgba(28,27,24,0.1);
+  --border2: rgba(28,27,24,0.18);
+  --amber: #f59e0b;
+  --amber-light: #fef3c7;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --blue: #2563eb;
+  --blue-light: #eff6ff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+
+/* NAV */
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.nav-actions{display:flex;gap:8px}
+.btn-nav{font-size:13px;padding:6px 14px;border-radius:7px;border:none;cursor:pointer;font-family:inherit;font-weight:500;transition:all .15s}
+.btn-nav-outline{background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8)}
+.btn-nav-outline:hover{background:rgba(255,255,255,0.08)}
+.btn-nav-primary{background:var(--green);color:var(--white)}
+.btn-nav-primary:hover{background:var(--green-mid)}
+
+/* LAYOUT */
+.page{max-width:960px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+/* HEADER */
+.page-header{margin-bottom:2rem}
+.page-header-top{display:flex;align-items:center;gap:12px;margin-bottom:.5rem}
+.modelo-badge{background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 10px;border-radius:6px;font-family:'DM Mono',monospace}
+.aeat-badge{background:var(--paper2);color:var(--ink3);font-size:12px;padding:4px 10px;border-radius:6px}
+.page-title{font-size:26px;font-weight:500;color:var(--ink);letter-spacing:-.3px;margin-bottom:4px}
+.page-subtitle{font-size:14px;color:var(--ink3)}
+.plazos{display:flex;gap:8px;flex-wrap:wrap;margin-top:.875rem}
+.plazo-chip{font-size:12px;background:var(--white);border:1px solid var(--border2);border-radius:6px;padding:4px 10px;color:var(--ink2);display:flex;align-items:center;gap:5px}
+.plazo-chip span{color:var(--green);font-weight:500}
+
+/* PROGRESS */
+.progress-bar{display:flex;gap:0;margin-bottom:2rem;border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.progress-step{flex:1;padding:.625rem;text-align:center;font-size:12px;font-weight:500;background:var(--white);color:var(--ink3);border-right:1px solid var(--border);cursor:pointer;transition:all .15s}
+.progress-step:last-child{border-right:none}
+.progress-step.active{background:var(--green);color:var(--white)}
+.progress-step.done{background:var(--green-light);color:var(--green)}
+
+/* SECTIONS */
+.section{background:var(--white);border:1px solid var(--border);border-radius:14px;margin-bottom:1rem;overflow:hidden}
+.section-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;border-bottom:1px solid var(--border)}
+.section-header.collapsed{border-bottom:none}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.si-green{background:var(--green-light)}
+.si-amber{background:var(--amber-light)}
+.si-blue{background:var(--blue-light)}
+.si-red{background:var(--red-light)}
+.section-title{font-size:15px;font-weight:500;color:var(--ink);flex:1}
+.section-subtitle{font-size:12px;color:var(--ink3);margin-top:1px}
+.section-total{font-size:14px;font-weight:500;color:var(--green);font-family:'DM Mono',monospace;margin-right:8px}
+.chevron{color:var(--ink3);transition:transform .2s;font-size:18px}
+.section-body{padding:0 1.25rem 1.25rem}
+
+/* TABLES */
+.field-table{width:100%;border-collapse:collapse;margin-top:.75rem}
+.field-table th{font-size:11px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;padding:.5rem .75rem;background:var(--paper);border-bottom:1px solid var(--border);text-align:left}
+.field-table th:not(:first-child){text-align:right}
+.field-table td{padding:.375rem .75rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.field-table tr:last-child td{border-bottom:none}
+.field-table tr:hover td{background:rgba(247,245,238,.5)}
+.row-label{font-size:13px;color:var(--ink2)}
+.row-casilla{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;margin-top:1px}
+.row-info{font-size:11px;color:var(--ink3);font-style:italic;margin-top:1px}
+
+/* INPUTS */
+.input-wrap{position:relative;display:flex;align-items:center}
+.input-euro{position:absolute;right:.625rem;font-size:12px;color:var(--ink3);pointer-events:none}
+.input-pct{position:absolute;right:.625rem;font-size:12px;color:var(--ink3);pointer-events:none}
+input[type=number]{width:140px;text-align:right;padding:.4rem .625rem;padding-right:1.75rem;border:1px solid var(--border2);border-radius:7px;font-size:14px;font-family:'DM Mono',monospace;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;-moz-appearance:textfield}
+input[type=number]:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+input[type=number].auto-calc{background:var(--paper);border-color:var(--border);color:var(--ink2)}
+input[type=text]{width:100%;padding:.5rem .75rem;border:1px solid var(--border2);border-radius:7px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s}
+input[type=text]:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
+select{padding:.5rem .75rem;border:1px solid var(--border2);border-radius:7px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--white);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238c8b84' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .5rem center;padding-right:2rem;width:100%}
+select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
+.auto-val{font-size:14px;font-family:'DM Mono',monospace;color:var(--green);text-align:right;min-width:140px}
+
+/* SUBTOTAL ROW */
+.subtotal-row td{background:var(--green-light)!important;font-weight:500;border-top:1px solid rgba(26,122,74,.2)!important}
+.subtotal-row .row-label{color:var(--green-dark);font-weight:500}
+.subtotal-row .auto-val{font-size:15px;color:var(--green-dark)}
+
+/* INFO BOX */
+.info-box{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12px;color:#92400e;display:flex;gap:8px;align-items:flex-start}
+.info-box.blue{background:var(--blue-light);border-color:rgba(37,99,235,.2);color:#1e40af}
+.info-box.green{background:var(--green-light);border-color:rgba(26,122,74,.2);color:var(--green-dark)}
+
+/* IDENTIF */
+.id-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:.75rem 0}
+.id-field{display:flex;flex-direction:column;gap:4px}
+.id-field label{font-size:12px;font-weight:500;color:var(--ink3)}
+.id-field.full{grid-column:1/-1}
+
+/* RESULTADO FINAL */
+.resultado{background:var(--ink);border-radius:14px;padding:1.5rem;margin-top:1.5rem;position:relative;overflow:hidden}
+.resultado::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(34,160,122,.08)}
+.resultado-label{font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem}
+.resultado-num{font-size:44px;font-weight:500;font-family:'DM Mono',monospace;color:var(--white);line-height:1.1;margin-bottom:.25rem}
+.resultado-num.positivo{color:#4ade80}
+.resultado-num.negativo{color:#f87171}
+.resultado-status{font-size:14px;color:rgba(255,255,255,.6);margin-bottom:1.5rem}
+.resultado-status strong{color:var(--white)}
+.resultado-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+.resultado-card{background:rgba(255,255,255,.07);border-radius:8px;padding:.75rem}
+.rc-label{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:3px}
+.rc-val{font-size:16px;font-weight:500;font-family:'DM Mono',monospace;color:rgba(255,255,255,.9)}
+.export-row{display:flex;gap:8px;flex-wrap:wrap}
+.btn-export{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:none;transition:all .15s}
+.btn-pdf{background:var(--green);color:var(--white)}
+.btn-pdf:hover{background:var(--green-mid)}
+.btn-excel{background:rgba(255,255,255,.1);color:var(--white);border:1px solid rgba(255,255,255,.2)}
+.btn-excel:hover{background:rgba(255,255,255,.15)}
+.btn-reset{background:transparent;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1)}
+.btn-reset:hover{color:rgba(255,255,255,.7)}
+
+/* AVISO EXENTAS */
+.exentas-note{background:var(--paper);border-radius:8px;padding:.75rem 1rem;font-size:12px;color:var(--ink3);border-left:3px solid var(--paper3);margin:.5rem 0}
+
+/* PRINT */
+@media print{
+  nav,.progress-bar,.export-row,.btn-export{display:none!important}
+  .section{break-inside:avoid;border:1px solid #ccc}
+  body{background:white}
+  .resultado{background:#1c1b18;color-adjust:exact;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+@media(max-width:640px){
+  .id-grid{grid-template-columns:1fr}
+  .resultado-grid{grid-template-columns:1fr 1fr}
+  input[type=number]{width:120px}
+  .progress-step{font-size:10px;padding:.5rem .25rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/>
+      <path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
+      <ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/>
+      <circle cx="74" cy="22" r="13" fill="#f59e0b"/>
+      <text x="74" y="27" font-family="Arial" font-size="15" font-weight="700" fill="white" text-anchor="middle">!</text>
+    </svg>
+    NormaAlerta
+    <span class="nav-badge">Calculadora fiscal</span>
+  </a>
+  <div class="nav-actions">
+    <button class="btn-nav btn-nav-outline" onclick="window.print()">🖨 Imprimir</button>
+    <button class="btn-nav btn-nav-primary" onclick="exportPDF()">⬇ Exportar PDF</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="page-header-top">
+      <span class="modelo-badge">MOD. 303</span>
+      <span class="aeat-badge">AEAT · Ley 37/1992 IVA</span>
+    </div>
+    <h1 class="page-title">Autoliquidación del IVA trimestral</h1>
+    <p class="page-subtitle">Rellena los campos que apliquen a tu actividad. Deja en 0 los que no uses. El resultado se calcula automáticamente.</p>
+    <div class="plazos">
+      <div class="plazo-chip">1T <span>→ 20 abril</span></div>
+      <div class="plazo-chip">2T <span>→ 20 julio</span></div>
+      <div class="plazo-chip">3T <span>→ 20 octubre</span></div>
+      <div class="plazo-chip">4T <span>→ 30 enero</span></div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-bar">
+    <div class="progress-step active" onclick="scrollTo('s-id')">1 · Identificación</div>
+    <div class="progress-step" onclick="scrollTo('s-dev')">2 · IVA devengado</div>
+    <div class="progress-step" onclick="scrollTo('s-ded')">3 · IVA deducible</div>
+    <div class="progress-step" onclick="scrollTo('s-res')">4 · Resultado</div>
+  </div>
+
+  <!-- SECCIÓN 1: IDENTIFICACIÓN -->
+  <div class="section" id="s-id">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon si-blue">📋</div>
+      <div>
+        <div class="section-title">Identificación del declarante</div>
+        <div class="section-subtitle">Datos del autónomo o empresa que presenta el modelo</div>
+      </div>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="id-grid">
+        <div class="id-field">
+          <label>Ejercicio</label>
+          <input type="text" id="ejercicio" value="2026">
+        </div>
+        <div class="id-field">
+          <label>Período</label>
+          <select id="periodo">
+            <option value="1T">1T — Primer trimestre (enero-marzo)</option>
+            <option value="2T">2T — Segundo trimestre (abril-junio)</option>
+            <option value="3T">3T — Tercer trimestre (julio-septiembre)</option>
+            <option value="4T">4T — Cuarto trimestre (octubre-diciembre)</option>
+          </select>
+        </div>
+        <div class="id-field">
+          <label>NIF / CIF</label>
+          <input type="text" id="nif" placeholder="12345678A">
+        </div>
+        <div class="id-field">
+          <label>Teléfono</label>
+          <input type="text" id="telefono" placeholder="600 000 000">
+        </div>
+        <div class="id-field full">
+          <label>Apellidos y nombre / Razón Social</label>
+          <input type="text" id="nombre" placeholder="Nombre completo o razón social">
+        </div>
+        <div class="id-field">
+          <label>Actividad económica principal</label>
+          <input type="text" id="actividad" placeholder="Ej: Consultoría, Comercio...">
+        </div>
+        <div class="id-field">
+          <label>Epígrafe IAE</label>
+          <input type="text" id="iae" placeholder="Ej: 849.9">
+        </div>
+        <div class="id-field full">
+          <label>Régimen de IVA aplicable</label>
+          <select id="regimen" onchange="actualizarRegimen()">
+            <option value="general">Régimen General</option>
+            <option value="caja">Criterio de Caja (art. 163 undecies LIVA)</option>
+            <option value="simplificado">Régimen Simplificado (módulos)</option>
+          </select>
+        </div>
+      </div>
+      <div class="info-box blue" id="info-caja" style="display:none">
+        ℹ️ <span><strong>Criterio de Caja:</strong> el IVA se devenga cuando se cobra (no cuando se factura). Debes llevar un registro de cobros y pagos. Los campos de devengado corresponden a facturas efectivamente cobradas en el período.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2: IVA DEVENGADO -->
+  <div class="section" id="s-dev">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon si-green">📤</div>
+      <div>
+        <div class="section-title">IVA devengado — Ventas e ingresos</div>
+        <div class="section-subtitle">Casillas 01 a 27 del modelo oficial</div>
+      </div>
+      <span class="section-total" id="tot-dev-label">0,00 €</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="info-box">
+        ⚠️ <span>Introduce solo las operaciones <strong>sujetas y no exentas</strong>. Las exentas (exportaciones, intracomunitarias exentas) se informan al final de esta sección pero no generan cuota.</span>
+      </div>
+      <table class="field-table">
+        <thead>
+          <tr>
+            <th style="width:45%">Tipo de operación</th>
+            <th>Casilla</th>
+            <th>Base imponible (€)</th>
+            <th>Tipo IVA</th>
+            <th>Cuota IVA (€)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- TIPO GENERAL 21% -->
+          <tr>
+            <td><div class="row-label">Operaciones tipo general</div><div class="row-info">Servicios y bienes al tipo estándar</div></td>
+            <td><div class="row-casilla">05/06</div></td>
+            <td><div class="input-wrap"><input type="number" id="b05" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td><span style="font-size:13px;font-weight:500;color:var(--green)">21%</span></td>
+            <td><div class="auto-val" id="c06">0,00 €</div></td>
+          </tr>
+          <!-- TIPO REDUCIDO 10% -->
+          <tr>
+            <td><div class="row-label">Operaciones tipo reducido</div><div class="row-info">Alimentación, hostelería, transporte...</div></td>
+            <td><div class="row-casilla">03/04</div></td>
+            <td><div class="input-wrap"><input type="number" id="b03" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td><span style="font-size:13px;font-weight:500;color:var(--green)">10%</span></td>
+            <td><div class="auto-val" id="c04">0,00 €</div></td>
+          </tr>
+          <!-- TIPO SUPERREDUCIDO 4% -->
+          <tr>
+            <td><div class="row-label">Operaciones tipo superreducido</div><div class="row-info">Pan, leche, libros, medicamentos...</div></td>
+            <td><div class="row-casilla">01/02</div></td>
+            <td><div class="input-wrap"><input type="number" id="b01" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td><span style="font-size:13px;font-weight:500;color:var(--green)">4%</span></td>
+            <td><div class="auto-val" id="c02">0,00 €</div></td>
+          </tr>
+          <!-- ADQUISICIONES INTRACOMUNITARIAS BIENES -->
+          <tr>
+            <td><div class="row-label">Adquisiciones intracomunitarias de bienes</div><div class="row-info">Compras a empresas de la UE — inversión del sujeto pasivo</div></td>
+            <td><div class="row-casilla">07/08</div></td>
+            <td><div class="input-wrap"><input type="number" id="b07" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td><span style="font-size:13px;font-weight:500;color:var(--green)">21%</span></td>
+            <td><div class="auto-val" id="c08">0,00 €</div></td>
+          </tr>
+          <!-- ADQUISICIONES INTRACOMUNITARIAS SERVICIOS -->
+          <tr>
+            <td><div class="row-label">Adquisiciones intracomunitarias de servicios</div><div class="row-info">Servicios recibidos de empresas UE</div></td>
+            <td><div class="row-casilla">09/10</div></td>
+            <td><div class="input-wrap"><input type="number" id="b09" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td><span style="font-size:13px;font-weight:500;color:var(--green)">21%</span></td>
+            <td><div class="auto-val" id="c10">0,00 €</div></td>
+          </tr>
+          <!-- INVERSIÓN SUJETO PASIVO -->
+          <tr>
+            <td><div class="row-label">Inversión del sujeto pasivo (doméstica)</div><div class="row-info">Operaciones donde el receptor declara el IVA</div></td>
+            <td><div class="row-casilla">11/12</div></td>
+            <td><div class="input-wrap"><input type="number" id="b11" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td><span style="font-size:13px;font-weight:500;color:var(--green)">21%</span></td>
+            <td><div class="auto-val" id="c12">0,00 €</div></td>
+          </tr>
+          <!-- RECARGO EQUIVALENCIA -->
+          <tr>
+            <td><div class="row-label">Recargo de equivalencia 5,2%</div><div class="row-info">Solo comerciantes minoristas en RE — tipo general</div></td>
+            <td><div class="row-casilla">17/18</div></td>
+            <td><div class="input-wrap"><input type="number" id="b17" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td><span style="font-size:13px;font-weight:500;color:var(--green)">5,2%</span></td>
+            <td><div class="auto-val" id="c18">0,00 €</div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Recargo de equivalencia 1,4%</div><div class="row-info">Solo comerciantes minoristas en RE — tipo reducido</div></td>
+            <td><div class="row-casilla">15/16</div></td>
+            <td><div class="input-wrap"><input type="number" id="b15" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td><span style="font-size:13px;font-weight:500;color:var(--green)">1,4%</span></td>
+            <td><div class="auto-val" id="c16">0,00 €</div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Recargo de equivalencia 0,5%</div><div class="row-info">Solo comerciantes minoristas en RE — tipo superreducido</div></td>
+            <td><div class="row-casilla">13/14</div></td>
+            <td><div class="input-wrap"><input type="number" id="b13" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td><span style="font-size:13px;font-weight:500;color:var(--green)">0,5%</span></td>
+            <td><div class="auto-val" id="c14">0,00 €</div></td>
+          </tr>
+          <!-- RECTIFICATIVAS -->
+          <tr>
+            <td><div class="row-label">Modificaciones de bases y cuotas (+)</div><div class="row-info">Facturas rectificativas que aumentan la base/cuota</div></td>
+            <td><div class="row-casilla">21/25</div></td>
+            <td><div class="input-wrap"><input type="number" id="b21" value="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td>—</td>
+            <td><div class="input-wrap" style="justify-content:flex-end"><input type="number" id="c25" value="0" step="0.01" oninput="calc()" style="width:140px"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Modificaciones de bases y cuotas (−)</div><div class="row-info">Facturas rectificativas que reducen la base/cuota</div></td>
+            <td><div class="row-casilla">23/26</div></td>
+            <td><div class="input-wrap"><input type="number" id="b23" value="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td>—</td>
+            <td><div class="input-wrap" style="justify-content:flex-end"><input type="number" id="c26" value="0" step="0.01" oninput="calc()" style="width:140px"><span class="input-euro">€</span></div></td>
+          </tr>
+          <!-- SUBTOTAL -->
+          <tr class="subtotal-row">
+            <td colspan="4"><div class="row-label">Total IVA devengado (casilla 27)</div></td>
+            <td><div class="auto-val" id="cas27" style="font-size:16px">0,00 €</div></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- OPERACIONES INFORMATIVAS -->
+      <div style="margin-top:1.25rem">
+        <div style="font-size:12px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Operaciones exentas — solo informativas (no generan cuota IVA)</div>
+        <div class="exentas-note">Estas operaciones deben declararse por obligación informativa pero no afectan al cálculo del IVA a ingresar.</div>
+        <table class="field-table">
+          <thead>
+            <tr><th style="width:55%">Tipo de operación exenta</th><th>Base imponible (€)</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="row-label">Entregas intracomunitarias exentas (art. 25 LIVA)</div><div class="row-info">Ventas a empresas de otros países UE con NIF intracomunitario</div></td>
+              <td><div class="input-wrap"><input type="number" id="exenta_int" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            </tr>
+            <tr>
+              <td><div class="row-label">Exportaciones y operaciones asimiladas (art. 21 LIVA)</div><div class="row-info">Ventas a clientes fuera de la UE</div></td>
+              <td><div class="input-wrap"><input type="number" id="exenta_exp" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            </tr>
+            <tr>
+              <td><div class="row-label">Operaciones exentas sin derecho a deducción (art. 20 LIVA)</div><div class="row-info">Servicios médicos, educación, seguros, arrendamientos de vivienda...</div></td>
+              <td><div class="input-wrap"><input type="number" id="exenta_sd" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            </tr>
+            <tr>
+              <td><div class="row-label">Operaciones exentas con derecho a deducción</div><div class="row-info">Exportaciones y entregas intracomunitarias — deducción plena</div></td>
+              <td><div class="input-wrap"><input type="number" id="exenta_cd" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3: IVA DEDUCIBLE -->
+  <div class="section" id="s-ded">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon si-amber">📥</div>
+      <div>
+        <div class="section-title">IVA deducible — Compras y gastos</div>
+        <div class="section-subtitle">Casillas 28 a 45 del modelo oficial</div>
+      </div>
+      <span class="section-total" id="tot-ded-label">0,00 €</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="info-box green">
+        ✅ <span>Solo son deducibles las cuotas de IVA soportadas en bienes y servicios <strong>afectos a la actividad económica</strong>. Los gastos personales no son deducibles aunque tengan IVA.</span>
+      </div>
+      <table class="field-table">
+        <thead>
+          <tr>
+            <th style="width:45%">Tipo de gasto / compra</th>
+            <th>Casilla</th>
+            <th>Base imponible (€)</th>
+            <th>IVA soportado (€)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="row-label">Cuotas soportadas — bienes y servicios corrientes</div><div class="row-info">Compras habituales, suministros, servicios profesionales...</div></td>
+            <td><div class="row-casilla">28/29</div></td>
+            <td><div class="input-wrap"><input type="number" id="b28" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td><div class="input-wrap" style="justify-content:flex-end"><input type="number" id="c29" value="0" min="0" step="0.01" oninput="calc()" style="width:140px"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Cuotas soportadas — bienes de inversión</div><div class="row-info">Maquinaria, equipos informáticos, vehículos afectos...</div></td>
+            <td><div class="row-casilla">30/31</div></td>
+            <td><div class="input-wrap"><input type="number" id="b30" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td><div class="input-wrap" style="justify-content:flex-end"><input type="number" id="c31" value="0" min="0" step="0.01" oninput="calc()" style="width:140px"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Importaciones — bienes corrientes</div><div class="row-info">IVA pagado en aduana por importaciones habituales</div></td>
+            <td><div class="row-casilla">32/33</div></td>
+            <td><div class="input-wrap"><input type="number" id="b32" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td><div class="input-wrap" style="justify-content:flex-end"><input type="number" id="c33" value="0" min="0" step="0.01" oninput="calc()" style="width:140px"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Importaciones — bienes de inversión</div><div class="row-info">IVA en aduana por maquinaria o equipos importados</div></td>
+            <td><div class="row-casilla">34/35</div></td>
+            <td><div class="input-wrap"><input type="number" id="b34" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td><div class="input-wrap" style="justify-content:flex-end"><input type="number" id="c35" value="0" min="0" step="0.01" oninput="calc()" style="width:140px"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Adquisiciones intracomunitarias — bienes corrientes</div><div class="row-info">IVA devengado y deducible por compras a empresas UE</div></td>
+            <td><div class="row-casilla">36/37</div></td>
+            <td><div class="input-wrap"><input type="number" id="b36" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td><div class="input-wrap" style="justify-content:flex-end"><input type="number" id="c37" value="0" min="0" step="0.01" oninput="calc()" style="width:140px"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Adquisiciones intracomunitarias — bienes de inversión</div><div class="row-info">IVA devengado y deducible por equipos adquiridos en UE</div></td>
+            <td><div class="row-casilla">38/39</div></td>
+            <td><div class="input-wrap"><input type="number" id="b38" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td><div class="input-wrap" style="justify-content:flex-end"><input type="number" id="c39" value="0" min="0" step="0.01" oninput="calc()" style="width:140px"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Regularización de bienes de inversión (art. 107-110 LIVA)</div><div class="row-info">Ajuste por cambio de uso de bienes de inversión en los 5/10 años</div></td>
+            <td><div class="row-casilla">40/41</div></td>
+            <td>—</td>
+            <td><div class="input-wrap" style="justify-content:flex-end"><input type="number" id="c41" value="0" step="0.01" oninput="calc()" style="width:140px"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Regularización por aplicación del porcentaje de prorrata</div><div class="row-info">Ajuste anual en la regularización de la prorrata (solo 4T o último período)</div></td>
+            <td><div class="row-casilla">42</div></td>
+            <td>—</td>
+            <td><div class="input-wrap" style="justify-content:flex-end"><input type="number" id="c42" value="0" step="0.01" oninput="calc()" style="width:140px"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Cuotas pendientes de compensar de períodos anteriores</div><div class="row-info">Saldo a compensar generado en trimestres anteriores de este ejercicio</div></td>
+            <td><div class="row-casilla">43</div></td>
+            <td>—</td>
+            <td><div class="input-wrap" style="justify-content:flex-end"><input type="number" id="c43" value="0" min="0" step="0.01" oninput="calc()" style="width:140px"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr class="subtotal-row">
+            <td colspan="3"><div class="row-label">Total IVA deducible (casilla 45)</div></td>
+            <td><div class="auto-val" id="cas45" style="font-size:16px">0,00 €</div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 4: RESULTADO -->
+  <div class="section" id="s-res">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon si-green">📊</div>
+      <div>
+        <div class="section-title">Resultado de la liquidación</div>
+        <div class="section-subtitle">Casillas 46 a 69 del modelo oficial</div>
+      </div>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <table class="field-table">
+        <tbody>
+          <tr>
+            <td style="width:55%"><div class="row-label">IVA devengado (casilla 27)</div></td>
+            <td><div class="row-casilla">46 parcial</div></td>
+            <td><div class="auto-val" id="res_dev">0,00 €</div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">IVA deducible (casilla 45)</div></td>
+            <td><div class="row-casilla">46 parcial</div></td>
+            <td><div class="auto-val" id="res_ded">0,00 €</div></td>
+          </tr>
+          <tr class="subtotal-row">
+            <td><div class="row-label">Diferencia (Devengado − Deducible) — Casilla 46</div></td>
+            <td><div class="row-casilla">46</div></td>
+            <td><div class="auto-val" id="cas46" style="font-size:16px">0,00 €</div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">% atribuible a la Administración del Estado</div><div class="row-info">100% para régimen común | Reducido para País Vasco y Navarra</div></td>
+            <td><div class="row-casilla">47</div></td>
+            <td><div class="input-wrap" style="justify-content:flex-end"><input type="number" id="cas47" value="100" min="0" max="100" step="1" oninput="calc()" style="width:100px"><span class="input-pct">%</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Resultado atribuible al Estado (46 × 47%)</div></td>
+            <td><div class="row-casilla">48</div></td>
+            <td><div class="auto-val" id="cas48">0,00 €</div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Cuotas a compensar de períodos anteriores del mismo ejercicio</div><div class="row-info">Solo si el trimestre anterior resultó negativo y eligió compensar</div></td>
+            <td><div class="row-casilla">49</div></td>
+            <td><div class="input-wrap" style="justify-content:flex-end"><input type="number" id="cas49" value="0" min="0" step="0.01" oninput="calc()" style="width:140px"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Resultado antes de ingreso indebido (48 − 49)</div></td>
+            <td><div class="row-casilla">50</div></td>
+            <td><div class="auto-val" id="cas50">0,00 €</div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Por ingreso indebido (cuotas ingresadas por error)</div><div class="row-info">Solo si previamente se ingresó por error y se solicitó devolución</div></td>
+            <td><div class="row-casilla">51</div></td>
+            <td><div class="input-wrap" style="justify-content:flex-end"><input type="number" id="cas51" value="0" min="0" step="0.01" oninput="calc()" style="width:140px"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">A deducir — solo declaración complementaria</div><div class="row-info">Importe ya ingresado en declaración anterior del mismo período</div></td>
+            <td><div class="row-casilla">52</div></td>
+            <td><div class="input-wrap" style="justify-content:flex-end"><input type="number" id="cas52" value="0" min="0" step="0.01" oninput="calc()" style="width:140px"><span class="input-euro">€</span></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- RESULTADO FINAL -->
+  <div class="resultado">
+    <div class="resultado-label">Casilla 69 — Resultado final</div>
+    <div class="resultado-num" id="resultado-num">0,00 €</div>
+    <div class="resultado-status" id="resultado-status">Rellena los campos para ver el resultado</div>
+    <div class="resultado-grid">
+      <div class="resultado-card">
+        <div class="rc-label">IVA devengado (cas. 27)</div>
+        <div class="rc-val" id="rc-dev">0,00 €</div>
+      </div>
+      <div class="resultado-card">
+        <div class="rc-label">IVA deducible (cas. 45)</div>
+        <div class="rc-val" id="rc-ded">0,00 €</div>
+      </div>
+      <div class="resultado-card">
+        <div class="rc-label">Diferencia (cas. 46)</div>
+        <div class="rc-val" id="rc-dif">0,00 €</div>
+      </div>
+    </div>
+    <div class="export-row">
+      <button class="btn-export btn-pdf" onclick="exportPDF()">⬇ Descargar PDF</button>
+      <button class="btn-export btn-excel" onclick="exportExcel()">📊 Exportar datos</button>
+      <button class="btn-export btn-reset" onclick="resetForm()">↺ Limpiar todo</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function fmt(n){
+  const v=parseFloat(n)||0;
+  return v.toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+}
+function v(id){return parseFloat(document.getElementById(id)?.value)||0;}
+function set(id,val){
+  const el=document.getElementById(id);
+  if(el) el.textContent=fmt(val);
+}
+
+function calc(){
+  // IVA DEVENGADO
+  const dev21=v('b05')*0.21;
+  const dev10=v('b03')*0.10;
+  const dev04=v('b01')*0.04;
+  const devInt_b=v('b07')*0.21;
+  const devInt_s=v('b09')*0.21;
+  const devInv=v('b11')*0.21;
+  const devRE52=v('b17')*0.052;
+  const devRE14=v('b15')*0.014;
+  const devRE05=v('b13')*0.005;
+  const rect_pos=v('c25');
+  const rect_neg=v('c26');
+
+  set('c06', dev21);
+  set('c04', dev10);
+  set('c02', dev04);
+  set('c08', devInt_b);
+  set('c10', devInt_s);
+  set('c12', devInv);
+  set('c18', devRE52);
+  set('c16', devRE14);
+  set('c14', devRE05);
+
+  const cas27=dev21+dev10+dev04+devInt_b+devInt_s+devInv+devRE52+devRE14+devRE05+rect_pos-rect_neg;
+  set('cas27', cas27);
+  set('tot-dev-label', cas27);
+  document.getElementById('tot-dev-label').textContent=fmt(cas27);
+
+  // IVA DEDUCIBLE
+  const ded=v('c29')+v('c31')+v('c33')+v('c35')+v('c37')+v('c39')+v('c41')+v('c42')+v('c43');
+  const cas45=ded;
+  set('cas45', cas45);
+  document.getElementById('tot-ded-label').textContent=fmt(cas45);
+
+  // RESULTADO
+  set('res_dev', cas27);
+  set('res_ded', cas45);
+  const cas46=cas27-cas45;
+  set('cas46', cas46);
+
+  const pct47=v('cas47')/100;
+  const cas48=cas46*pct47;
+  set('cas48', cas48);
+
+  const cas49=v('cas49');
+  const cas50=cas48-cas49;
+  set('cas50', cas50);
+
+  const cas51=v('cas51');
+  const cas52=v('cas52');
+  const cas69=cas50-cas51-cas52;
+
+  // RESULTADO FINAL
+  const numEl=document.getElementById('resultado-num');
+  const statusEl=document.getElementById('resultado-status');
+  numEl.textContent=fmt(cas69);
+
+  if(cas69>0.005){
+    numEl.className='resultado-num positivo';
+    const periodo=document.getElementById('periodo').value;
+    const plazos={'1T':'20 de abril','2T':'20 de julio','3T':'20 de octubre','4T':'30 de enero'};
+    statusEl.innerHTML=`<strong>A ingresar en Hacienda</strong> — Plazo: hasta el ${plazos[periodo]||'plazo oficial'}`;
+  } else if(cas69<-0.005){
+    numEl.className='resultado-num negativo';
+    const periodo=document.getElementById('periodo').value;
+    if(periodo==='4T'){
+      statusEl.innerHTML=`<strong>A devolver o compensar</strong> — En 4T puedes solicitar devolución o compensar en el siguiente ejercicio`;
+    } else {
+      statusEl.innerHTML=`<strong>A compensar</strong> — Resultado negativo: se compensa en el siguiente trimestre (casilla 49 del próximo)`;
+    }
+  } else {
+    numEl.className='resultado-num';
+    statusEl.innerHTML='Resultado <strong>cero</strong> — No hay cantidad a ingresar ni a compensar';
+  }
+
+  // RC CARDS
+  set('rc-dev', cas27);
+  set('rc-ded', cas45);
+  set('rc-dif', cas46);
+}
+
+function toggleSection(header){
+  const body=header.nextElementSibling;
+  const chevron=header.querySelector('.chevron');
+  if(body.style.display==='none'){
+    body.style.display='block';
+    chevron.style.transform='rotate(0deg)';
+    header.classList.remove('collapsed');
+  } else {
+    body.style.display='none';
+    chevron.style.transform='rotate(-90deg)';
+    header.classList.add('collapsed');
+  }
+}
+
+function actualizarRegimen(){
+  const r=document.getElementById('regimen').value;
+  document.getElementById('info-caja').style.display=r==='caja'?'flex':'none';
+}
+
+function scrollTo(id){
+  document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function resetForm(){
+  if(!confirm('¿Limpiar todos los datos introducidos?')) return;
+  document.querySelectorAll('input[type=number]').forEach(i=>{
+    if(i.id==='cas47') i.value=100;
+    else i.value=0;
+  });
+  document.querySelectorAll('input[type=text]').forEach(i=>i.value='');
+  document.getElementById('ejercicio').value='2026';
+  calc();
+}
+
+function exportPDF(){
+  const ejercicio=document.getElementById('ejercicio').value||'2026';
+  const periodo=document.getElementById('periodo').value||'1T';
+  const nif=document.getElementById('nif').value||'—';
+  const nombre=document.getElementById('nombre').value||'—';
+  const resultado=document.getElementById('resultado-num').textContent;
+  const status=document.getElementById('resultado-status').textContent;
+  const cas27=document.getElementById('cas27').textContent;
+  const cas45=document.getElementById('cas45').textContent;
+  const cas46=document.getElementById('cas46').textContent;
+
+  const w=window.open('','_blank','width=800,height=900');
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+  <title>Modelo 303 — ${ejercicio} ${periodo}</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;color:#1c1b18;padding:40px;background:white}
+    .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid #1a7a4a}
+    .logo-section h1{font-size:20px;font-weight:600;color:#1a7a4a;margin-bottom:2px}
+    .logo-section p{font-size:12px;color:#8c8b84}
+    .modelo-info{text-align:right}
+    .modelo-info .mod{font-size:24px;font-weight:700;color:#1c1b18;font-family:monospace}
+    .modelo-info .sub{font-size:12px;color:#8c8b84}
+    .id-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;padding:14px;background:#f7f5ee;border-radius:8px}
+    .id-field label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#8c8b84;display:block;margin-bottom:2px}
+    .id-field span{font-size:13px;color:#1c1b18}
+    .section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:white;background:#3d3d3d;padding:6px 10px;border-radius:4px;margin:16px 0 8px}
+    table{width:100%;border-collapse:collapse;margin-bottom:8px}
+    th{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#8c8b84;padding:6px 8px;background:#f0ede4;border-bottom:1px solid #e2ded2;text-align:left}
+    th:not(:first-child){text-align:right}
+    td{padding:5px 8px;border-bottom:1px solid #edeae0;font-size:12px;vertical-align:middle}
+    td.num{text-align:right;font-family:monospace}
+    .subtotal td{background:#e0f0ea;font-weight:600;font-size:13px}
+    .resultado-box{background:#1c1b18;color:white;padding:20px;border-radius:10px;margin-top:20px;display:flex;justify-content:space-between;align-items:center}
+    .resultado-box .label{font-size:11px;opacity:.5;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+    .resultado-box .num{font-size:28px;font-weight:600;font-family:monospace;color:#4ade80}
+    .resultado-box .num.neg{color:#f87171}
+    .resultado-box .status{font-size:13px;opacity:.7}
+    .footer{margin-top:24px;font-size:10px;color:#8c8b84;text-align:center;border-top:1px solid #edeae0;padding-top:12px}
+    @media print{body{padding:20px}}
+  </style></head><body>
+  <div class="header">
+    <div class="logo-section"><h1>NormaAlerta</h1><p>Calculadora fiscal para autónomos y pymes</p></div>
+    <div class="modelo-info"><div class="mod">MOD. 303</div><div class="sub">Autoliquidación IVA</div></div>
+  </div>
+  <div class="id-grid">
+    <div class="id-field"><label>Ejercicio</label><span>${ejercicio}</span></div>
+    <div class="id-field"><label>Período</label><span>${periodo}</span></div>
+    <div class="id-field"><label>NIF / CIF</label><span>${nif}</span></div>
+    <div class="id-field"><label>Declarante</label><span>${nombre}</span></div>
+  </div>
+  <div class="section-title">IVA Devengado</div>
+  <table>
+    <tr><th style="width:55%">Operación</th><th>Cas.</th><th>Base (€)</th><th>Cuota (€)</th></tr>
+    ${[
+      ['Tipo general 21%','05/06',v('b05'),(v('b05')*0.21)],
+      ['Tipo reducido 10%','03/04',v('b03'),(v('b03')*0.10)],
+      ['Tipo superreducido 4%','01/02',v('b01'),(v('b01')*0.04)],
+      ['Adq. intracom. bienes','07/08',v('b07'),(v('b07')*0.21)],
+      ['Adq. intracom. servicios','09/10',v('b09'),(v('b09')*0.21)],
+      ['Inversión sujeto pasivo','11/12',v('b11'),(v('b11')*0.21)],
+      ['Recargo equiv. 5,2%','17/18',v('b17'),(v('b17')*0.052)],
+      ['Recargo equiv. 1,4%','15/16',v('b15'),(v('b15')*0.014)],
+      ['Recargo equiv. 0,5%','13/14',v('b13'),(v('b13')*0.005)],
+    ].map(([l,c,b,q])=>`<tr><td>${l}</td><td class="num">${c}</td><td class="num">${b.toLocaleString('es-ES',{minimumFractionDigits:2})}</td><td class="num">${q.toLocaleString('es-ES',{minimumFractionDigits:2})}</td></tr>`).join('')}
+    <tr class="subtotal"><td colspan="3">Total IVA Devengado (cas. 27)</td><td class="num">${cas27}</td></tr>
+  </table>
+  <div class="section-title">IVA Deducible</div>
+  <table>
+    <tr><th style="width:55%">Tipo de gasto</th><th>Cas.</th><th>Base (€)</th><th>IVA (€)</th></tr>
+    ${[
+      ['Bienes/servicios corrientes','28/29',v('b28'),v('c29')],
+      ['Bienes de inversión','30/31',v('b30'),v('c31')],
+      ['Importaciones corrientes','32/33',v('b32'),v('c33')],
+      ['Importaciones inversión','34/35',v('b34'),v('c35')],
+      ['Adq. intracom. corrientes','36/37',v('b36'),v('c37')],
+      ['Adq. intracom. inversión','38/39',v('b38'),v('c39')],
+      ['Regularización bienes inv.','40/41','—',v('c41')],
+      ['Regularización prorrata','42','—',v('c42')],
+      ['Compensar períodos ant.','43','—',v('c43')],
+    ].map(([l,c,b,q])=>`<tr><td>${l}</td><td class="num">${c}</td><td class="num">${typeof b==='number'?b.toLocaleString('es-ES',{minimumFractionDigits:2}):b}</td><td class="num">${q.toLocaleString('es-ES',{minimumFractionDigits:2})}</td></tr>`).join('')}
+    <tr class="subtotal"><td colspan="3">Total IVA Deducible (cas. 45)</td><td class="num">${cas45}</td></tr>
+  </table>
+  <div class="resultado-box">
+    <div>
+      <div class="label">Casilla 69 — Resultado final</div>
+      <div class="num ${parseFloat(resultado)>=0?'':'neg'}">${resultado}</div>
+      <div class="status">${status}</div>
+    </div>
+    <div style="text-align:right">
+      <div class="label">Devengado</div><div style="font-family:monospace;font-size:14px;margin-bottom:8px">${cas27}</div>
+      <div class="label">Deducible</div><div style="font-family:monospace;font-size:14px;margin-bottom:8px">${cas45}</div>
+      <div class="label">Diferencia (cas.46)</div><div style="font-family:monospace;font-size:14px">${cas46}</div>
+    </div>
+  </div>
+  <div class="footer">Generado con NormaAlerta · normaalerta.com · Este documento es orientativo — presentación oficial en sede.agenciatributaria.gob.es</div>
+  <script>window.onload=()=>window.print()<\/script>
+  </body></html>`);
+  w.document.close();
+}
+
+function exportExcel(){
+  const rows=[
+    ['MODELO 303 — AUTOLIQUIDACIÓN IVA'],
+    ['Ejercicio',document.getElementById('ejercicio').value],
+    ['Período',document.getElementById('periodo').value],
+    ['NIF',document.getElementById('nif').value],
+    ['Declarante',document.getElementById('nombre').value],
+    [''],
+    ['IVA DEVENGADO','Base (€)','Cuota (€)'],
+    ['Tipo general 21% (cas.05/06)',v('b05').toFixed(2),(v('b05')*0.21).toFixed(2)],
+    ['Tipo reducido 10% (cas.03/04)',v('b03').toFixed(2),(v('b03')*0.10).toFixed(2)],
+    ['Tipo superreducido 4% (cas.01/02)',v('b01').toFixed(2),(v('b01')*0.04).toFixed(2)],
+    ['Adq. intracom. bienes (cas.07/08)',v('b07').toFixed(2),(v('b07')*0.21).toFixed(2)],
+    ['Adq. intracom. servicios (cas.09/10)',v('b09').toFixed(2),(v('b09')*0.21).toFixed(2)],
+    ['Inversión sujeto pasivo (cas.11/12)',v('b11').toFixed(2),(v('b11')*0.21).toFixed(2)],
+    ['TOTAL IVA DEVENGADO (cas.27)','',document.getElementById('cas27').textContent.replace(' €','').replace('.','').replace(',','.')],
+    [''],
+    ['IVA DEDUCIBLE','Base (€)','IVA (€)'],
+    ['Bienes/servicios corrientes (cas.28/29)',v('b28').toFixed(2),v('c29').toFixed(2)],
+    ['Bienes de inversión (cas.30/31)',v('b30').toFixed(2),v('c31').toFixed(2)],
+    ['Importaciones corrientes (cas.32/33)',v('b32').toFixed(2),v('c33').toFixed(2)],
+    ['Importaciones inversión (cas.34/35)',v('b34').toFixed(2),v('c35').toFixed(2)],
+    ['Adq. intracom. corrientes (cas.36/37)',v('b36').toFixed(2),v('c37').toFixed(2)],
+    ['Adq. intracom. inversión (cas.38/39)',v('b38').toFixed(2),v('c39').toFixed(2)],
+    ['Compensar períodos anteriores (cas.43)','',v('c43').toFixed(2)],
+    ['TOTAL IVA DEDUCIBLE (cas.45)','',document.getElementById('cas45').textContent.replace(' €','').replace('.','').replace(',','.')],
+    [''],
+    ['RESULTADO',''],
+    ['Diferencia (cas.46)','',document.getElementById('cas46').textContent.replace(' €','').replace('.','').replace(',','.')],
+    ['% atribuible Estado (cas.47)',v('cas47')+'%',''],
+    ['Resultado atribuible Estado (cas.48)','',document.getElementById('cas48').textContent.replace(' €','').replace('.','').replace(',','.')],
+    ['Compensar períodos ant. (cas.49)','',v('cas49').toFixed(2)],
+    ['RESULTADO FINAL (cas.69)','',document.getElementById('resultado-num').textContent.replace(' €','').replace('.','').replace(',','.')],
+  ];
+
+  let csv='sep=,\n';
+  rows.forEach(r=>{ csv+=r.map(c=>`"${c}"`).join(',')+'\n'; });
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download=`Modelo303_${document.getElementById('ejercicio').value}_${document.getElementById('periodo').value}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+}
+
+// Init
+calc();
+</script>
+</body>
+</html>
