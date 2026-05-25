@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modelo 200 — Impuesto Sociedades | NormaAlerta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;--ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;--paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;--border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);--amber-light:#fef3c7;--blue-light:#eff6ff;--red-light:#fef2f2}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.nav-actions{display:flex;gap:8px}
+.btn-nav{font-size:13px;padding:6px 14px;border-radius:7px;border:none;cursor:pointer;font-family:inherit;font-weight:500}
+.btn-nav-outline{background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8)}
+.btn-nav-primary{background:var(--green);color:var(--white)}
+.page{max-width:960px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-header{margin-bottom:2rem}
+.page-header-top{display:flex;align-items:center;gap:12px;margin-bottom:.5rem}
+.modelo-badge{background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 10px;border-radius:6px;font-family:'DM Mono',monospace}
+.aeat-badge{background:var(--paper2);color:var(--ink3);font-size:12px;padding:4px 10px;border-radius:6px}
+.page-title{font-size:26px;font-weight:500;letter-spacing:-.3px;margin-bottom:4px}
+.page-subtitle{font-size:14px;color:var(--ink3)}
+.plazos{display:flex;gap:8px;flex-wrap:wrap;margin-top:.875rem}
+.plazo-chip{font-size:12px;background:var(--white);border:1px solid var(--border2);border-radius:6px;padding:4px 10px;color:var(--ink2)}
+.plazo-chip span{color:var(--green);font-weight:500}
+.section{background:var(--white);border:1px solid var(--border);border-radius:14px;margin-bottom:1rem;overflow:hidden}
+.section-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;border-bottom:1px solid var(--border)}
+.section-header.collapsed{border-bottom:none}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--green-light)}
+.section-title{font-size:15px;font-weight:500;flex:1}
+.section-subtitle{font-size:12px;color:var(--ink3);margin-top:1px}
+.section-total{font-size:14px;font-weight:500;color:var(--green);font-family:'DM Mono',monospace;margin-right:8px}
+.chevron{color:var(--ink3);transition:transform .2s;font-size:18px}
+.section-body{padding:0 1.25rem 1.25rem}
+.field-table{width:100%;border-collapse:collapse;margin-top:.75rem}
+.field-table th{font-size:11px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;padding:.5rem .75rem;background:var(--paper);border-bottom:1px solid var(--border);text-align:left}
+.field-table th:not(:first-child){text-align:right}
+.field-table td{padding:.375rem .75rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.field-table tr:hover td{background:rgba(247,245,238,.5)}
+.row-label{font-size:13px;color:var(--ink2)}
+.row-casilla{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;margin-top:1px}
+.row-info{font-size:11px;color:var(--ink3);font-style:italic;margin-top:1px}
+.input-wrap{position:relative;display:flex;align-items:center;justify-content:flex-end}
+.input-euro{position:absolute;right:.625rem;font-size:12px;color:var(--ink3);pointer-events:none}
+.input-pct{position:absolute;right:.5rem;font-size:12px;color:var(--ink3);pointer-events:none}
+input[type=number]{width:150px;text-align:right;padding:.4rem .625rem;padding-right:1.75rem;border:1px solid var(--border2);border-radius:7px;font-size:14px;font-family:'DM Mono',monospace;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;-moz-appearance:textfield}
+input[type=number]:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+input[type=number].pct{width:80px;padding-right:1.5rem}
+input[type=text],select{padding:.5rem .75rem;border:1px solid var(--border2);border-radius:7px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--white);outline:none;width:100%}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238c8b84' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .5rem center;padding-right:2rem}
+.auto-val{font-size:14px;font-family:'DM Mono',monospace;color:var(--green);text-align:right;min-width:150px}
+.subtotal-row td{background:var(--green-light)!important;font-weight:500;border-top:1px solid rgba(26,122,74,.2)!important}
+.subtotal-row .auto-val{font-size:16px;color:var(--green-dark)}
+.calc-row td{background:#f0fdf4!important}
+.calc-row .auto-val{color:var(--green-dark)}
+.info-box{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12px;color:#92400e;display:flex;gap:8px}
+.info-box.blue{background:var(--blue-light);border-color:rgba(37,99,235,.2);color:#1e40af}
+.info-box.green{background:var(--green-light);border-color:rgba(26,122,74,.2);color:var(--green-dark)}
+.tipo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:.75rem 0}
+.tipo-card{border:1px solid var(--border2);border-radius:8px;padding:.75rem;cursor:pointer;transition:all .15s;text-align:center}
+.tipo-card:hover{border-color:var(--green);background:var(--green-light)}
+.tipo-card.selected{border-color:var(--green);background:var(--green);color:var(--white)}
+.tipo-card.selected .tipo-pct{color:rgba(255,255,255,.8)}
+.tipo-name{font-size:12px;font-weight:500;margin-bottom:2px}
+.tipo-pct{font-size:20px;font-weight:500;font-family:'DM Mono',monospace;color:var(--green)}
+.tipo-card.selected .tipo-pct{color:var(--white)}
+.tipo-desc{font-size:11px;color:var(--ink3);margin-top:2px}
+.tipo-card.selected .tipo-desc{color:rgba(255,255,255,.6)}
+.id-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:.75rem 0}
+.id-field{display:flex;flex-direction:column;gap:4px}
+.id-field label{font-size:12px;font-weight:500;color:var(--ink3)}
+.id-field.full{grid-column:1/-1}
+.resultado{background:var(--ink);border-radius:14px;padding:1.5rem;margin-top:1.5rem;position:relative;overflow:hidden}
+.resultado::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(34,160,122,.08)}
+.resultado-label{font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem}
+.resultado-num{font-size:44px;font-weight:500;font-family:'DM Mono',monospace;color:var(--white);line-height:1.1;margin-bottom:.25rem}
+.resultado-num.positivo{color:#4ade80}
+.resultado-num.negativo{color:#f87171}
+.resultado-status{font-size:14px;color:rgba(255,255,255,.6);margin-bottom:1.5rem}
+.resultado-status strong{color:var(--white)}
+.resultado-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+.resultado-card{background:rgba(255,255,255,.07);border-radius:8px;padding:.75rem}
+.rc-label{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:3px}
+.rc-val{font-size:13px;font-weight:500;font-family:'DM Mono',monospace;color:rgba(255,255,255,.9)}
+.export-row{display:flex;gap:8px;flex-wrap:wrap}
+.btn-export{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:none}
+.btn-pdf{background:var(--green);color:var(--white)}
+.btn-excel{background:rgba(255,255,255,.1);color:var(--white);border:1px solid rgba(255,255,255,.2)}
+.btn-reset{background:transparent;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1)}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="#">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/><circle cx="74" cy="22" r="13" fill="#f59e0b"/><text x="74" y="27" font-family="Arial" font-size="15" font-weight="700" fill="white" text-anchor="middle">!</text></svg>
+    NormaAlerta <span class="nav-badge">Calculadora fiscal</span>
+  </a>
+  <div class="nav-actions">
+    <button class="btn-nav btn-nav-outline" onclick="window.print()">🖨 Imprimir</button>
+    <button class="btn-nav btn-nav-primary" onclick="exportPDF()">⬇ Exportar PDF</button>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="page-header-top">
+      <span class="modelo-badge">MOD. 200</span>
+      <span class="aeat-badge">AEAT · Ley 27/2014 IS · RD 634/2015 · Ley 7/2024</span>
+    </div>
+    <h1 class="page-title">Impuesto sobre Sociedades — Declaración Anual</h1>
+    <p class="page-subtitle">Para sociedades y entidades jurídicas. Plazo: 25 días naturales tras los 6 meses del cierre del ejercicio (ejercicio natural → hasta el 25 de julio).</p>
+    <div class="plazos">
+      <div class="plazo-chip">Ejercicio natural <span>→ 25 julio</span></div>
+      <div class="plazo-chip">Ejercicio distinto <span>→ 25 días tras 6 meses del cierre</span></div>
+    </div>
+  </div>
+
+  <!-- ID -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📋</div>
+      <div><div class="section-title">Identificación de la entidad</div><div class="section-subtitle">Datos de la sociedad declarante</div></div>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="id-grid">
+        <div class="id-field"><label>Ejercicio fiscal</label><input type="text" id="ejercicio" value="2025"></div>
+        <div class="id-field"><label>Período impositivo</label><input type="text" id="periodo" value="01/01/2025 - 31/12/2025"></div>
+        <div class="id-field"><label>NIF/CIF de la entidad</label><input type="text" id="nif" placeholder="B12345678"></div>
+        <div class="id-field"><label>Teléfono</label><input type="text" id="telefono"></div>
+        <div class="id-field full"><label>Razón Social</label><input type="text" id="nombre"></div>
+        <div class="id-field"><label>Domicilio fiscal</label><input type="text" id="domicilio"></div>
+        <div class="id-field"><label>CNAE actividad principal</label><input type="text" id="cnae" placeholder="Ej: 6201"></div>
+        <div class="id-field full"><label>Tipo de entidad</label>
+          <select id="tipo-entidad"><option>Sociedad de Responsabilidad Limitada (SRL)</option><option>Sociedad Anónima (SA)</option><option>Cooperativa</option><option>Asociación / Fundación</option><option>Sociedad Civil</option><option>Otro</option></select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIPO IMPOSITIVO -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">💶</div>
+      <div><div class="section-title">Tipo impositivo aplicable</div><div class="section-subtitle">Selecciona el tipo que corresponde a tu sociedad</div></div>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="tipo-grid">
+        <div class="tipo-card" onclick="selectTipo(0.25,'general',this)">
+          <div class="tipo-name">General</div>
+          <div class="tipo-pct">25%</div>
+          <div class="tipo-desc">Facturación ≥ 1M€</div>
+        </div>
+        <div class="tipo-card selected" onclick="selectTipo(0.21,'micropyme',this)">
+          <div class="tipo-name">Micropyme (hasta 50K€ BI)</div>
+          <div class="tipo-pct">21%</div>
+          <div class="tipo-desc">Facturación &lt; 1M€ — Ley 7/2024</div>
+        </div>
+        <div class="tipo-card" onclick="selectTipo(0.22,'micropyme2',this)">
+          <div class="tipo-name">Micropyme (resto BI)</div>
+          <div class="tipo-pct">22%</div>
+          <div class="tipo-desc">Facturación &lt; 1M€ sobre resto BI</div>
+        </div>
+        <div class="tipo-card" onclick="selectTipo(0.15,'nueva',this)">
+          <div class="tipo-name">Nueva creación</div>
+          <div class="tipo-pct">15%</div>
+          <div class="tipo-desc">Primeros 2 ejercicios con BI positiva</div>
+        </div>
+      </div>
+      <div class="info-box blue">ℹ️ <span><strong>Micropymes (Ley 7/2024):</strong> Si la facturación es menor de 1M€, aplica 21% a los primeros 50.000€ de base imponible y 22% al resto. Si usas la tarjeta "Micropyme (hasta 50K€ BI)", el 21% se aplicará hasta 50.000€ y el sistema calculará el resto al 22% automáticamente.</span></div>
+      <div style="margin-top:.75rem">
+        <label style="font-size:12px;font-weight:500;color:var(--ink3);display:block;margin-bottom:4px">O introduce un tipo personalizado</label>
+        <div class="input-wrap" style="justify-content:flex-start;gap:8px">
+          <div style="position:relative">
+            <input type="number" class="pct" id="tipo-custom" value="21" min="0" max="40" step="0.01" oninput="calc()">
+            <span class="input-pct">%</span>
+          </div>
+          <span style="font-size:13px;color:var(--ink3)">Cooperativas: 20% | Asociaciones sin ánimo de lucro: 25%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PÉRDIDAS Y GANANCIAS -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📊</div>
+      <div><div class="section-title">Cuenta de Pérdidas y Ganancias</div><div class="section-subtitle">Resultado contable del ejercicio — casilla 00550</div></div>
+      <span class="section-total" id="tot-rc-label">0,00 €</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="info-box">⚠️ <span>Introduce los importes tal como aparecen en tu contabilidad. Los gastos van con signo positivo (son importes a restar). El resultado contable se calcula automáticamente.</span></div>
+      <table class="field-table">
+        <thead><tr><th style="width:55%">Concepto</th><th>Casilla</th><th>Importe (€)</th></tr></thead>
+        <tbody>
+          <tr><td><div class="row-label">(+) Importe neto de la cifra de negocios</div><div class="row-info">Ventas netas + prestación de servicios, sin IVA</div></td><td><div class="row-casilla">00100</div></td><td><div class="input-wrap"><input type="number" id="p01" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(+) Variación de existencias de productos terminados</div><div class="row-info">Puede ser negativa si existencias disminuyen</div></td><td><div class="row-casilla">00105</div></td><td><div class="input-wrap"><input type="number" id="p02" value="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(+) Trabajos realizados por la empresa para su activo</div><div class="row-info">Inmovilizado construido o fabricado por la propia empresa</div></td><td><div class="row-casilla">00110</div></td><td><div class="input-wrap"><input type="number" id="p03" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(+) Subvenciones de explotación imputadas al resultado</div><div class="row-info">Subvenciones de explotación del ejercicio</div></td><td><div class="row-casilla">00115</div></td><td><div class="input-wrap"><input type="number" id="p04" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(+) Otros ingresos de explotación</div><div class="row-info">Ingresos accesorios y de gestión corriente</div></td><td><div class="row-casilla">00120</div></td><td><div class="input-wrap"><input type="number" id="p05" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(+) Ingresos financieros</div><div class="row-info">Dividendos, intereses de cuentas y préstamos concedidos</div></td><td><div class="row-casilla">00170</div></td><td><div class="input-wrap"><input type="number" id="p06" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(+) Beneficios en enajenación de inmovilizado y otros</div><div class="row-info">Plusvalías por venta de activos fijos, subvenciones capital...</div></td><td><div class="row-casilla">00180</div></td><td><div class="input-wrap"><input type="number" id="p07" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Aprovisionamientos — coste de ventas</div><div class="row-info">Compras netas ± variación de existencias de mercaderías</div></td><td><div class="row-casilla">00125</div></td><td><div class="input-wrap"><input type="number" id="p08" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Gastos de personal</div><div class="row-info">Sueldos brutos + Seguridad Social a cargo de empresa + otros gastos sociales</div></td><td><div class="row-casilla">00130</div></td><td><div class="input-wrap"><input type="number" id="p09" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Otros gastos de explotación</div><div class="row-info">Alquiler, suministros, servicios exteriores, tributos, reparaciones...</div></td><td><div class="row-casilla">00135</div></td><td><div class="input-wrap"><input type="number" id="p10" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Amortización del inmovilizado</div><div class="row-info">Amortización contable del ejercicio (material e intangible)</div></td><td><div class="row-casilla">00140</div></td><td><div class="input-wrap"><input type="number" id="p11" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Deterioros y pérdidas por enajenación del inmovilizado</div><div class="row-info">Pérdidas por ventas de activos por debajo de su valor contable</div></td><td><div class="row-casilla">00145</div></td><td><div class="input-wrap"><input type="number" id="p12" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Gastos financieros</div><div class="row-info">Intereses de préstamos, gastos de emisión de deuda...</div></td><td><div class="row-casilla">00175</div></td><td><div class="input-wrap"><input type="number" id="p13" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Diferencias negativas de cambio</div><div class="row-info">Pérdidas por tipo de cambio en operaciones en moneda extranjera</div></td><td><div class="row-casilla">00177</div></td><td><div class="input-wrap"><input type="number" id="p14" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Impuesto sobre sociedades (gasto contable)</div><div class="row-info">El IS contabilizado como gasto NO es fiscalmente deducible — se ajusta</div></td><td><div class="row-casilla">00155</div></td><td><div class="input-wrap"><input type="number" id="p15" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr class="subtotal-row"><td><div class="row-label">Resultado contable antes del IS (casilla 00550)</div></td><td><div class="row-casilla">00550</div></td><td><div class="auto-val" id="cas00550" style="font-size:16px">0,00 €</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- AJUSTES FISCALES -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🔧</div>
+      <div><div class="section-title">Ajustes fiscales al resultado contable</div><div class="section-subtitle">Diferencias permanentes y temporarias — base imponible</div></div>
+      <span class="section-total" id="tot-bi-label">0,00 €</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="info-box green">✅ <span><strong>Ajuste automático del IS:</strong> El gasto contable del Impuesto sobre Sociedades (casilla 00155) se suma automáticamente como ajuste positivo, ya que NO es fiscalmente deducible. El resto de ajustes debes introducirlos manualmente.</span></div>
+      <table class="field-table">
+        <thead><tr><th style="width:55%">Concepto</th><th>Casilla</th><th>Importe (€)</th></tr></thead>
+        <tbody>
+          <tr class="calc-row"><td><div class="row-label">Resultado contable antes de IS (automático)</div></td><td><div class="row-casilla">00550</div></td><td><div class="auto-val" id="aj_rc">0,00 €</div></td></tr>
+          <tr><td><div class="row-label">(+) Ajuste IS contabilizado (sum. automáticamente)</div><div class="row-info">El gasto IS no es deducible — art. 15 f) LIS</div></td><td><div class="row-casilla">00301</div></td><td><div class="auto-val" id="aj_is">0,00 €</div></td></tr>
+          <tr><td><div class="row-label">(+) Otros ajustes permanentes positivos</div><div class="row-info">Multas y sanciones, donativos no deducibles, gastos no justificados...</div></td><td><div class="row-casilla">00301</div></td><td><div class="input-wrap"><input type="number" id="aj01" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Ajustes permanentes negativos</div><div class="row-info">Ingresos contabilizados exentos fiscalmente (dividendos exentos, etc.)</div></td><td><div class="row-casilla">00302</div></td><td><div class="input-wrap"><input type="number" id="aj02" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(+) Ajustes temporarios positivos</div><div class="row-info">Deterioros no deducibles, provisiones excesivas, amortización acelerada revertida...</div></td><td><div class="row-casilla">00303</div></td><td><div class="input-wrap"><input type="number" id="aj03" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Ajustes temporarios negativos</div><div class="row-info">Libertad de amortización aplicada, reinversión de plusvalías...</div></td><td><div class="row-casilla">00304</div></td><td><div class="input-wrap"><input type="number" id="aj04" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Libertad amortización vehículos eléctricos y renovables 2025</div><div class="row-info">RDL 2/2026 — prorrogado para 2026. Art. 12 LIS</div></td><td><div class="row-casilla">00319</div></td><td><div class="input-wrap"><input type="number" id="aj05" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr class="subtotal-row"><td><div class="row-label">Base imponible previa</div></td><td><div class="row-casilla">00550 bis</div></td><td><div class="auto-val" id="bi_previa" style="font-size:15px">0,00 €</div></td></tr>
+          <tr><td><div class="row-label">(−) Compensación bases imponibles negativas de ejercicios anteriores (BINs)</div><div class="row-info">Sin límite temporal. Límite cuantitativo: 70% BI previa (sin límite si BI &lt; 1M€)</div></td><td><div class="row-casilla">00556</div></td><td><div class="input-wrap"><input type="number" id="aj_bins" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr class="subtotal-row"><td><div class="row-label">Base imponible (casilla 00562)</div></td><td><div class="row-casilla">00562</div></td><td><div class="auto-val" id="bi" style="font-size:16px">0,00 €</div></td></tr>
+          <tr><td><div class="row-label">(−) Reserva de capitalización — art. 25 LIS</div><div class="row-info">10% incremento fondos propios. Requiere reserva indisponible 5 años + mantenimiento plantilla</div></td><td><div class="row-casilla">00565</div></td><td><div class="input-wrap"><input type="number" id="aj_cap" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Reserva de nivelación — art. 105 LIS (solo PYMES)</div><div class="row-info">Hasta 10% BI, máx. 1.000.000€/año. Se revierte en 5 años si hay BINs</div></td><td><div class="row-casilla">00566</div></td><td><div class="input-wrap"><input type="number" id="aj_niv" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr class="subtotal-row"><td><div class="row-label">Base liquidable (casilla 00567)</div></td><td><div class="row-casilla">00567</div></td><td><div class="auto-val" id="bl" style="font-size:16px">0,00 €</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CUOTA Y DEDUCCIONES -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">💰</div>
+      <div><div class="section-title">Cuota íntegra, deducciones y resultado</div><div class="section-subtitle">Casillas 00582 a 00630</div></div>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <table class="field-table">
+        <thead><tr><th style="width:55%">Concepto</th><th>Casilla</th><th>Importe (€)</th></tr></thead>
+        <tbody>
+          <tr class="calc-row"><td><div class="row-label">Base liquidable (automático)</div></td><td><div class="row-casilla">00567</div></td><td><div class="auto-val" id="cuota_bl">0,00 €</div></td></tr>
+          <tr class="calc-row"><td><div class="row-label">Tipo impositivo seleccionado</div></td><td><div class="row-casilla">—</div></td><td><div class="auto-val" id="cuota_tipo">21%</div></td></tr>
+          <tr class="subtotal-row"><td><div class="row-label">Cuota íntegra (casilla 00582)</div></td><td><div class="row-casilla">00582</div></td><td><div class="auto-val" id="cuota_integra" style="font-size:16px">0,00 €</div></td></tr>
+          <tr><td><div class="row-label">(−) Deducción doble imposición internacional</div><div class="row-info">Art. 31 y 32 LIS — rentas e IS pagados en el extranjero</div></td><td><div class="row-casilla">00585</div></td><td><div class="input-wrap"><input type="number" id="ded01" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Deducciones para incentivar actividades — I+D+i (art. 35 LIS)</div><div class="row-info">25-42% gastos I+D | 12% innovación tecnológica</div></td><td><div class="row-casilla">00590</div></td><td><div class="input-wrap"><input type="number" id="ded02" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Deducción inversiones medioambientales (art. 39 LIS)</div><div class="row-info">8% de las inversiones destinadas a la protección medioambiental</div></td><td><div class="row-casilla">00591</div></td><td><div class="input-wrap"><input type="number" id="ded03" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Deducción creación de empleo (art. 37 LIS)</div><div class="row-info">3.000€ por primer contrato indefinido de trabajador menor de 30 años</div></td><td><div class="row-casilla">00592</div></td><td><div class="input-wrap"><input type="number" id="ded04" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Deducción trabajadores discapacitados (art. 38 LIS)</div><div class="row-info">9.000€ por trabajador (discapacidad ≥33%) o 12.000€ (≥65% o movilidad reducida)</div></td><td><div class="row-casilla">00593</div></td><td><div class="input-wrap"><input type="number" id="ded05" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Bonificaciones (Canarias, Ceuta, Melilla, cooperativas...)</div><div class="row-info">Bonificaciones territoriales y especiales según naturaleza entidad</div></td><td><div class="row-casilla">00598</div></td><td><div class="input-wrap"><input type="number" id="ded06" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Otras deducciones en cuota íntegra</div><div class="row-info">Deducciones por inversión en producciones cinematográficas, publicaciones, etc.</div></td><td><div class="row-casilla">00599</div></td><td><div class="input-wrap"><input type="number" id="ded07" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr class="subtotal-row"><td><div class="row-label">Cuota líquida (casilla 00599 bis)</div></td><td><div class="row-casilla">00599b</div></td><td><div class="auto-val" id="cuota_liquida" style="font-size:16px">0,00 €</div></td></tr>
+          <tr><td><div class="row-label">(−) Retenciones e ingresos a cuenta soportados</div><div class="row-info">Retenciones practicadas sobre rendimientos percibidos por la sociedad</div></td><td><div class="row-casilla">00610</div></td><td><div class="input-wrap"><input type="number" id="ded08" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Pagos fraccionados realizados — Modelo 202</div><div class="row-info">Suma de los 3 pagos fraccionados del IS del ejercicio</div></td><td><div class="row-casilla">00620</div></td><td><div class="input-wrap"><input type="number" id="ded09" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+          <tr><td><div class="row-label">(−) Cuota ingresada en declaración anterior (solo complementaria)</div><div class="row-info">Solo si se presenta una declaración complementaria</div></td><td><div class="row-casilla">00630</div></td><td><div class="input-wrap"><input type="number" id="ded10" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado">
+    <div class="resultado-label">Resultado final — Casilla 00630 bis</div>
+    <div class="resultado-num" id="resultado-num">0,00 €</div>
+    <div class="resultado-status" id="resultado-status">Rellena los campos para ver el resultado</div>
+    <div class="resultado-grid">
+      <div class="resultado-card"><div class="rc-label">Resultado contable</div><div class="rc-val" id="rc-rc">0,00 €</div></div>
+      <div class="resultado-card"><div class="rc-label">Base imponible</div><div class="rc-val" id="rc-bi">0,00 €</div></div>
+      <div class="resultado-card"><div class="rc-label">Cuota íntegra</div><div class="rc-val" id="rc-ci">0,00 €</div></div>
+      <div class="resultado-card"><div class="rc-label">Cuota líquida</div><div class="rc-val" id="rc-cl">0,00 €</div></div>
+    </div>
+    <div class="export-row">
+      <button class="btn-export btn-pdf" onclick="exportPDF()">⬇ Descargar PDF</button>
+      <button class="btn-export btn-excel" onclick="exportCSV()">📊 Exportar datos</button>
+      <button class="btn-export btn-reset" onclick="resetForm()">↺ Limpiar todo</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let tipoSeleccionado=0.21;
+let tipoNombre='Micropyme 21%';
+function fmt(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
+function v(id){return parseFloat(document.getElementById(id)?.value)||0;}
+function set(id,val){const el=document.getElementById(id);if(el)el.textContent=fmt(val);}
+
+function selectTipo(tipo,nombre,btn){
+  tipoSeleccionado=tipo;tipoNombre=nombre;
+  document.querySelectorAll('.tipo-card').forEach(c=>c.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('tipo-custom').value=(tipo*100).toFixed(2);
+  calc();
+}
+
+function calc(){
+  tipoSeleccionado=v('tipo-custom')/100;
+  // PyG
+  const ing=v('p01')+v('p02')+v('p03')+v('p04')+v('p05')+v('p06')+v('p07');
+  const gtos=v('p08')+v('p09')+v('p10')+v('p11')+v('p12')+v('p13')+v('p14')+v('p15');
+  const rc=ing-gtos;
+  set('cas00550',rc); set('aj_rc',rc);
+  document.getElementById('tot-rc-label').textContent=fmt(rc);
+
+  // Ajuste automático IS
+  const is_gasto=v('p15');
+  set('aj_is',is_gasto);
+
+  // Base imponible
+  const bi_previa=rc+is_gasto+v('aj01')-v('aj02')+v('aj03')-v('aj04')-v('aj05');
+  set('bi_previa',bi_previa);
+  const bi=Math.max(0,bi_previa)-v('aj_bins');
+  set('bi',Math.max(0,bi));
+  document.getElementById('tot-bi-label').textContent=fmt(Math.max(0,bi));
+
+  // Base liquidable
+  const bl=Math.max(0,Math.max(0,bi)-v('aj_cap')-v('aj_niv'));
+  set('bl',bl);
+
+  // Cuota íntegra — micropyme tiene tramo
+  let cuota_integra=0;
+  if(tipoNombre==='micropyme'||v('tipo-custom')===21){
+    const tramo1=Math.min(bl,50000);
+    const tramo2=Math.max(0,bl-50000);
+    cuota_integra=tramo1*0.21+tramo2*0.22;
+  } else {
+    cuota_integra=bl*tipoSeleccionado;
+  }
+  set('cuota_bl',bl);
+  document.getElementById('cuota_tipo').textContent=(tipoSeleccionado*100).toFixed(2)+'%';
+  set('cuota_integra',cuota_integra);
+
+  // Deducciones
+  const deds=v('ded01')+v('ded02')+v('ded03')+v('ded04')+v('ded05')+v('ded06')+v('ded07');
+  const cuota_liquida=Math.max(0,cuota_integra-deds);
+  set('cuota_liquida',cuota_liquida);
+
+  // Resultado final
+  const resultado=cuota_liquida-v('ded08')-v('ded09')-v('ded10');
+  const numEl=document.getElementById('resultado-num');
+  numEl.textContent=fmt(resultado);
+  if(resultado>0.005){numEl.className='resultado-num positivo';document.getElementById('resultado-status').innerHTML=`<strong>A ingresar en Hacienda</strong> — Plazo: 25 días naturales tras los 6 meses del cierre del ejercicio`;}
+  else if(resultado<-0.005){numEl.className='resultado-num negativo';document.getElementById('resultado-status').innerHTML=`<strong>A devolver</strong> — Resultado negativo: Hacienda devolverá la diferencia`;}
+  else{numEl.className='resultado-num';document.getElementById('resultado-status').innerHTML='<strong>Resultado cero</strong>';}
+
+  set('rc-rc',rc); set('rc-bi',Math.max(0,bi)); set('rc-ci',cuota_integra); set('rc-cl',cuota_liquida);
+}
+
+function toggleSection(h){
+  const b=h.nextElementSibling,c=h.querySelector('.chevron');
+  if(b.style.display==='none'){b.style.display='block';c.style.transform='rotate(0deg)';h.classList.remove('collapsed');}
+  else{b.style.display='none';c.style.transform='rotate(-90deg)';h.classList.add('collapsed');}
+}
+
+function resetForm(){
+  if(!confirm('¿Limpiar todos los datos?')) return;
+  document.querySelectorAll('input[type=number]').forEach(i=>{if(i.id==='tipo-custom')i.value=21;else i.value=0;});
+  calc();
+}
+
+function exportPDF(){
+  const w=window.open('','_blank','width=800,height=900');
+  const ej=document.getElementById('ejercicio').value,per=document.getElementById('periodo').value;
+  const nif=document.getElementById('nif').value||'—',nom=document.getElementById('nombre').value||'—';
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Modelo 200</title>
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Helvetica,Arial,sans-serif;font-size:12px;padding:36px;color:#1c1b18}
+  .hdr{display:flex;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid #1a7a4a}
+  h1{font-size:17px;font-weight:600;color:#1a7a4a}h2{font-size:11px;font-weight:600;background:#3d3d3d;color:white;padding:5px 8px;border-radius:4px;margin:12px 0 6px}
+  .id{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#f7f5ee;padding:10px;border-radius:8px;margin-bottom:12px}
+  .id label{font-size:9px;text-transform:uppercase;color:#8c8b84;display:block}.id span{font-size:11px}
+  table{width:100%;border-collapse:collapse}th{font-size:9px;text-transform:uppercase;color:#8c8b84;background:#f0ede4;padding:4px 6px;text-align:left;border-bottom:1px solid #e2ded2}
+  td{padding:3px 6px;border-bottom:1px solid #edeae0;font-size:10px}td.r{text-align:right;font-family:monospace}
+  .sub td{background:#e0f0ea;font-weight:600}.res{background:#1c1b18;color:white;padding:16px;border-radius:10px;margin-top:16px;display:flex;justify-content:space-between}
+  .res .n{font-size:24px;font-weight:600;font-family:monospace}.ftr{margin-top:16px;font-size:9px;color:#8c8b84;text-align:center;border-top:1px solid #edeae0;padding-top:10px}
+  @media print{body{padding:20px}}</style></head><body>
+  <div class="hdr"><div><h1>NormaAlerta</h1><p style="font-size:10px;color:#8c8b84">Calculadora fiscal · normaalerta.com</p></div>
+  <div style="text-align:right"><div style="font-size:20px;font-weight:700;font-family:monospace">MOD. 200</div><div style="font-size:10px;color:#8c8b84">Impuesto Sociedades</div></div></div>
+  <div class="id"><div><label>Ejercicio</label><span>${ej}</span></div><div><label>Período</label><span>${per}</span></div>
+  <div><label>CIF</label><span>${nif}</span></div><div><label>Entidad</label><span>${nom}</span></div>
+  <div><label>Tipo IS</label><span>${(tipoSeleccionado*100).toFixed(2)}%</span></div></div>
+  <h2>Cuenta de Pérdidas y Ganancias</h2>
+  <table><tr><th style="width:65%">Concepto</th><th>Cas.</th><th class="r">€</th></tr>
+  <tr><td>Cifra de negocios</td><td>00100</td><td class="r">${v('p01').toFixed(2)}</td></tr>
+  <tr><td>Gastos personal</td><td>00130</td><td class="r">-${v('p09').toFixed(2)}</td></tr>
+  <tr><td>Otros gastos explotación</td><td>00135</td><td class="r">-${v('p10').toFixed(2)}</td></tr>
+  <tr><td>Amortizaciones</td><td>00140</td><td class="r">-${v('p11').toFixed(2)}</td></tr>
+  <tr><td>Gastos financieros</td><td>00175</td><td class="r">-${v('p13').toFixed(2)}</td></tr>
+  <tr class="sub"><td colspan="2">Resultado contable antes IS (cas. 00550)</td><td class="r">${document.getElementById('cas00550').textContent}</td></tr></table>
+  <h2>Ajustes fiscales y base imponible</h2>
+  <table><tr><th style="width:65%">Concepto</th><th>Cas.</th><th class="r">€</th></tr>
+  <tr><td>Ajuste IS contabilizado (+)</td><td>00301</td><td class="r">${v('p15').toFixed(2)}</td></tr>
+  <tr><td>Otros ajustes (+)</td><td>00301</td><td class="r">${v('aj01').toFixed(2)}</td></tr>
+  <tr><td>Ajustes (-)</td><td>00302</td><td class="r">-${v('aj02').toFixed(2)}</td></tr>
+  <tr><td>Compensación BINs</td><td>00556</td><td class="r">-${v('aj_bins').toFixed(2)}</td></tr>
+  <tr><td>Reserva capitalización</td><td>00565</td><td class="r">-${v('aj_cap').toFixed(2)}</td></tr>
+  <tr><td>Reserva nivelación</td><td>00566</td><td class="r">-${v('aj_niv').toFixed(2)}</td></tr>
+  <tr class="sub"><td colspan="2">Base liquidable (cas. 00567)</td><td class="r">${document.getElementById('bl').textContent}</td></tr></table>
+  <h2>Cuota y resultado</h2>
+  <table><tr><th style="width:65%">Concepto</th><th>Cas.</th><th class="r">€</th></tr>
+  <tr class="sub"><td colspan="2">Cuota íntegra (cas. 00582)</td><td class="r">${document.getElementById('cuota_integra').textContent}</td></tr>
+  <tr><td>Retenciones soportadas</td><td>00610</td><td class="r">-${v('ded08').toFixed(2)}</td></tr>
+  <tr><td>Pagos fraccionados Mod.202</td><td>00620</td><td class="r">-${v('ded09').toFixed(2)}</td></tr>
+  <tr class="sub"><td colspan="2">Resultado final</td><td class="r">${document.getElementById('resultado-num').textContent}</td></tr></table>
+  <div class="res" style="${parseFloat(document.getElementById('resultado-num').textContent.replace(/\./g,'').replace(',','.'))||0>=0?'':'color:#f87171'}">
+  <div><div style="font-size:9px;opacity:.5;text-transform:uppercase;margin-bottom:3px">Resultado IS</div>
+  <div class="n" style="color:${(parseFloat(document.getElementById('resultado-num').textContent.replace(/\./g,'').replace(',','.'))||0)>=0?'#4ade80':'#f87171'}">${document.getElementById('resultado-num').textContent}</div>
+  <div style="font-size:11px;opacity:.6;margin-top:3px">${document.getElementById('resultado-status').innerText}</div></div></div>
+  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Documento orientativo</div>
+  <script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.close();
+}
+
+function exportCSV(){
+  const rows=[['MODELO 200 — IMPUESTO SOBRE SOCIEDADES'],['Ejercicio',document.getElementById('ejercicio').value],['Entidad',document.getElementById('nombre').value],['CIF',document.getElementById('nif').value],['Tipo IS',(tipoSeleccionado*100).toFixed(2)+'%'],[''],['RESUMEN','Casilla','Importe'],['Resultado contable','00550',document.getElementById('cas00550').textContent],['Base imponible','00562',document.getElementById('bi').textContent],['Base liquidable','00567',document.getElementById('bl').textContent],['Cuota íntegra','00582',document.getElementById('cuota_integra').textContent],['Cuota líquida','00599b',document.getElementById('cuota_liquida').textContent],['RESULTADO FINAL','00630b',document.getElementById('resultado-num').textContent]];
+  let csv='sep=,\n';rows.forEach(r=>{csv+=r.map(c=>`"${c}"`).join(',')+'\n';});
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`Modelo200_${document.getElementById('ejercicio').value}.csv`;a.click();
+}
+calc();
+</script>
+</body></html>

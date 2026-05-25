@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modelo 115 — Retenciones Arrendamientos | NormaAlerta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;--ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;--paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;--border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);--amber-light:#fef3c7;--blue-light:#eff6ff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.nav-actions{display:flex;gap:8px}
+.btn-nav{font-size:13px;padding:6px 14px;border-radius:7px;border:none;cursor:pointer;font-family:inherit;font-weight:500}
+.btn-nav-outline{background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8)}
+.btn-nav-primary{background:var(--green);color:var(--white)}
+.page{max-width:980px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-header{margin-bottom:2rem}
+.page-header-top{display:flex;align-items:center;gap:12px;margin-bottom:.5rem}
+.modelo-badge{background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 10px;border-radius:6px;font-family:'DM Mono',monospace}
+.aeat-badge{background:var(--paper2);color:var(--ink3);font-size:12px;padding:4px 10px;border-radius:6px}
+.page-title{font-size:26px;font-weight:500;letter-spacing:-.3px;margin-bottom:4px}
+.page-subtitle{font-size:14px;color:var(--ink3)}
+.plazos{display:flex;gap:8px;flex-wrap:wrap;margin-top:.875rem}
+.plazo-chip{font-size:12px;background:var(--white);border:1px solid var(--border2);border-radius:6px;padding:4px 10px;color:var(--ink2)}
+.plazo-chip span{color:var(--green);font-weight:500}
+.section{background:var(--white);border:1px solid var(--border);border-radius:14px;margin-bottom:1rem;overflow:hidden}
+.section-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;border-bottom:1px solid var(--border)}
+.section-header.collapsed{border-bottom:none}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--green-light)}
+.section-title{font-size:15px;font-weight:500;flex:1}
+.section-subtitle{font-size:12px;color:var(--ink3);margin-top:1px}
+.section-total{font-size:14px;font-weight:500;color:var(--green);font-family:'DM Mono',monospace;margin-right:8px}
+.chevron{color:var(--ink3);transition:transform .2s;font-size:18px}
+.section-body{padding:0 1.25rem 1.25rem}
+.field-table{width:100%;border-collapse:collapse;margin-top:.75rem}
+.field-table th{font-size:11px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;padding:.5rem .75rem;background:var(--paper);border-bottom:1px solid var(--border);text-align:left}
+.field-table td{padding:.375rem .75rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.field-table tr:hover td{background:rgba(247,245,238,.5)}
+.row-label{font-size:13px;color:var(--ink2)}
+.row-casilla{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;margin-top:1px}
+.row-info{font-size:11px;color:var(--ink3);font-style:italic;margin-top:1px}
+.input-wrap{position:relative;display:flex;align-items:center;justify-content:flex-end}
+.input-euro{position:absolute;right:.625rem;font-size:12px;color:var(--ink3);pointer-events:none}
+.input-pct{position:absolute;right:.5rem;font-size:12px;color:var(--ink3);pointer-events:none}
+input[type=number]{width:140px;text-align:right;padding:.4rem .625rem;padding-right:1.75rem;border:1px solid var(--border2);border-radius:7px;font-size:13px;font-family:'DM Mono',monospace;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;-moz-appearance:textfield}
+input[type=number]:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+input[type=number].pct{width:70px;padding-right:1.5rem}
+input[type=text],select{padding:.5rem .75rem;border:1px solid var(--border2);border-radius:7px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--white);outline:none;width:100%}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238c8b84' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .5rem center;padding-right:2rem}
+.auto-val{font-size:13px;font-family:'DM Mono',monospace;color:var(--green);text-align:right;min-width:130px}
+.subtotal-row td{background:var(--green-light)!important;font-weight:500;border-top:1px solid rgba(26,122,74,.2)!important}
+.subtotal-row .auto-val{font-size:15px;color:var(--green-dark)}
+.info-box{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12px;color:#92400e;display:flex;gap:8px}
+.info-box.blue{background:var(--blue-light);border-color:rgba(37,99,235,.2);color:#1e40af}
+.info-box.green{background:var(--green-light);border-color:rgba(26,122,74,.2);color:var(--green-dark)}
+.id-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:.75rem 0}
+.id-field{display:flex;flex-direction:column;gap:4px}
+.id-field label{font-size:12px;font-weight:500;color:var(--ink3)}
+.id-field.full{grid-column:1/-1}
+.resultado{background:var(--ink);border-radius:14px;padding:1.5rem;margin-top:1.5rem}
+.resultado-label{font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem}
+.resultado-num{font-size:44px;font-weight:500;font-family:'DM Mono',monospace;color:#4ade80;line-height:1.1;margin-bottom:.25rem}
+.resultado-status{font-size:14px;color:rgba(255,255,255,.6);margin-bottom:1.5rem}
+.resultado-status strong{color:var(--white)}
+.resultado-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+.resultado-card{background:rgba(255,255,255,.07);border-radius:8px;padding:.75rem}
+.rc-label{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:3px}
+.rc-val{font-size:14px;font-weight:500;font-family:'DM Mono',monospace;color:rgba(255,255,255,.9)}
+.export-row{display:flex;gap:8px;flex-wrap:wrap}
+.btn-export{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:none}
+.btn-pdf{background:var(--green);color:var(--white)}
+.btn-excel{background:rgba(255,255,255,.1);color:var(--white);border:1px solid rgba(255,255,255,.2)}
+.btn-reset{background:transparent;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1)}
+.btn-add{font-size:13px;padding:.5rem 1rem;background:var(--green-light);color:var(--green-dark);border:1px solid rgba(26,122,74,.2);border-radius:8px;cursor:pointer;font-family:inherit;font-weight:500;margin-top:.75rem}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="#">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/><circle cx="74" cy="22" r="13" fill="#f59e0b"/><text x="74" y="27" font-family="Arial" font-size="15" font-weight="700" fill="white" text-anchor="middle">!</text></svg>
+    NormaAlerta <span class="nav-badge">Calculadora fiscal</span>
+  </a>
+  <div class="nav-actions">
+    <button class="btn-nav btn-nav-outline" onclick="window.print()">🖨 Imprimir</button>
+    <button class="btn-nav btn-nav-primary" onclick="exportPDF()">⬇ Exportar PDF</button>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="page-header-top">
+      <span class="modelo-badge">MOD. 115</span>
+      <span class="aeat-badge">AEAT · Art. 75 y 100 RIRPF · Ley 35/2006</span>
+    </div>
+    <h1 class="page-title">Retenciones sobre arrendamientos de inmuebles urbanos</h1>
+    <p class="page-subtitle">Para empresas y autónomos que pagan alquiler de local u oficina afecto a la actividad. La retención es del 19% sobre la renta (sin IVA).</p>
+    <div class="plazos">
+      <div class="plazo-chip">1T <span>→ 20 abril</span></div>
+      <div class="plazo-chip">2T <span>→ 20 julio</span></div>
+      <div class="plazo-chip">3T <span>→ 20 octubre</span></div>
+      <div class="plazo-chip">4T <span>→ 20 enero</span></div>
+    </div>
+  </div>
+
+  <!-- ID -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📋</div>
+      <div><div class="section-title">Identificación del retenedor</div><div class="section-subtitle">Quien paga el alquiler y practica la retención</div></div>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="id-grid">
+        <div class="id-field"><label>Ejercicio</label><input type="text" id="ejercicio" value="2026"></div>
+        <div class="id-field"><label>Período</label><select id="periodo"><option value="1T">1T — Enero-marzo</option><option value="2T">2T — Abril-junio</option><option value="3T">3T — Julio-septiembre</option><option value="4T">4T — Octubre-diciembre</option></select></div>
+        <div class="id-field"><label>NIF/CIF retenedor</label><input type="text" id="nif" placeholder="12345678A"></div>
+        <div class="id-field"><label>Teléfono</label><input type="text" id="telefono"></div>
+        <div class="id-field full"><label>Razón Social / Nombre del retenedor</label><input type="text" id="nombre"></div>
+      </div>
+      <div class="info-box blue">ℹ️ <span><strong>¿Cuándo hay obligación de retener?</strong> Solo si el arrendador (propietario) realiza actividad económica de arrendamiento (epígrafe IAE 861). Si el propietario es una persona física que alquila ocasionalmente y no tiene actividad de arrendamiento, <strong>NO hay obligación de retener</strong>.</span></div>
+    </div>
+  </div>
+
+  <!-- INMUEBLES -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">🏠</div>
+      <div><div class="section-title">Detalle de inmuebles arrendados</div><div class="section-subtitle">Casillas 01, 02, 03 — renta e NIF por arrendador</div></div>
+      <span class="section-total" id="tot-ret-label">0,00 €</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="info-box">⚠️ <span>La retención se aplica sobre la <strong>renta sin IVA</strong>. Si el propietario está en régimen de IVA, primero separa la base y luego calcula el 19% sobre esa base. La renta a incluir es la del <strong>trimestre</strong>, no acumulada.</span></div>
+      <table class="field-table" id="tabla-inmuebles">
+        <thead>
+          <tr>
+            <th style="width:30%">Inmueble / Arrendador</th>
+            <th style="width:14%">NIF arrendador</th>
+            <th style="width:14%">Renta trimestre (€)</th>
+            <th style="width:10%">Tipo (%)</th>
+            <th style="width:13%">Retención (€)</th>
+            <th style="width:8%">Exento</th>
+            <th style="width:5%"></th>
+          </tr>
+        </thead>
+        <tbody id="inmuebles-body"></tbody>
+        <tfoot>
+          <tr class="subtotal-row">
+            <td colspan="2"><div class="row-label">Totales (casillas 01/02/03)</div></td>
+            <td><div class="auto-val" id="tot-rentas">0,00 €</div></td>
+            <td></td>
+            <td><div class="auto-val" id="tot-ret" style="font-size:15px">0,00 €</div></td>
+            <td colspan="2"></td>
+          </tr>
+        </tfoot>
+      </table>
+      <button class="btn-add" onclick="addInmueble()">+ Añadir inmueble</button>
+      <div style="font-size:12px;color:var(--ink3);margin-top:.5rem">Puedes añadir tantos inmuebles como necesites. Marca "Exento" si el arrendador ha acreditado exención (certificado AEAT).</div>
+    </div>
+  </div>
+
+  <!-- LIQUIDACIÓN -->
+  <div class="section">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon">📊</div>
+      <div><div class="section-title">Liquidación — Resultado</div><div class="section-subtitle">Casilla 04 — resultado a ingresar</div></div>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <table class="field-table">
+        <tbody>
+          <tr>
+            <td style="width:55%"><div class="row-label">Casilla 01 — Número total de perceptores (arrendadores)</div></td>
+            <td><div class="row-casilla">01</div></td>
+            <td><div class="auto-val" id="cas01">0</div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Casilla 02 — Importe total de las rentas satisfechas</div></td>
+            <td><div class="row-casilla">02</div></td>
+            <td><div class="auto-val" id="cas02">0,00 €</div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Casilla 03 — Retenciones e ingresos a cuenta practicados</div></td>
+            <td><div class="row-casilla">03</div></td>
+            <td><div class="auto-val" id="cas03">0,00 €</div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">A deducir — declaración complementaria (importe ya ingresado)</div><div class="row-info">Solo si es declaración complementaria al mismo período</div></td>
+            <td><div class="row-casilla">04 b</div></td>
+            <td><div class="input-wrap"><input type="number" id="complementaria" value="0" min="0" step="0.01" oninput="calcTotal()"><span class="input-euro">€</span></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado">
+    <div class="resultado-label">Resultado final — Casilla 04</div>
+    <div class="resultado-num" id="resultado-num">0,00 €</div>
+    <div class="resultado-status" id="resultado-status">Añade los inmuebles arrendados para ver el resultado</div>
+    <div class="resultado-grid">
+      <div class="resultado-card"><div class="rc-label">Nº arrendadores (cas. 01)</div><div class="rc-val" id="rc-num">0</div></div>
+      <div class="resultado-card"><div class="rc-label">Total rentas (cas. 02)</div><div class="rc-val" id="rc-rentas">0,00 €</div></div>
+      <div class="resultado-card"><div class="rc-label">Total retenciones (cas. 03)</div><div class="rc-val" id="rc-ret">0,00 €</div></div>
+    </div>
+    <div class="export-row">
+      <button class="btn-export btn-pdf" onclick="exportPDF()">⬇ Descargar PDF</button>
+      <button class="btn-export btn-excel" onclick="exportCSV()">📊 Exportar datos</button>
+      <button class="btn-export btn-reset" onclick="resetForm()">↺ Limpiar todo</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let numInmuebles=0;
+function fmt(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
+function v(id){return parseFloat(document.getElementById(id)?.value)||0;}
+function set(id,val){const el=document.getElementById(id);if(el)el.textContent=fmt(val);}
+
+function addInmueble(){
+  numInmuebles++;
+  const i=numInmuebles;
+  const tbody=document.getElementById('inmuebles-body');
+  const tr=document.createElement('tr');
+  tr.id=`row-inm-${i}`;
+  tr.innerHTML=`
+    <td><input type="text" id="inm-nom-${i}" placeholder="Inmueble ${i} / Arrendador" style="font-size:12px;padding:.35rem .5rem"></td>
+    <td><input type="text" id="inm-nif-${i}" placeholder="NIF" style="font-size:12px;padding:.35rem .5rem;width:110px"></td>
+    <td><div class="input-wrap"><input type="number" id="inm-renta-${i}" value="0" min="0" step="0.01" oninput="calcInmuebles()"><span class="input-euro">€</span></div></td>
+    <td><div class="input-wrap"><input type="number" class="pct" id="inm-tipo-${i}" value="19" min="0" max="100" step="0.01" oninput="calcInmuebles()"><span class="input-pct">%</span></div></td>
+    <td><div class="auto-val" id="inm-ret-${i}">0,00 €</div></td>
+    <td style="text-align:center"><input type="checkbox" id="inm-exento-${i}" onchange="calcInmuebles()" title="Marcar si el arrendador ha acreditado exención"></td>
+    <td><button onclick="removeInmueble(${i})" style="background:none;border:none;cursor:pointer;color:#8c8b84;font-size:16px" title="Eliminar">×</button></td>`;
+  tbody.appendChild(tr);
+  calcInmuebles();
+}
+
+function removeInmueble(i){
+  document.getElementById(`row-inm-${i}`).remove();
+  calcInmuebles();
+}
+
+function calcInmuebles(){
+  let totRentas=0,totRet=0,numPerc=0;
+  for(let i=1;i<=numInmuebles;i++){
+    const row=document.getElementById(`row-inm-${i}`);
+    if(!row) continue;
+    const exento=document.getElementById(`inm-exento-${i}`)?.checked;
+    const renta=v(`inm-renta-${i}`),tipo=v(`inm-tipo-${i}`)/100;
+    const ret=exento?0:renta*tipo;
+    const el=document.getElementById(`inm-ret-${i}`);
+    if(el) el.textContent=fmt(ret);
+    if(renta>0) numPerc++;
+    totRentas+=renta; totRet+=exento?0:ret;
+  }
+  set('tot-rentas',totRentas); set('tot-ret',totRet);
+  document.getElementById('tot-ret-label').textContent=fmt(totRet);
+  document.getElementById('cas01').textContent=numPerc;
+  set('cas02',totRentas); set('cas03',totRet);
+  calcTotal(totRet,numPerc,totRentas);
+}
+
+function calcTotal(totRet,numPerc,totRentas){
+  if(totRet===undefined){
+    totRet=parseFloat(document.getElementById('tot-ret').textContent.replace(/\./g,'').replace(',','.').replace(' €',''))||0;
+    numPerc=parseInt(document.getElementById('cas01').textContent)||0;
+    totRentas=parseFloat(document.getElementById('cas02').textContent.replace(/\./g,'').replace(',','.').replace(' €',''))||0;
+  }
+  const comp=v('complementaria');
+  const resultado=Math.max(0,totRet-comp);
+  document.getElementById('resultado-num').textContent=fmt(resultado);
+  const p=document.getElementById('periodo').value;
+  const plazos={'1T':'20 de abril','2T':'20 de julio','3T':'20 de octubre','4T':'20 de enero'};
+  document.getElementById('resultado-status').innerHTML=`<strong>A ingresar en Hacienda</strong> — Plazo: hasta el ${plazos[p]||'fecha oficial'}`;
+  document.getElementById('rc-num').textContent=numPerc;
+  document.getElementById('rc-rentas').textContent=fmt(totRentas);
+  document.getElementById('rc-ret').textContent=fmt(totRet);
+}
+
+function toggleSection(h){
+  const b=h.nextElementSibling,c=h.querySelector('.chevron');
+  if(b.style.display==='none'){b.style.display='block';c.style.transform='rotate(0deg)';h.classList.remove('collapsed');}
+  else{b.style.display='none';c.style.transform='rotate(-90deg)';h.classList.add('collapsed');}
+}
+
+function resetForm(){
+  if(!confirm('¿Limpiar todos los datos?')) return;
+  document.getElementById('inmuebles-body').innerHTML='';
+  numInmuebles=0;
+  document.getElementById('complementaria').value=0;
+  calcInmuebles();
+}
+
+function exportPDF(){
+  const w=window.open('','_blank','width=800,height=900');
+  const ej=document.getElementById('ejercicio').value,per=document.getElementById('periodo').value;
+  const nif=document.getElementById('nif').value||'—',nom=document.getElementById('nombre').value||'—';
+  let rows='';
+  for(let i=1;i<=numInmuebles;i++){
+    const row=document.getElementById(`row-inm-${i}`);if(!row)continue;
+    rows+=`<tr><td>${document.getElementById(`inm-nom-${i}`).value||'—'}</td><td>${document.getElementById(`inm-nif-${i}`).value||'—'}</td><td class="r">${v(`inm-renta-${i}`).toFixed(2)}</td><td class="r">${v(`inm-tipo-${i}`)}%</td><td class="r">${document.getElementById(`inm-ret-${i}`).textContent}</td></tr>`;
+  }
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Modelo 115</title>
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Helvetica,Arial,sans-serif;font-size:13px;padding:40px;color:#1c1b18}
+  .hdr{display:flex;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #1a7a4a}
+  h1{font-size:18px;font-weight:600;color:#1a7a4a}h2{font-size:12px;font-weight:600;background:#3d3d3d;color:white;padding:5px 8px;border-radius:4px;margin:14px 0 6px}
+  .id{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#f7f5ee;padding:12px;border-radius:8px;margin-bottom:14px}
+  .id label{font-size:10px;text-transform:uppercase;color:#8c8b84;display:block}.id span{font-size:12px}
+  table{width:100%;border-collapse:collapse}th{font-size:10px;text-transform:uppercase;color:#8c8b84;background:#f0ede4;padding:5px 8px;text-align:left;border-bottom:1px solid #e2ded2}
+  td{padding:4px 8px;border-bottom:1px solid #edeae0;font-size:11px}td.r{text-align:right;font-family:monospace}
+  .sub td{background:#e0f0ea;font-weight:600}.res{background:#1c1b18;color:white;padding:18px;border-radius:10px;margin-top:18px}
+  .res .n{font-size:26px;font-weight:600;font-family:monospace;color:#4ade80}.ftr{margin-top:18px;font-size:10px;color:#8c8b84;text-align:center;border-top:1px solid #edeae0;padding-top:10px}
+  @media print{body{padding:20px}}</style></head><body>
+  <div class="hdr"><div><h1>NormaAlerta</h1><p style="font-size:11px;color:#8c8b84">Calculadora fiscal · normaalerta.com</p></div>
+  <div style="text-align:right"><div style="font-size:22px;font-weight:700;font-family:monospace">MOD. 115</div><div style="font-size:11px;color:#8c8b84">Retenciones arrendamientos</div></div></div>
+  <div class="id"><div><label>Ejercicio</label><span>${ej}</span></div><div><label>Período</label><span>${per}</span></div>
+  <div><label>NIF/CIF</label><span>${nif}</span></div><div><label>Retenedor</label><span>${nom}</span></div></div>
+  <h2>Detalle de inmuebles</h2>
+  <table><tr><th>Inmueble / Arrendador</th><th>NIF</th><th class="r">Renta (€)</th><th class="r">Tipo</th><th class="r">Retención</th></tr>${rows}
+  <tr class="sub"><td colspan="2">Total (cas. 01/02/03)</td><td class="r">${document.getElementById('cas02').textContent}</td><td></td><td class="r">${document.getElementById('cas03').textContent}</td></tr></table>
+  <h2>Liquidación</h2>
+  <table><tr><th>Casilla</th><th class="r">Valor</th></tr>
+  <tr><td>01 — Nº perceptores</td><td class="r">${document.getElementById('cas01').textContent}</td></tr>
+  <tr><td>02 — Total rentas</td><td class="r">${document.getElementById('cas02').textContent}</td></tr>
+  <tr><td>03 — Total retenciones</td><td class="r">${document.getElementById('cas03').textContent}</td></tr>
+  <tr class="sub"><td>04 — Resultado a ingresar</td><td class="r">${document.getElementById('resultado-num').textContent}</td></tr></table>
+  <div class="res"><div><div style="font-size:10px;opacity:.5;text-transform:uppercase;margin-bottom:4px">Resultado — Casilla 04</div><div class="n">${document.getElementById('resultado-num').textContent}</div></div></div>
+  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Documento orientativo</div>
+  <script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.close();
+}
+
+function exportCSV(){
+  const rows=[['MODELO 115 — RETENCIONES ARRENDAMIENTOS'],['Ejercicio',document.getElementById('ejercicio').value],['Período',document.getElementById('periodo').value],['NIF',document.getElementById('nif').value],[''],['Inmueble','NIF Arrendador','Renta (€)','Tipo (%)','Retención (€)']];
+  for(let i=1;i<=numInmuebles;i++){
+    const row=document.getElementById(`row-inm-${i}`);if(!row)continue;
+    rows.push([document.getElementById(`inm-nom-${i}`).value,document.getElementById(`inm-nif-${i}`).value,v(`inm-renta-${i}`).toFixed(2),v(`inm-tipo-${i}`)+'%',document.getElementById(`inm-ret-${i}`).textContent]);
+  }
+  rows.push([''],['RESUMEN','Casilla','Valor'],['Nº perceptores','01',document.getElementById('cas01').textContent],['Total rentas','02',document.getElementById('cas02').textContent],['Total retenciones','03',document.getElementById('cas03').textContent],['RESULTADO','04',document.getElementById('resultado-num').textContent]);
+  let csv='sep=,\n';rows.forEach(r=>{csv+=r.map(c=>`"${c}"`).join(',')+'\n';});
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`Modelo115_${document.getElementById('ejercicio').value}_${document.getElementById('periodo').value}.csv`;a.click();
+}
+
+// Init: añadir 3 inmuebles por defecto
+addInmueble(); addInmueble(); addInmueble();
+</script>
+</body></html>
