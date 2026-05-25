@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asistente Fiscal IA | NormaAlerta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;
+  --ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;
+  --paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;
+  --border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);
+  --amber-light:#fef3c7;--red-light:#fef2f2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;display:flex;flex-direction:column;min-height:100vh}
+
+/* NAV */
+nav{background:var(--ink);padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:16px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:22px;height:22px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-contador{font-size:12px;color:rgba(255,255,255,.4)}
+.btn-nuevo{font-size:12px;padding:5px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.7);cursor:pointer;font-family:inherit}
+.btn-nuevo:hover{background:rgba(255,255,255,.08)}
+
+/* LAYOUT CHAT */
+.chat-container{flex:1;display:flex;flex-direction:column;max-width:760px;margin:0 auto;width:100%;padding:0 1rem}
+
+/* CABECERA BIENVENIDA */
+.welcome{padding:2rem 0 1.5rem;text-align:center}
+.welcome-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:4px 10px;border-radius:20px;background:var(--green-light);color:var(--green-dark);font-weight:500;margin-bottom:.75rem}
+.welcome-dot{width:7px;height:7px;border-radius:50%;background:var(--green-mid);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.welcome h1{font-family:'Fraunces',serif;font-size:clamp(1.5rem,3vw,2rem);font-weight:300;color:var(--ink);margin-bottom:.375rem}
+.welcome h1 em{font-style:italic;color:var(--green)}
+.welcome p{font-size:14px;color:var(--ink3);max-width:480px;margin:0 auto}
+
+/* SUGERENCIAS */
+.sugerencias{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.5rem}
+.sugerencia{background:var(--white);border:1px solid var(--border2);border-radius:10px;padding:.75rem 1rem;font-size:13px;color:var(--ink2);cursor:pointer;text-align:left;transition:all .15s;font-family:inherit;line-height:1.4}
+.sugerencia:hover{border-color:var(--green);background:var(--green-light);color:var(--green-dark)}
+.sugerencia .s-icon{font-size:16px;display:block;margin-bottom:4px}
+
+/* MENSAJES */
+.mensajes{flex:1;overflow-y:auto;padding:.5rem 0;display:flex;flex-direction:column;gap:1rem}
+.mensaje{display:flex;gap:10px;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.mensaje.usuario{flex-direction:row-reverse}
+.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:2px}
+.avatar.ia{background:var(--green);color:white;font-weight:500}
+.avatar.user{background:var(--paper2);color:var(--ink2);font-size:15px}
+.burbuja{max-width:85%;padding:.75rem 1rem;border-radius:14px;font-size:14px;line-height:1.65}
+.burbuja.ia{background:var(--white);border:1px solid var(--border);border-radius:14px 14px 14px 4px}
+.burbuja.usuario{background:var(--ink);color:rgba(255,255,255,.9);border-radius:14px 14px 4px 14px}
+.burbuja p{margin-bottom:.5rem}
+.burbuja p:last-child{margin-bottom:0}
+.burbuja strong{font-weight:600}
+.burbuja ul,.burbuja ol{padding-left:1.25rem;margin:.375rem 0}
+.burbuja li{margin-bottom:.25rem}
+.burbuja .aviso-legal{font-size:11px;color:var(--ink3);border-top:1px solid var(--border);margin-top:.75rem;padding-top:.625rem;font-style:italic}
+
+/* TYPING */
+.typing{display:flex;align-items:center;gap:5px;padding:.75rem 1rem;background:var(--white);border:1px solid var(--border);border-radius:14px 14px 14px 4px;width:fit-content}
+.typing span{width:7px;height:7px;border-radius:50%;background:var(--ink3);animation:bounce .8s infinite}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+
+/* INPUT */
+.input-area{padding:1rem 0 1.5rem;flex-shrink:0}
+.input-box{background:var(--white);border:1px solid var(--border2);border-radius:14px;display:flex;align-items:flex-end;gap:8px;padding:.625rem .625rem .625rem 1rem;transition:border-color .15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.input-box:focus-within{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1),0 2px 8px rgba(0,0,0,.06)}
+textarea{flex:1;border:none;outline:none;resize:none;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);background:transparent;line-height:1.5;max-height:140px;min-height:24px}
+textarea::placeholder{color:var(--ink3)}
+.btn-enviar{width:36px;height:36px;border-radius:9px;background:var(--green);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.btn-enviar:hover{background:var(--green-mid)}
+.btn-enviar:disabled{background:var(--paper2);cursor:not-allowed}
+.btn-enviar svg{width:16px;height:16px;fill:white}
+.input-nota{font-size:11px;color:var(--ink3);text-align:center;margin-top:.5rem}
+
+/* DISCLAIMER INICIAL */
+.disclaimer{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:.75rem 1rem;font-size:12px;color:#92400e;margin-bottom:1rem;display:flex;gap:8px}
+
+/* LIMITE */
+.limite-aviso{background:var(--red-light);border:1px solid rgba(220,38,38,.2);border-radius:10px;padding:.75rem 1rem;font-size:13px;color:#991b1b;text-align:center;margin-bottom:1rem}
+
+@media(max-width:600px){
+  .sugerencias{grid-template-columns:1fr}
+  .burbuja{max-width:92%}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/><circle cx="74" cy="22" r="13" fill="#f59e0b"/><text x="74" y="27" font-family="Arial" font-size="15" font-weight="700" fill="white" text-anchor="middle">!</text></svg>
+    NormaAlerta
+    <span class="nav-badge">Asistente IA</span>
+  </a>
+  <div class="nav-right">
+    <span class="nav-contador" id="contador">5 consultas disponibles hoy</span>
+    <button class="btn-nuevo" onclick="nuevaConversacion()">↺ Nueva consulta</button>
+  </div>
+</nav>
+
+<div class="chat-container">
+
+  <div class="welcome" id="bienvenida">
+    <div class="welcome-badge"><span class="welcome-dot"></span> Asistente activo</div>
+    <h1>Consulta tu duda <em>fiscal</em><br>o normativa</h1>
+    <p>Pregúntame sobre modelos, plazos, obligaciones laborales o cualquier duda sobre la normativa española para autónomos y pymes.</p>
+  </div>
+
+  <div class="disclaimer" id="disclaimer-inicial">
+    ⚠️ <span>Las respuestas son <strong>orientativas</strong> y no constituyen asesoramiento fiscal o legal vinculante. Para decisiones importantes, consulta siempre con tu gestor o asesor.</span>
+  </div>
+
+  <div class="sugerencias" id="sugerencias">
+    <button class="sugerencia" onclick="usarSugerencia(this.querySelector('.s-text').textContent)">
+      <span class="s-icon">📅</span>
+      <span class="s-text">¿Cuándo tengo que presentar el Modelo 303 del primer trimestre?</span>
+    </button>
+    <button class="sugerencia" onclick="usarSugerencia(this.querySelector('.s-text').textContent)">
+      <span class="s-icon">🧾</span>
+      <span class="s-text">¿Qué pasa si no presento el 303 a tiempo? ¿Cuánto me sancionan?</span>
+    </button>
+    <button class="sugerencia" onclick="usarSugerencia(this.querySelector('.s-text').textContent)">
+      <span class="s-icon">💼</span>
+      <span class="s-text">Tengo un empleado nuevo. ¿Qué modelos de retención tengo que presentar?</span>
+    </button>
+    <button class="sugerencia" onclick="usarSugerencia(this.querySelector('.s-text').textContent)">
+      <span class="s-icon">🏠</span>
+      <span class="s-text">Alquilo un local para mi negocio. ¿Tengo que retener el 19% y qué modelo presento?</span>
+    </button>
+  </div>
+
+  <div class="mensajes" id="mensajes"></div>
+
+  <div class="input-area">
+    <div class="input-box">
+      <textarea id="input" placeholder="Escribe tu consulta fiscal o normativa..." rows="1" onkeydown="teclaEnter(event)" oninput="autoResize(this)"></textarea>
+      <button class="btn-enviar" id="btn-enviar" onclick="enviar()">
+        <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+      </button>
+    </div>
+    <p class="input-nota">NormaAlerta · Respuestas orientativas · Consulta siempre con tu gestor para decisiones importantes</p>
+  </div>
+
+</div>
+
+<script>
+const SYSTEM_PROMPT = `Eres el asistente fiscal de NormaAlerta, una plataforma de alertas normativas para autónomos y pymes en España. Tu función es responder preguntas sobre:
+
+- Modelos fiscales de la AEAT (303 IVA, 130 IRPF, 111 retenciones trabajo, 115 retenciones alquiler, 200 Impuesto Sociedades, 347, 390, 180, 190...)
+- Plazos de presentación de declaraciones fiscales y laborales
+- Obligaciones normativas para autónomos y pymes en España
+- Novedades del BOE que afectan a autónomos y pymes
+- Régimen de autónomos: cuotas, bases de cotización, prestaciones
+- IVA, IRPF, Impuesto de Sociedades: conceptos básicos y dudas frecuentes
+- Contratos laborales, nóminas, cotizaciones
+- Facturación electrónica, Verifactu, SII
+
+REGLAS IMPORTANTES:
+1. Responde SIEMPRE en español
+2. Sé claro, directo y práctico — el usuario es un autónomo o gestor de pyme, no un experto
+3. Usa ejemplos concretos cuando ayude a entender
+4. Incluye siempre los plazos y fechas exactas cuando sean relevantes
+5. Si la pregunta requiere conocer datos personales específicos (ingresos, situación concreta), indica qué información necesitarías para responder con más precisión
+6. SIEMPRE termina con una nota corta recordando que la respuesta es orientativa y que deben verificar con su gestor para decisiones importantes — pero hazlo de forma natural, no repetitiva
+7. Si no sabes algo con certeza, dilo claramente y recomienda consultar la fuente oficial (AEAT, Seguridad Social, BOE)
+8. Estructura las respuestas con párrafos cortos, usa negritas para términos clave y listas cuando haya varios pasos o puntos
+9. No inventes normativa. Si algo cambió recientemente y no estás seguro, indícalo
+10. Sé amable y cercano — el tono es profesional pero accesible
+
+Normativa vigente clave 2026:
+- IVA: Ley 37/1992 | Tipos: 21%, 10%, 4%
+- IRPF: Ley 35/2006 | Tramos: 19%, 24%, 30%, 37%, 45%, 47%
+- IS: Ley 27/2014 | Tipos: 25% general, 21%/22% micropyme (<1M€), 15% nueva creación
+- SMI 2026: 1.221€/mes (14 pagas) — RD 126/2026
+- Verifactu: aplazado hasta julio 2027 para autónomos/pymes
+- Cuotas RETA 2026: congeladas respecto 2025, base máxima tramos 11-12 actualizada
+- Módulos IRPF 2026: prorrogados (RDL 2/2026)`;
+
+let historial = [];
+let consultasHoy = parseInt(localStorage.getItem('na_consultas_' + hoy()) || '0');
+const MAX_CONSULTAS = 5;
+
+function hoy(){return new Date().toISOString().split('T')[0]}
+
+function actualizarContador(){
+  const restantes = MAX_CONSULTAS - consultasHoy;
+  const el = document.getElementById('contador');
+  if(restantes <= 0){
+    el.textContent = 'Límite diario alcanzado';
+    el.style.color = 'rgba(239,68,68,.7)';
+  } else {
+    el.textContent = restantes + (restantes === 1 ? ' consulta disponible hoy' : ' consultas disponibles hoy');
+  }
+}
+
+function autoResize(el){
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 140) + 'px';
+}
+
+function teclaEnter(e){
+  if(e.key === 'Enter' && !e.shiftKey){
+    e.preventDefault();
+    enviar();
+  }
+}
+
+function usarSugerencia(texto){
+  document.getElementById('input').value = texto;
+  autoResize(document.getElementById('input'));
+  enviar();
+}
+
+function ocultarBienvenida(){
+  const b = document.getElementById('bienvenida');
+  const s = document.getElementById('sugerencias');
+  const d = document.getElementById('disclaimer-inicial');
+  if(b) b.style.display = 'none';
+  if(s) s.style.display = 'none';
+  if(d) d.style.display = 'none';
+}
+
+function agregarMensaje(rol, contenido){
+  const cont = document.getElementById('mensajes');
+  const div = document.createElement('div');
+  div.className = 'mensaje ' + (rol === 'user' ? 'usuario' : 'ia');
+
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar ' + (rol === 'user' ? 'user' : 'ia');
+  avatar.textContent = rol === 'user' ? '👤' : 'N';
+
+  const burbuja = document.createElement('div');
+  burbuja.className = 'burbuja ' + (rol === 'user' ? 'usuario' : 'ia');
+  burbuja.innerHTML = formatearTexto(contenido);
+
+  div.appendChild(avatar);
+  div.appendChild(burbuja);
+  cont.appendChild(div);
+  cont.scrollTop = cont.scrollHeight;
+  return burbuja;
+}
+
+function mostrarTyping(){
+  const cont = document.getElementById('mensajes');
+  const div = document.createElement('div');
+  div.className = 'mensaje ia';
+  div.id = 'typing-indicator';
+
+  const avatar = document.createElement('div');
+  avatar.className = 'avatar ia';
+  avatar.textContent = 'N';
+
+  const typing = document.createElement('div');
+  typing.className = 'typing';
+  typing.innerHTML = '<span></span><span></span><span></span>';
+
+  div.appendChild(avatar);
+  div.appendChild(typing);
+  cont.appendChild(div);
+  cont.scrollTop = cont.scrollHeight;
+}
+
+function quitarTyping(){
+  const t = document.getElementById('typing-indicator');
+  if(t) t.remove();
+}
+
+function formatearTexto(texto){
+  // Convertir markdown básico a HTML
+  return texto
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/^### (.+)$/gm, '<strong>$1</strong>')
+    .replace(/^## (.+)$/gm, '<strong>$1</strong>')
+    .replace(/^# (.+)$/gm, '<strong>$1</strong>')
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>')
+    .replace(/(<li>.*<\/li>)/gs, m => '<ul>' + m + '</ul>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>')
+    .replace(/^(.+)$/, '<p>$1</p>');
+}
+
+async function enviar(){
+  const input = document.getElementById('input');
+  const pregunta = input.value.trim();
+  if(!pregunta) return;
+
+  // Verificar límite
+  if(consultasHoy >= MAX_CONSULTAS){
+    const cont = document.getElementById('mensajes');
+    const aviso = document.createElement('div');
+    aviso.className = 'limite-aviso';
+    aviso.innerHTML = '⏰ Has alcanzado el límite de <strong>' + MAX_CONSULTAS + ' consultas diarias</strong>. Vuelve mañana o actualiza tu plan para consultas ilimitadas.';
+    cont.appendChild(aviso);
+    return;
+  }
+
+  // Ocultar bienvenida
+  ocultarBienvenida();
+
+  // Mostrar mensaje usuario
+  agregarMensaje('user', pregunta);
+  historial.push({role: 'user', content: pregunta});
+
+  // Limpiar input
+  input.value = '';
+  input.style.height = 'auto';
+
+  // Deshabilitar botón
+  const btn = document.getElementById('btn-enviar');
+  btn.disabled = true;
+  input.disabled = true;
+
+  // Mostrar typing
+  mostrarTyping();
+
+  try {
+    const respuesta = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: historial
+      })
+    });
+
+    const data = await respuesta.json();
+    quitarTyping();
+
+    if(data.content && data.content[0]){
+      const texto = data.content[0].text;
+      historial.push({role: 'assistant', content: texto});
+      agregarMensaje('assistant', texto);
+
+      // Incrementar contador
+      consultasHoy++;
+      localStorage.setItem('na_consultas_' + hoy(), consultasHoy);
+      actualizarContador();
+    } else {
+      throw new Error('Respuesta vacía');
+    }
+  } catch(err){
+    quitarTyping();
+    agregarMensaje('assistant', 'Lo siento, ha ocurrido un error al conectar con el asistente. Por favor inténtalo de nuevo en unos segundos.');
+    console.error(err);
+  }
+
+  btn.disabled = false;
+  input.disabled = false;
+  input.focus();
+}
+
+function nuevaConversacion(){
+  historial = [];
+  document.getElementById('mensajes').innerHTML = '';
+  document.getElementById('bienvenida').style.display = 'block';
+  document.getElementById('sugerencias').style.display = 'grid';
+  document.getElementById('disclaimer-inicial').style.display = 'flex';
+  document.getElementById('input').value = '';
+  document.getElementById('input').style.height = 'auto';
+  actualizarContador();
+}
+
+// Init
+actualizarContador();
+</script>
+</body>
+</html>
