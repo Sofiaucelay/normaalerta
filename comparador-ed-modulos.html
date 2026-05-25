@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparador Estimación Directa vs Módulos | NormaAlerta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #1a7a4a;
+  --green-mid: #22a07a;
+  --green-light: #e0f0ea;
+  --green-dark: #0f5235;
+  --ink: #1c1b18;
+  --ink2: #4a4944;
+  --ink3: #8c8b84;
+  --paper: #f7f5ee;
+  --paper2: #edeae0;
+  --white: #ffffff;
+  --border: rgba(28,27,24,0.1);
+  --border2: rgba(28,27,24,0.18);
+  --amber: #f59e0b;
+  --amber-light: #fef3c7;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --blue: #2563eb;
+  --blue-light: #eff6ff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+
+.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+.page-header{margin-bottom:2rem;text-align:center}
+.modelo-badge{display:inline-block;background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;font-family:'DM Mono',monospace;margin-bottom:.75rem}
+.page-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:300;letter-spacing:-.5px;margin-bottom:.5rem;color:var(--ink)}
+.page-title em{font-style:italic;color:var(--green)}
+.page-subtitle{font-size:15px;color:var(--ink3);max-width:560px;margin:0 auto}
+
+/* SECCIONES */
+.section{background:var(--white);border:1px solid var(--border);border-radius:14px;margin-bottom:1rem;overflow:hidden}
+.section-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--green-light)}
+.section-title{font-size:15px;font-weight:500;flex:1}
+.section-subtitle{font-size:12px;color:var(--ink3);margin-top:1px}
+.section-body{padding:1.25rem}
+
+/* GRID DE INPUTS */
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.input-grid.three{grid-template-columns:1fr 1fr 1fr}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.full{grid-column:1/-1}
+.field label{font-size:12px;font-weight:500;color:var(--ink3)}
+.field input,.field select{padding:.5rem .75rem;border:1px solid var(--border2);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;width:100%}
+.field input:focus,.field select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238c8b84' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .5rem center;padding-right:2rem}
+.input-note{font-size:11px;color:var(--ink3);font-style:italic;margin-top:2px}
+
+.info-box{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12px;color:#92400e;display:flex;gap:8px;align-items:flex-start}
+.info-box.blue{background:var(--blue-light);border-color:rgba(37,99,235,.2);color:#1e40af}
+.info-box.green{background:var(--green-light);border-color:rgba(26,122,74,.2);color:var(--green-dark)}
+
+/* BOTÓN CALCULAR */
+.btn-calcular{width:100%;padding:16px;background:var(--green);color:var(--white);border:none;border-radius:12px;font-size:16px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-calcular:hover{background:var(--green-mid);transform:translateY(-1px)}
+
+/* RESULTADO */
+.resultado{display:none;margin-top:1.5rem}
+.resultado.visible{display:block}
+
+.ganador-banner{border-radius:14px;padding:1.75rem 2rem;margin-bottom:1rem;position:relative;overflow:hidden}
+.ganador-banner.ed{background:var(--ink)}
+.ganador-banner.mod{background:#1e40af}
+.ganador-banner.empate{background:#6b7280}
+.ganador-banner::before{content:'';position:absolute;top:-30px;right:-30px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.05)}
+.ganador-label{font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem}
+.ganador-titulo{font-family:'Fraunces',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:300;color:var(--white);margin-bottom:.25rem}
+.ganador-ahorro{font-size:14px;color:rgba(255,255,255,.7)}
+.ganador-ahorro strong{color:#4ade80;font-size:22px;font-family:'DM Mono',monospace}
+
+/* COMPARATIVA */
+.comparativa{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem}
+.comp-card{border-radius:12px;padding:1.25rem;border:2px solid transparent}
+.comp-card.winner{border-color:var(--green);background:var(--green-light)}
+.comp-card.loser{border-color:var(--border);background:var(--white);opacity:.8}
+.comp-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3);margin-bottom:.5rem;display:flex;align-items:center;gap:6px}
+.comp-label .badge{font-size:10px;padding:2px 7px;border-radius:4px;background:var(--green);color:white}
+.comp-label .badge.azul{background:#2563eb}
+.comp-nombre{font-family:'Fraunces',serif;font-size:18px;font-weight:500;margin-bottom:1rem}
+.comp-fila{display:flex;justify-content:space-between;align-items:center;padding:.375rem 0;border-bottom:1px solid var(--border);font-size:13px}
+.comp-fila:last-child{border-bottom:none}
+.comp-fila-label{color:var(--ink3)}
+.comp-fila-val{font-family:'DM Mono',monospace;font-weight:500;color:var(--ink)}
+.comp-fila-val.total{font-size:16px;color:var(--green-dark);font-weight:600}
+.comp-fila-val.total.loser{color:var(--red)}
+
+/* TABLA DETALLE */
+.detalle-tabla{width:100%;border-collapse:collapse;margin-top:.75rem;font-size:13px}
+.detalle-tabla th{font-size:11px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;padding:.5rem .75rem;background:var(--paper);border-bottom:1px solid var(--border);text-align:left}
+.detalle-tabla th:not(:first-child){text-align:right}
+.detalle-tabla td{padding:.4rem .75rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.detalle-tabla tr:last-child td{border-bottom:none;font-weight:600}
+.detalle-tabla td:not(:first-child){text-align:right;font-family:'DM Mono',monospace}
+.td-green{color:var(--green-dark)!important}
+.td-red{color:var(--red)!important}
+
+/* RECOMENDACIÓN */
+.recomendacion{background:var(--ink);border-radius:12px;padding:1.25rem 1.5rem;color:rgba(255,255,255,.85);font-size:14px;line-height:1.7;margin-top:1rem}
+.recomendacion strong{color:white}
+.recomendacion h3{font-family:'Fraunces',serif;font-size:18px;font-weight:300;color:white;margin-bottom:.75rem}
+
+.export-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:1rem}
+.btn-export{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:none;transition:all .15s}
+.btn-pdf{background:var(--green);color:var(--white)}
+.btn-reset{background:var(--paper2);color:var(--ink2)}
+
+@media(max-width:640px){
+  .input-grid,.input-grid.three,.comparativa{grid-template-columns:1fr}
+  .ganador-banner{padding:1.25rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/><circle cx="74" cy="22" r="13" fill="#f59e0b"/><text x="74" y="27" font-family="Arial" font-size="15" font-weight="700" fill="white" text-anchor="middle">!</text></svg>
+    NormaAlerta <span class="nav-badge">Herramienta fiscal</span>
+  </a>
+</nav>
+
+<div class="page">
+
+  <div class="page-header">
+    <div class="modelo-badge">COMPARADOR FISCAL</div>
+    <h1 class="page-title">Estimación Directa <em>vs</em> Módulos</h1>
+    <p class="page-subtitle">Descubre qué sistema de tributación te sale más barato según tu situación real. Introduce tus datos y el comparador calcula automáticamente.</p>
+  </div>
+
+  <!-- DATOS PERSONALES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">📋</div>
+      <div>
+        <div class="section-title">Datos de tu actividad</div>
+        <div class="section-subtitle">Información básica para el cálculo</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="input-grid">
+        <div class="field">
+          <label>Actividad económica</label>
+          <select id="actividad" onchange="actualizarModulo()">
+            <option value="">— Selecciona tu actividad —</option>
+            <optgroup label="Comercio y hostelería">
+              <option value="comercio_menor" data-modulo="0.03">Comercio al por menor general</option>
+              <option value="restaurante" data-modulo="0.06">Restaurante / Bar</option>
+              <option value="cafe_bar" data-modulo="0.05">Café / Bar sin cocina</option>
+              <option value="panaderia" data-modulo="0.045">Panadería / Pastelería</option>
+              <option value="carniceria" data-modulo="0.04">Carnicería / Pescadería</option>
+            </optgroup>
+            <optgroup label="Servicios">
+              <option value="peluqueria" data-modulo="0.055">Peluquería / Estética</option>
+              <option value="taxi" data-modulo="0.065">Taxi / Transporte de viajeros</option>
+              <option value="transporte_mercancias" data-modulo="0.07">Transporte de mercancías</option>
+              <option value="taller" data-modulo="0.06">Taller / Reparaciones</option>
+              <option value="fontanero" data-modulo="0.065">Fontanero / Electricista / Albañil</option>
+              <option value="agricultor" data-modulo="0.02">Agricultor / Ganadero</option>
+            </optgroup>
+            <optgroup label="Profesionales">
+              <option value="medico" data-modulo="0">Médico / Dentista (no en módulos)</option>
+              <option value="abogado" data-modulo="0">Abogado / Economista (no en módulos)</option>
+              <option value="arquitecto" data-modulo="0">Arquitecto / Ingeniero (no en módulos)</option>
+              <option value="otro_prof" data-modulo="0">Otro profesional (no en módulos)</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="field">
+          <label>Ejercicio fiscal</label>
+          <select id="ejercicio">
+            <option value="2026">2026</option>
+            <option value="2025">2025</option>
+          </select>
+        </div>
+      </div>
+      <div id="aviso-modulos" class="info-box" style="display:none;margin-top:.75rem">
+        ⚠️ <span>Tu actividad <strong>no puede acogerse al régimen de módulos</strong>. Las actividades profesionales (médicos, abogados, arquitectos, ingenieros...) tributan obligatoriamente en Estimación Directa.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- INGRESOS Y GASTOS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">💰</div>
+      <div>
+        <div class="section-title">Ingresos y gastos reales</div>
+        <div class="section-subtitle">Para calcular la Estimación Directa</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="input-grid">
+        <div class="field">
+          <label>Ingresos anuales brutos (sin IVA)</label>
+          <input type="number" id="ingresos" value="40000" min="0" step="100" oninput="calcular()">
+          <span class="input-note">Total de facturas emitidas en el año</span>
+        </div>
+        <div class="field">
+          <label>Gastos deducibles anuales</label>
+          <input type="number" id="gastos" value="15000" min="0" step="100" oninput="calcular()">
+          <span class="input-note">Alquiler, suministros, material, gestoría...</span>
+        </div>
+        <div class="field">
+          <label>Cuota SS anual (autónomo)</label>
+          <input type="number" id="ss_anual" value="4000" min="0" step="100" oninput="calcular()">
+          <span class="input-note">Tu cuota real de Seguridad Social</span>
+        </div>
+        <div class="field">
+          <label>Amortizaciones anuales</label>
+          <input type="number" id="amortizaciones" value="2000" min="0" step="100" oninput="calcular()">
+          <span class="input-note">Vehículo, maquinaria, equipos... (0 si no aplica)</span>
+        </div>
+      </div>
+      <div class="info-box blue" style="margin-top:.75rem">
+        ℹ️ <span>En <strong>Estimación Directa Simplificada</strong> se aplica automáticamente un 5% adicional de gastos de difícil justificación (máx. 2.000€/año) sobre el rendimiento neto previo.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATOS MÓDULOS -->
+  <div class="section" id="seccion-modulos">
+    <div class="section-header">
+      <div class="section-icon">📊</div>
+      <div>
+        <div class="section-title">Datos para módulos</div>
+        <div class="section-subtitle">Magnitudes que determinan tu cuota en módulos</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="input-grid three">
+        <div class="field">
+          <label>Personal empleado (personas)</label>
+          <input type="number" id="personal" value="0" min="0" step="1" oninput="calcular()">
+          <span class="input-note">Incluye tú mismo como 1 persona</span>
+        </div>
+        <div class="field">
+          <label>Superficie del local (m²)</label>
+          <input type="number" id="superficie" value="0" min="0" step="1" oninput="calcular()">
+          <span class="input-note">0 si trabajas sin local fijo</span>
+        </div>
+        <div class="field">
+          <label>Potencia eléctrica (kW)</label>
+          <input type="number" id="potencia" value="0" min="0" step="0.1" oninput="calcular()">
+          <span class="input-note">Figura en tu factura de luz</span>
+        </div>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Índice corrector estimado por módulos (% sobre facturación)</label>
+        <input type="number" id="indice_modulo" value="5" min="0" max="30" step="0.1" oninput="calcular()">
+        <span class="input-note">Porcentaje orientativo según tu actividad. Selecciona tu actividad arriba para autocompletar. Consulta las tablas exactas de la AEAT para tu epígrafe.</span>
+      </div>
+      <div class="info-box" style="margin-top:.75rem">
+        ⚠️ <span>Los módulos se calculan sobre <strong>magnitudes físicas</strong> (personal, superficie, potencia...) multiplicadas por los índices de la AEAT para tu epígrafe IAE. Este comparador usa una estimación porcentual sobre ingresos como aproximación. Para el cálculo exacto, consulta las tablas oficiales de tu epígrafe.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTÓN -->
+  <button class="btn-calcular" onclick="calcular()">
+    🧮 Calcular cuál me conviene más
+  </button>
+
+  <!-- RESULTADO -->
+  <div class="resultado" id="resultado">
+
+    <!-- BANNER GANADOR -->
+    <div class="ganador-banner" id="ganador-banner">
+      <div class="ganador-label">Resultado del comparador</div>
+      <div class="ganador-titulo" id="ganador-titulo">—</div>
+      <div class="ganador-ahorro" id="ganador-ahorro">—</div>
+    </div>
+
+    <!-- COMPARATIVA -->
+    <div class="comparativa">
+      <div class="comp-card" id="card-ed">
+        <div class="comp-label">
+          <span>📊</span> Estimación Directa Simplificada
+          <span class="badge" id="badge-ed" style="display:none">✓ MEJOR</span>
+        </div>
+        <div class="comp-nombre">Pagas sobre tu beneficio real</div>
+        <div class="comp-fila"><span class="comp-fila-label">Ingresos</span><span class="comp-fila-val" id="ed-ingresos">—</span></div>
+        <div class="comp-fila"><span class="comp-fila-label">Gastos deducibles</span><span class="comp-fila-val" id="ed-gastos">—</span></div>
+        <div class="comp-fila"><span class="comp-fila-label">Gtos. difícil justif. (5%)</span><span class="comp-fila-val" id="ed-dj">—</span></div>
+        <div class="comp-fila"><span class="comp-fila-label">Cuota SS deducible</span><span class="comp-fila-val" id="ed-ss">—</span></div>
+        <div class="comp-fila"><span class="comp-fila-label">Amortizaciones</span><span class="comp-fila-val" id="ed-amor">—</span></div>
+        <div class="comp-fila"><span class="comp-fila-label">Rendimiento neto</span><span class="comp-fila-val" id="ed-rdto">—</span></div>
+        <div class="comp-fila"><span class="comp-fila-label">IRPF estimado (20%)</span><span class="comp-fila-val" id="ed-irpf">—</span></div>
+        <div class="comp-fila"><span class="comp-fila-label">Cuota SS</span><span class="comp-fila-val" id="ed-ss2">—</span></div>
+        <div class="comp-fila"><span class="comp-fila-label" style="font-weight:600">COSTE FISCAL TOTAL</span><span class="comp-fila-val total" id="ed-total">—</span></div>
+      </div>
+
+      <div class="comp-card" id="card-mod">
+        <div class="comp-label">
+          <span>📋</span> Estimación Objetiva (Módulos)
+          <span class="badge azul" id="badge-mod" style="display:none">✓ MEJOR</span>
+        </div>
+        <div class="comp-nombre">Pagas una cuota fija predeterminada</div>
+        <div class="comp-fila"><span class="comp-fila-label">Ingresos</span><span class="comp-fila-val" id="mod-ingresos">—</span></div>
+        <div class="comp-fila"><span class="comp-fila-label">Rendimiento neto módulos</span><span class="comp-fila-val" id="mod-rdto">—</span></div>
+        <div class="comp-fila"><span class="comp-fila-label">Índice aplicado</span><span class="comp-fila-val" id="mod-indice">—</span></div>
+        <div class="comp-fila"><span class="comp-fila-label">IRPF módulos estimado</span><span class="comp-fila-val" id="mod-irpf">—</span></div>
+        <div class="comp-fila"><span class="comp-fila-label">Cuota SS</span><span class="comp-fila-val" id="mod-ss">—</span></div>
+        <div class="comp-fila" style="margin-top:.5rem"><span class="comp-fila-label">Gastos NO deducibles</span><span class="comp-fila-val" id="mod-nogastos" style="color:var(--ink3)">—</span></div>
+        <div class="comp-fila"><span class="comp-fila-label" style="font-weight:600">COSTE FISCAL TOTAL</span><span class="comp-fila-val total" id="mod-total">—</span></div>
+      </div>
+    </div>
+
+    <!-- RECOMENDACIÓN -->
+    <div class="recomendacion" id="recomendacion-box">
+      <h3 id="rec-titulo">—</h3>
+      <p id="rec-texto">—</p>
+    </div>
+
+    <!-- NOTA LEGAL -->
+    <div class="info-box" style="margin-top:1rem">
+      ⚠️ <span>Este comparador es <strong>orientativo</strong>. El cálculo real de módulos depende de los índices exactos de tu epígrafe IAE y las magnitudes físicas de tu negocio. Consulta siempre con tu gestor antes de tomar la decisión. Fuente: AEAT — Orden de módulos vigente para 2026.</span>
+    </div>
+
+    <div class="export-row">
+      <button class="btn-export btn-pdf" onclick="exportPDF()">⬇ Descargar PDF con el resultado</button>
+      <button class="btn-export btn-reset" onclick="resetForm()">↺ Hacer otro cálculo</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function fmt(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
+function fmtPct(n){return (parseFloat(n)||0).toFixed(1)+'%';}
+function v(id){return parseFloat(document.getElementById(id)?.value)||0;}
+
+function actualizarModulo(){
+  const sel=document.getElementById('actividad');
+  const opt=sel.options[sel.selectedIndex];
+  const modulo=parseFloat(opt?.getAttribute('data-modulo')||0);
+  const avisoMod=document.getElementById('aviso-modulos');
+  const secMod=document.getElementById('seccion-modulos');
+  if(modulo===0 && opt && opt.value && opt.value!==''){
+    avisoMod.style.display='flex';
+    secMod.style.opacity='.4';
+    secMod.style.pointerEvents='none';
+  } else {
+    avisoMod.style.display='none';
+    secMod.style.opacity='1';
+    secMod.style.pointerEvents='auto';
+    if(modulo>0){
+      document.getElementById('indice_modulo').value=(modulo*100).toFixed(1);
+    }
+  }
+  calcular();
+}
+
+function calcular(){
+  const ing=v('ingresos');
+  const gtos=v('gastos');
+  const ss=v('ss_anual');
+  const amor=v('amortizaciones');
+  const indice=v('indice_modulo')/100;
+
+  // ─── ESTIMACIÓN DIRECTA SIMPLIFICADA ───
+  const rdto_previo=ing-gtos-ss-amor;
+  const gtos_dj=rdto_previo>0 ? Math.min(rdto_previo*0.05, 2000) : 0;
+  const rdto_neto=Math.max(0, rdto_previo-gtos_dj);
+  // IRPF estimado con tramos simplificados 2026
+  const irpf_ed=calcIRPF(rdto_neto);
+  const total_ed=irpf_ed+ss;
+
+  // ─── MÓDULOS ───
+  const rdto_mod=ing*indice;
+  const irpf_mod=calcIRPF(Math.max(0,rdto_mod-ss));
+  const total_mod=irpf_mod+ss;
+
+  // ─── ACTUALIZAR UI ───
+  document.getElementById('ed-ingresos').textContent=fmt(ing);
+  document.getElementById('ed-gastos').textContent='-'+fmt(gtos);
+  document.getElementById('ed-dj').textContent='-'+fmt(gtos_dj);
+  document.getElementById('ed-ss').textContent='-'+fmt(ss);
+  document.getElementById('ed-amor').textContent='-'+fmt(amor);
+  document.getElementById('ed-rdto').textContent=fmt(rdto_neto);
+  document.getElementById('ed-irpf').textContent=fmt(irpf_ed);
+  document.getElementById('ed-ss2').textContent=fmt(ss);
+  document.getElementById('ed-total').textContent=fmt(total_ed);
+
+  document.getElementById('mod-ingresos').textContent=fmt(ing);
+  document.getElementById('mod-rdto').textContent=fmt(rdto_mod);
+  document.getElementById('mod-indice').textContent=fmtPct(indice*100);
+  document.getElementById('mod-irpf').textContent=fmt(irpf_mod);
+  document.getElementById('mod-ss').textContent=fmt(ss);
+  document.getElementById('mod-nogastos').textContent=fmt(gtos)+' (no deducibles en módulos)';
+  document.getElementById('mod-total').textContent=fmt(total_mod);
+
+  // ─── GANADOR ───
+  const diff=Math.abs(total_ed-total_mod);
+  const banner=document.getElementById('ganador-banner');
+  const titulo=document.getElementById('ganador-titulo');
+  const ahorro=document.getElementById('ganador-ahorro');
+  const cardED=document.getElementById('card-ed');
+  const cardMod=document.getElementById('card-mod');
+  const badgeED=document.getElementById('badge-ed');
+  const badgeMod=document.getElementById('badge-mod');
+  const recTitulo=document.getElementById('rec-titulo');
+  const recTexto=document.getElementById('rec-texto');
+
+  // Reset clases
+  cardED.className='comp-card'; cardMod.className='comp-card';
+  badgeED.style.display='none'; badgeMod.style.display='none';
+  document.getElementById('ed-total').className='comp-fila-val total';
+  document.getElementById('mod-total').className='comp-fila-val total';
+
+  const sel=document.getElementById('actividad');
+  const opt=sel.options[sel.selectedIndex];
+  const modValido=parseFloat(opt?.getAttribute('data-modulo')||0)>0;
+
+  if(!modValido && opt && opt.value){
+    banner.className='ganador-banner ed';
+    titulo.textContent='Estimación Directa — única opción para tu actividad';
+    ahorro.innerHTML='Tu actividad no puede acogerse al régimen de módulos';
+    cardED.className='comp-card winner'; badgeED.style.display='inline';
+    cardMod.className='comp-card loser';
+    recTitulo.textContent='Tu actividad tributa en Estimación Directa';
+    recTexto.textContent='Las actividades profesionales (médicos, abogados, arquitectos, ingenieros, consultores...) no pueden acogerse al régimen de módulos. Tributan obligatoriamente en Estimación Directa Normal o Simplificada. Asegúrate de llevar un registro correcto de todos tus ingresos y gastos.';
+  } else if(diff < 500){
+    banner.className='ganador-banner empate';
+    titulo.textContent='Resultado muy similar — decide según tu situación';
+    ahorro.innerHTML=`La diferencia es de solo <strong>${fmt(diff)}</strong> — otros factores son más importantes`;
+    recTitulo.textContent='La diferencia es mínima — valora otros factores';
+    recTexto.innerHTML=`Con una diferencia de <strong>${fmt(diff)}</strong>, la decisión depende más de tu situación personal. <strong>Elige módulos si:</strong> tus gastos reales son bajos o variables y prefieres pagar una cantidad fija y predecible. <strong>Elige Estimación Directa si:</strong> tienes muchos gastos deducibles, prefieres transparencia total o tus ingresos son irregulares.`;
+  } else if(total_ed < total_mod){
+    banner.className='ganador-banner ed';
+    titulo.textContent='Te conviene la Estimación Directa';
+    ahorro.innerHTML=`Ahorras <strong>${fmt(diff)}</strong> al año respecto a módulos`;
+    cardED.className='comp-card winner'; badgeED.style.display='inline';
+    cardMod.className='comp-card loser';
+    document.getElementById('mod-total').className='comp-fila-val total loser';
+    recTitulo.textContent='La Estimación Directa es tu mejor opción';
+    recTexto.innerHTML=`Con tus datos actuales, la Estimación Directa te supone un ahorro de <strong>${fmt(diff)} al año</strong>. Esto ocurre generalmente cuando tienes muchos gastos deducibles en relación a tus ingresos. <strong>Recuerda:</strong> debes guardar todas las facturas de gastos, llevar un libro registro de ingresos y gastos, y presentar el Modelo 130 trimestralmente.`;
+  } else {
+    banner.className='ganador-banner mod';
+    titulo.textContent='Te convienen los Módulos';
+    ahorro.innerHTML=`Ahorras <strong>${fmt(diff)}</strong> al año respecto a Estimación Directa`;
+    cardMod.className='comp-card winner'; badgeMod.style.display='inline';
+    cardED.className='comp-card loser';
+    document.getElementById('ed-total').className='comp-fila-val total loser';
+    recTitulo.textContent='El régimen de módulos es tu mejor opción';
+    recTexto.innerHTML=`Con tus datos actuales, los módulos te suponen un ahorro de <strong>${fmt(diff)} al año</strong>. Esto ocurre cuando tus gastos reales son bajos en relación a los ingresos. <strong>Ventaja adicional:</strong> en módulos no necesitas justificar gastos ni llevar contabilidad compleja, y la cuota es predecible. <strong>Recuerda:</strong> debes comprobar que no superas los límites de facturación del régimen (300.000€ ventas / 250.000€ a empresas).`;
+  }
+
+  document.getElementById('resultado').className='resultado visible';
+  document.getElementById('resultado').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function calcIRPF(base){
+  // Tramos IRPF 2026 (escala estatal + autonómica media estimada)
+  if(base<=0) return 0;
+  let irpf=0;
+  const tramos=[[12450,0.19],[7750,0.24],[15000,0.30],[24800,0.37],[240000,0.45],[Infinity,0.47]];
+  let resta=base;
+  for(const [limite,tipo] of tramos){
+    if(resta<=0) break;
+    const aplicar=Math.min(resta,limite);
+    irpf+=aplicar*tipo;
+    resta-=aplicar;
+  }
+  return irpf;
+}
+
+function resetForm(){
+  document.getElementById('resultado').className='resultado';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function exportPDF(){
+  const w=window.open('','_blank','width=800,height=900');
+  const actividad=document.getElementById('actividad').options[document.getElementById('actividad').selectedIndex]?.text||'—';
+  const ganadorTitulo=document.getElementById('ganador-titulo').textContent;
+  const ganadorAhorro=document.getElementById('ganador-ahorro').textContent;
+  const recTitulo=document.getElementById('rec-titulo').textContent;
+  const recTexto=document.getElementById('rec-texto').innerHTML;
+
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Comparador ED vs Módulos</title>
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Helvetica,Arial,sans-serif;font-size:12px;padding:36px;color:#1c1b18}
+  .hdr{display:flex;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid #1a7a4a}
+  h1{font-size:17px;font-weight:600;color:#1a7a4a}
+  .ganador{background:#1c1b18;color:white;padding:16px 20px;border-radius:10px;margin-bottom:16px}
+  .ganador .label{font-size:10px;opacity:.5;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  .ganador .titulo{font-size:18px;font-weight:600;margin-bottom:4px}
+  .ganador .ahorro{font-size:12px;opacity:.7}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .card{border:1px solid #e2ded2;border-radius:8px;padding:12px}
+  .card h3{font-size:12px;font-weight:600;text-transform:uppercase;color:#8c8b84;margin-bottom:8px}
+  table{width:100%;border-collapse:collapse}
+  td{padding:3px 0;font-size:11px;border-bottom:1px solid #f0ede4}
+  td:last-child{text-align:right;font-family:monospace}
+  .total td{font-weight:600;font-size:12px}
+  .rec{background:#f7f5ee;border-radius:8px;padding:12px;margin-bottom:14px}
+  .rec h3{font-size:13px;font-weight:600;margin-bottom:6px}
+  .rec p{font-size:11px;line-height:1.6;color:#4a4944}
+  .ftr{margin-top:14px;font-size:9px;color:#8c8b84;text-align:center;border-top:1px solid #edeae0;padding-top:10px}
+  @media print{body{padding:20px}}</style></head><body>
+  <div class="hdr"><div><h1>NormaAlerta — Comparador fiscal</h1><p style="font-size:10px;color:#8c8b84">Estimación Directa vs Módulos · normaalerta.com</p></div>
+  <div style="text-align:right;font-size:11px;color:#8c8b84"><div>Actividad: ${actividad}</div><div>Ingresos: ${document.getElementById('ed-ingresos').textContent}</div></div></div>
+  <div class="ganador"><div class="label">Resultado</div><div class="titulo">${ganadorTitulo}</div><div class="ahorro">${ganadorAhorro}</div></div>
+  <div class="grid">
+  <div class="card"><h3>Estimación Directa</h3><table>
+  <tr><td>Ingresos</td><td>${document.getElementById('ed-ingresos').textContent}</td></tr>
+  <tr><td>Gastos deducibles</td><td>${document.getElementById('ed-gastos').textContent}</td></tr>
+  <tr><td>Gtos. difícil just.</td><td>${document.getElementById('ed-dj').textContent}</td></tr>
+  <tr><td>Cuota SS</td><td>${document.getElementById('ed-ss').textContent}</td></tr>
+  <tr><td>Amortizaciones</td><td>${document.getElementById('ed-amor').textContent}</td></tr>
+  <tr><td>Rendimiento neto</td><td>${document.getElementById('ed-rdto').textContent}</td></tr>
+  <tr><td>IRPF estimado</td><td>${document.getElementById('ed-irpf').textContent}</td></tr>
+  <tr class="total"><td>COSTE FISCAL TOTAL</td><td>${document.getElementById('ed-total').textContent}</td></tr>
+  </table></div>
+  <div class="card"><h3>Módulos (Est. Objetiva)</h3><table>
+  <tr><td>Ingresos</td><td>${document.getElementById('mod-ingresos').textContent}</td></tr>
+  <tr><td>Rdto. neto módulos</td><td>${document.getElementById('mod-rdto').textContent}</td></tr>
+  <tr><td>Índice aplicado</td><td>${document.getElementById('mod-indice').textContent}</td></tr>
+  <tr><td>IRPF módulos</td><td>${document.getElementById('mod-irpf').textContent}</td></tr>
+  <tr><td>Cuota SS</td><td>${document.getElementById('mod-ss').textContent}</td></tr>
+  <tr class="total"><td>COSTE FISCAL TOTAL</td><td>${document.getElementById('mod-total').textContent}</td></tr>
+  </table></div></div>
+  <div class="rec"><h3>${recTitulo}</h3><p>${recTexto}</p></div>
+  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Cálculo orientativo. Consulta con tu gestor antes de tomar la decisión. Fuente: AEAT 2026.</div>
+  <script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.close();
+}
+
+// Calcular al cargar
+calcular();
+</script>
+</body>
+</html>

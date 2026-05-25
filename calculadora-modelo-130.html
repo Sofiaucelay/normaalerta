@@ -6,7 +6,7 @@
 <title>Modelo 130 — Pago Fraccionado IRPF | NormaAlerta</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;--ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;--paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;--border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);--amber:#f59e0b;--amber-light:#fef3c7;--blue-light:#eff6ff;--red-light:#fef2f2}
+:root{--green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;--ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;--paper:#f7f5ee;--paper2:#edeae0;--paper3:#e2ded2;--white:#ffffff;--border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);--amber:#f59e0b;--amber-light:#fef3c7;--red:#dc2626;--red-light:#fef2f2;--blue:#2563eb;--blue-light:#eff6ff}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
 nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
@@ -15,72 +15,79 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
 .nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
 .nav-actions{display:flex;gap:8px}
 .btn-nav{font-size:13px;padding:6px 14px;border-radius:7px;border:none;cursor:pointer;font-family:inherit;font-weight:500;transition:all .15s}
-.btn-outline{background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8)}
-.btn-primary{background:var(--green);color:var(--white)}
-.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.btn-nav-outline{background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8)}
+.btn-nav-primary{background:var(--green);color:var(--white)}
+.page{max-width:960px;margin:0 auto;padding:2rem 1.5rem 4rem}
 .page-header{margin-bottom:2rem}
-.header-top{display:flex;align-items:center;gap:12px;margin-bottom:.5rem}
-.mbadge{background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 10px;border-radius:6px;font-family:'DM Mono',monospace}
-.abadge{background:var(--paper2);color:var(--ink3);font-size:12px;padding:4px 10px;border-radius:6px}
-h1{font-size:26px;font-weight:500;color:var(--ink);letter-spacing:-.3px;margin-bottom:4px}
-.subtitle{font-size:14px;color:var(--ink3)}
+.page-header-top{display:flex;align-items:center;gap:12px;margin-bottom:.5rem}
+.modelo-badge{background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 10px;border-radius:6px;font-family:'DM Mono',monospace}
+.aeat-badge{background:var(--paper2);color:var(--ink3);font-size:12px;padding:4px 10px;border-radius:6px}
+.page-title{font-size:26px;font-weight:500;letter-spacing:-.3px;margin-bottom:4px}
+.page-subtitle{font-size:14px;color:var(--ink3)}
 .plazos{display:flex;gap:8px;flex-wrap:wrap;margin-top:.875rem}
-.plazo{font-size:12px;background:var(--white);border:1px solid var(--border2);border-radius:6px;padding:4px 10px;color:var(--ink2);display:flex;align-items:center;gap:5px}
-.plazo span{color:var(--green);font-weight:500}
+.plazo-chip{font-size:12px;background:var(--white);border:1px solid var(--border2);border-radius:6px;padding:4px 10px;color:var(--ink2);display:flex;align-items:center;gap:5px}
+.plazo-chip span{color:var(--green);font-weight:500}
 .section{background:var(--white);border:1px solid var(--border);border-radius:14px;margin-bottom:1rem;overflow:hidden}
-.sh{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;border-bottom:1px solid var(--border)}
-.sh.col{border-bottom:none}
-.sicon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.sg{background:var(--green-light)}.sa{background:var(--amber-light)}.sb{background:var(--blue-light)}
-.stitle{font-size:15px;font-weight:500;color:var(--ink);flex:1}
-.ssub{font-size:12px;color:var(--ink3);margin-top:1px}
-.stot{font-size:14px;font-weight:500;color:var(--green);font-family:'DM Mono',monospace;margin-right:8px}
-.chev{color:var(--ink3);transition:transform .2s;font-size:18px}
-.sb-body{padding:0 1.25rem 1.25rem}
-.id-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:.75rem 0}
-.idf{display:flex;flex-direction:column;gap:4px}
-.idf label{font-size:12px;font-weight:500;color:var(--ink3)}
-.idf.full{grid-column:1/-1}
-input[type=text],select{width:100%;padding:.5rem .75rem;border:1px solid var(--border2);border-radius:7px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s}
+.section-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;border-bottom:1px solid var(--border)}
+.section-header.collapsed{border-bottom:none}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.si-green{background:var(--green-light)}.si-amber{background:var(--amber-light)}.si-blue{background:var(--blue-light)}.si-red{background:var(--red-light)}
+.section-title{font-size:15px;font-weight:500;flex:1}
+.section-subtitle{font-size:12px;color:var(--ink3);margin-top:1px}
+.section-total{font-size:14px;font-weight:500;color:var(--green);font-family:'DM Mono',monospace;margin-right:8px}
+.chevron{color:var(--ink3);transition:transform .2s;font-size:18px}
+.section-body{padding:0 1.25rem 1.25rem}
+.field-table{width:100%;border-collapse:collapse;margin-top:.75rem}
+.field-table th{font-size:11px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;padding:.5rem .75rem;background:var(--paper);border-bottom:1px solid var(--border);text-align:left}
+.field-table th:not(:first-child){text-align:right}
+.field-table td{padding:.375rem .75rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.field-table tr:last-child td{border-bottom:none}
+.field-table tr:hover td{background:rgba(247,245,238,.5)}
+.row-label{font-size:13px;color:var(--ink2)}
+.row-casilla{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace;margin-top:1px}
+.row-info{font-size:11px;color:var(--ink3);font-style:italic;margin-top:1px}
+.input-wrap{position:relative;display:flex;align-items:center;justify-content:flex-end}
+.input-euro{position:absolute;right:.625rem;font-size:12px;color:var(--ink3);pointer-events:none}
+.input-pct{position:absolute;right:.625rem;font-size:12px;color:var(--ink3);pointer-events:none}
+input[type=number]{width:150px;text-align:right;padding:.4rem .625rem;padding-right:1.75rem;border:1px solid var(--border2);border-radius:7px;font-size:14px;font-family:'DM Mono',monospace;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;-moz-appearance:textfield}
+input[type=number]:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+input[type=text],select{padding:.5rem .75rem;border:1px solid var(--border2);border-radius:7px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;width:100%}
 input[type=text]:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
 select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238c8b84' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .5rem center;padding-right:2rem}
-.crow{display:grid;grid-template-columns:1fr auto;align-items:center;padding:.875rem 0;border-bottom:1px solid var(--border);gap:20px}
-.crow:last-child{border-bottom:none}
-.crow.sub{background:var(--green-light);padding:.875rem 1rem;border-radius:8px;margin-top:.5rem;border:none}
-.rl{font-size:14px;color:var(--ink2)}.rl.b{font-weight:500;color:var(--ink)}
-.rc{font-size:11px;color:var(--ink3);font-family:'DM Mono',monospace}
-.ri{font-size:12px;color:var(--ink3);font-style:italic;margin-top:2px;line-height:1.4}
-.rr{display:flex;align-items:center;justify-content:flex-end}
-.iw{position:relative;display:flex;align-items:center}
-.is{position:absolute;right:.625rem;font-size:12px;color:var(--ink3);pointer-events:none}
-input[type=number]{width:165px;text-align:right;padding:.45rem .625rem;padding-right:1.75rem;border:1px solid var(--border2);border-radius:7px;font-size:14px;font-family:'DM Mono',monospace;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;-moz-appearance:textfield}
-input[type=number]:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
-input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
-.av{font-size:14px;font-family:'DM Mono',monospace;color:var(--green);min-width:165px;text-align:right}
-.av.lg{font-size:18px;font-weight:500}
-.av.sub{font-size:16px;font-weight:500;color:var(--green-dark)}
-.ib{border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12px;display:flex;gap:8px;align-items:flex-start;line-height:1.5}
-.ib.am{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);color:#92400e}
-.ib.bl{background:var(--blue-light);border:1px solid rgba(37,99,235,.2);color:#1e40af}
-.ib.gn{background:var(--green-light);border:1px solid rgba(26,122,74,.2);color:var(--green-dark)}
-.tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500;margin-left:6px;background:var(--paper2);color:var(--ink3)}
-.res{background:var(--ink);border-radius:14px;padding:1.5rem;margin-top:1.5rem;position:relative;overflow:hidden}
-.res::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(34,160,122,.08)}
-.res-lbl{font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem}
-.res-num{font-size:44px;font-weight:500;font-family:'DM Mono',monospace;color:var(--white);line-height:1.1;margin-bottom:.25rem}
-.res-num.pos{color:#4ade80}.res-num.cer{color:rgba(255,255,255,.5)}
-.res-sta{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:1.25rem}
-.res-sta strong{color:var(--white)}
-.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.25rem}
-.res-card{background:rgba(255,255,255,.07);border-radius:8px;padding:.75rem}
-.rclbl{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:3px}
-.rcval{font-size:15px;font-weight:500;font-family:'DM Mono',monospace;color:rgba(255,255,255,.85)}
-.exp-row{display:flex;gap:8px;flex-wrap:wrap}
-.btn-exp{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:none;transition:all .15s}
-.bp{background:var(--green);color:var(--white)}.bp:hover{background:var(--green-mid)}
-.bc{background:rgba(255,255,255,.1);color:var(--white);border:1px solid rgba(255,255,255,.2)}.bc:hover{background:rgba(255,255,255,.15)}
-.br{background:transparent;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1)}.br:hover{color:rgba(255,255,255,.7)}
-@media(max-width:640px){.id-grid{grid-template-columns:1fr}.res-grid{grid-template-columns:1fr 1fr}input[type=number]{width:130px}}
+.auto-val{font-size:14px;font-family:'DM Mono',monospace;color:var(--green);text-align:right;min-width:150px}
+.subtotal-row td{background:var(--green-light)!important;font-weight:500;border-top:1px solid rgba(26,122,74,.2)!important}
+.subtotal-row .row-label{color:var(--green-dark);font-weight:500}
+.subtotal-row .auto-val{font-size:15px;color:var(--green-dark)}
+.calc-row td{background:#f0fdf4!important}
+.calc-row .auto-val{color:var(--green-dark)}
+.info-box{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12px;color:#92400e;display:flex;gap:8px;align-items:flex-start}
+.info-box.blue{background:var(--blue-light);border-color:rgba(37,99,235,.2);color:#1e40af}
+.info-box.green{background:var(--green-light);border-color:rgba(26,122,74,.2);color:var(--green-dark)}
+.id-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:.75rem 0}
+.id-field{display:flex;flex-direction:column;gap:4px}
+.id-field label{font-size:12px;font-weight:500;color:var(--ink3)}
+.id-field.full{grid-column:1/-1}
+.resultado{background:var(--ink);border-radius:14px;padding:1.5rem;margin-top:1.5rem;position:relative;overflow:hidden}
+.resultado::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(34,160,122,.08)}
+.resultado-label{font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem}
+.resultado-num{font-size:44px;font-weight:500;font-family:'DM Mono',monospace;color:var(--white);line-height:1.1;margin-bottom:.25rem}
+.resultado-num.positivo{color:#4ade80}
+.resultado-num.negativo{color:#f87171}
+.resultado-status{font-size:14px;color:rgba(255,255,255,.6);margin-bottom:1.5rem}
+.resultado-status strong{color:var(--white)}
+.resultado-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+.resultado-card{background:rgba(255,255,255,.07);border-radius:8px;padding:.75rem}
+.rc-label{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:3px}
+.rc-val{font-size:14px;font-weight:500;font-family:'DM Mono',monospace;color:rgba(255,255,255,.9)}
+.export-row{display:flex;gap:8px;flex-wrap:wrap}
+.btn-export{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:none;transition:all .15s}
+.btn-pdf{background:var(--green);color:var(--white)}
+.btn-excel{background:rgba(255,255,255,.1);color:var(--white);border:1px solid rgba(255,255,255,.2)}
+.btn-reset{background:transparent;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1)}
+.modalidad-selector{display:flex;gap:8px;margin:.75rem 0}
+.mod-btn{flex:1;padding:.625rem;border:1px solid var(--border2);border-radius:8px;font-size:13px;font-weight:500;background:var(--white);color:var(--ink2);cursor:pointer;text-align:center;transition:all .15s}
+.mod-btn.active{background:var(--green);color:var(--white);border-color:var(--green)}
 </style>
 </head>
 <body>
@@ -90,305 +97,311 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
     NormaAlerta <span class="nav-badge">Calculadora fiscal</span>
   </a>
   <div class="nav-actions">
-    <button class="btn-nav btn-outline" onclick="window.print()">🖨 Imprimir</button>
-    <button class="btn-nav btn-primary" onclick="exportPDF()">⬇ Exportar PDF</button>
+    <button class="btn-nav btn-nav-outline" onclick="window.print()">🖨 Imprimir</button>
+    <button class="btn-nav btn-nav-primary" onclick="exportPDF()">⬇ Exportar PDF</button>
   </div>
 </nav>
 
 <div class="page">
   <div class="page-header">
-    <div class="header-top">
-      <span class="mbadge">MOD. 130</span>
-      <span class="abadge">AEAT · Art. 109-110 RIRPF · RD 439/2007</span>
+    <div class="page-header-top">
+      <span class="modelo-badge">MOD. 130</span>
+      <span class="aeat-badge">AEAT · Art. 109-110 RIRPF · RD 439/2007</span>
     </div>
-    <h1>Pago fraccionado del IRPF — Estimación directa</h1>
-    <p class="subtitle">Autónomos en estimación directa normal o simplificada. Introduce los importes <strong>acumulados desde el 1 de enero</strong> hasta el final del trimestre.</p>
+    <h1 class="page-title">Pago fraccionado IRPF — Estimación Directa</h1>
+    <p class="page-subtitle">Para autónomos en estimación directa normal o simplificada. Los importes son ACUMULADOS desde el 1 de enero.</p>
     <div class="plazos">
-      <div class="plazo">1T <span>→ 20 abril</span></div>
-      <div class="plazo">2T <span>→ 20 julio</span></div>
-      <div class="plazo">3T <span>→ 20 octubre</span></div>
-      <div class="plazo">4T <span>→ 30 enero</span></div>
+      <div class="plazo-chip">1T <span>→ 20 abril</span></div>
+      <div class="plazo-chip">2T <span>→ 20 julio</span></div>
+      <div class="plazo-chip">3T <span>→ 20 octubre</span></div>
+      <div class="plazo-chip">4T <span>→ 30 enero</span></div>
     </div>
   </div>
 
-  <!-- ID -->
-  <div class="section">
-    <div class="sh" onclick="tog(this)">
-      <div class="sicon sb">📋</div>
-      <div><div class="stitle">Identificación</div><div class="ssub">Datos personales y de la actividad</div></div>
-      <span class="chev">▾</span>
+  <!-- IDENTIFICACIÓN -->
+  <div class="section" id="s-id">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon si-blue">📋</div>
+      <div><div class="section-title">Identificación</div><div class="section-subtitle">Datos del declarante</div></div>
+      <span class="chevron">▾</span>
     </div>
-    <div class="sb-body">
+    <div class="section-body">
       <div class="id-grid">
-        <div class="idf"><label>Ejercicio</label><input type="text" id="ej" value="2026"></div>
-        <div class="idf"><label>Período</label>
-          <select id="per">
-            <option value="1T">1T — Primer trimestre (enero-marzo)</option>
-            <option value="2T">2T — Segundo trimestre (abril-junio)</option>
-            <option value="3T">3T — Tercer trimestre (julio-septiembre)</option>
-            <option value="4T">4T — Cuarto trimestre (octubre-diciembre)</option>
+        <div class="id-field"><label>Ejercicio</label><input type="text" id="ejercicio" value="2026"></div>
+        <div class="id-field"><label>Período</label>
+          <select id="periodo">
+            <option value="1T">1T — Enero a marzo</option>
+            <option value="2T">2T — Enero a junio</option>
+            <option value="3T">3T — Enero a septiembre</option>
+            <option value="4T">4T — Enero a diciembre</option>
           </select>
         </div>
-        <div class="idf"><label>NIF</label><input type="text" id="nif" placeholder="12345678A"></div>
-        <div class="idf"><label>Teléfono</label><input type="text" id="tel" placeholder="600 000 000"></div>
-        <div class="idf full"><label>Apellidos y nombre</label><input type="text" id="nom" placeholder="Apellidos y nombre completo"></div>
-        <div class="idf"><label>Actividad económica</label><input type="text" id="act" placeholder="Ej: Consultoría informática"></div>
-        <div class="idf"><label>Epígrafe IAE</label><input type="text" id="iae" placeholder="Ej: 849.9"></div>
-        <div class="idf full"><label>Modalidad de estimación directa</label>
-          <select id="mod" onchange="toggleSimp()">
-            <option value="normal">Estimación Directa Normal</option>
-            <option value="simp">Estimación Directa Simplificada (facturación &lt; 600.000 €/año)</option>
-          </select>
+        <div class="id-field"><label>NIF</label><input type="text" id="nif" placeholder="12345678A"></div>
+        <div class="id-field"><label>Teléfono</label><input type="text" id="telefono"></div>
+        <div class="id-field full"><label>Apellidos y nombre</label><input type="text" id="nombre"></div>
+        <div class="id-field"><label>Actividad económica</label><input type="text" id="actividad"></div>
+        <div class="id-field"><label>Epígrafe IAE</label><input type="text" id="iae"></div>
+        <div class="id-field full">
+          <label>Modalidad de Estimación Directa</label>
+          <div class="modalidad-selector">
+            <button class="mod-btn active" onclick="setModalidad('normal',this)">Normal</button>
+            <button class="mod-btn" onclick="setModalidad('simplificada',this)">Simplificada</button>
+          </div>
         </div>
+      </div>
+      <div class="info-box blue">
+        ℹ️ <span><strong>Importante:</strong> Los importes de ingresos y gastos son <strong>acumulados desde el 1 de enero</strong> hasta el final del trimestre, no solo del trimestre. Ej: en el 2T se incluyen enero+febrero+marzo+abril+mayo+junio.</span>
       </div>
     </div>
   </div>
 
   <!-- INGRESOS Y GASTOS -->
-  <div class="section">
-    <div class="sh" onclick="tog(this)">
-      <div class="sicon sg">💰</div>
-      <div><div class="stitle">Ingresos y gastos acumulados (casillas 01 y 02)</div><div class="ssub">Importes acumulados desde el 1 de enero hasta el fin del trimestre</div></div>
-      <span class="chev">▾</span>
+  <div class="section" id="s-ing">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon si-green">💰</div>
+      <div><div class="section-title">Ingresos y gastos acumulados</div><div class="section-subtitle">Casillas 01 a 08 — importes desde 1 de enero</div></div>
+      <span class="section-total" id="tot-rdto-label">0,00 €</span>
+      <span class="chevron">▾</span>
     </div>
-    <div class="sb-body">
-      <div class="ib am">⚠️ <span><strong>Importante:</strong> los importes son ACUMULADOS desde el 1 de enero. En el 2T incluye enero a junio; en el 3T enero a septiembre, etc.</span></div>
-      <div class="crow">
-        <div><div class="rl b">Ingresos computables de la actividad</div><div class="rc">Casilla 01</div><div class="ri">Total ingresos de la actividad (sin IVA). Suma de todas las facturas emitidas/devengadas desde el 1 de enero.</div></div>
-        <div class="rr"><div class="iw"><input type="number" id="c01" value="0" min="0" step="0.01" oninput="calc()"><span class="is">€</span></div></div>
-      </div>
-      <div class="crow">
-        <div><div class="rl b">Gastos fiscalmente deducibles</div><div class="rc">Casilla 02 (parte)</div><div class="ri">Todos los gastos afectos a la actividad: cuota SS, alquiler, suministros, gestoría, material, seguros, gastos de desplazamiento... Sin IVA.</div></div>
-        <div class="rr"><div class="iw"><input type="number" id="c02g" value="0" min="0" step="0.01" oninput="calc()"><span class="is">€</span></div></div>
-      </div>
-      <div class="crow">
-        <div><div class="rl b">Amortizaciones del inmovilizado</div><div class="rc">Casilla 02 (parte)</div><div class="ri">Amortización de equipos, vehículos afectos, maquinaria según tablas oficiales o libertad de amortización.</div></div>
-        <div class="rr"><div class="iw"><input type="number" id="c02a" value="0" min="0" step="0.01" oninput="calc()"><span class="is">€</span></div></div>
-      </div>
-      <div class="crow" id="row-dj" style="display:none">
-        <div><div class="rl b">Gastos de difícil justificación <span class="tag">Solo Simplificada</span></div><div class="rc">Casilla 02 (parte)</div><div class="ri">5% del rendimiento neto previo (máx. 2.000 €/año). Se calcula automáticamente.</div></div>
-        <div class="rr"><div class="av" id="dj">0,00 €</div></div>
-      </div>
-      <div class="crow sub">
-        <div><div class="rl b" style="color:var(--green-dark)">Rendimiento neto previo</div><div class="rc" style="color:var(--green)">Ingresos − Gastos − Amortizaciones (− Gastos DJ si simplificada)</div></div>
-        <div class="rr"><div class="av sub" id="rdto_p">0,00 €</div></div>
+    <div class="section-body">
+      <table class="field-table">
+        <thead>
+          <tr><th style="width:55%">Concepto</th><th>Casilla</th><th>Importe acumulado (€)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="row-label">Ingresos íntegros de la actividad económica</div><div class="row-info">Total facturas emitidas SIN IVA, acumulado desde 1 enero</div></td>
+            <td><div class="row-casilla">01</div></td>
+            <td><div class="input-wrap"><input type="number" id="c01" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Gastos fiscalmente deducibles (excl. amortizaciones)</div><div class="row-info">Todos los gastos afectos a la actividad: alquiler, suministros, material, seguros, gestoría...</div></td>
+            <td><div class="row-casilla">02</div></td>
+            <td><div class="input-wrap"><input type="number" id="c02" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Amortizaciones del inmovilizado afecto</div><div class="row-info">Según tablas de amortización oficiales AEAT (Orden HAP/2612/2014)</div></td>
+            <td><div class="row-casilla">03</div></td>
+            <td><div class="input-wrap"><input type="number" id="c03" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr class="calc-row">
+            <td><div class="row-label">Rendimiento neto previo (01 − 02 − 03)</div><div class="row-info">Cálculo automático</div></td>
+            <td><div class="row-casilla">04</div></td>
+            <td><div class="auto-val" id="c04">0,00 €</div></td>
+          </tr>
+          <tr id="row-simp" style="display:none">
+            <td><div class="row-label">Gastos difícil justificación 5% (solo Est. Simplificada)</div><div class="row-info">5% del rendimiento neto previo positivo, máximo 2.000 € anuales (art. 30.2 RIRPF)</div></td>
+            <td><div class="row-casilla">04b</div></td>
+            <td><div class="auto-val" id="c04b">0,00 €</div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Reducción por inicio de actividad (20%)</div><div class="row-info">Solo primeros 2 años naturales con rendimiento neto positivo — art. 32.3 LIRPF</div></td>
+            <td><div class="row-casilla">05</div></td>
+            <td><div class="input-wrap"><input type="number" id="c05" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Reducción por rendimientos irregulares y otras reducciones</div><div class="row-info">Art. 32.1 LIRPF — rendimientos con período generación >2 años u obtenidos de forma notoriamente irregular</div></td>
+            <td><div class="row-casilla">06</div></td>
+            <td><div class="input-wrap"><input type="number" id="c06" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr class="subtotal-row">
+            <td><div class="row-label">Rendimiento neto reducido (casilla 07)</div></td>
+            <td><div class="row-casilla">07</div></td>
+            <td><div class="auto-val" id="c07" style="font-size:16px">0,00 €</div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CÁLCULO PAGO FRACCIONADO -->
+  <div class="section" id="s-calc">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="section-icon si-amber">🧮</div>
+      <div><div class="section-title">Cálculo del pago fraccionado</div><div class="section-subtitle">Casillas 08 a 20</div></div>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <table class="field-table">
+        <tbody>
+          <tr class="calc-row">
+            <td style="width:55%"><div class="row-label">Base del pago fraccionado (20% del rdto. neto reducido positivo)</div><div class="row-info">Si el rendimiento neto es negativo, la base es 0</div></td>
+            <td><div class="row-casilla">08</div></td>
+            <td><div class="auto-val" id="c08">0,00 €</div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Retenciones e ingresos a cuenta ACUMULADOS desde 1 enero</div><div class="row-info">IRPF retenido que aparece en tus facturas emitidas a clientes</div></td>
+            <td><div class="row-casilla">09</div></td>
+            <td><div class="input-wrap"><input type="number" id="c09" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Pagos fraccionados del mismo ejercicio ya presentados</div><div class="row-info">Suma de resultados de modelos 130 de trimestres anteriores del mismo año</div></td>
+            <td><div class="row-casilla">10</div></td>
+            <td><div class="input-wrap"><input type="number" id="c10" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Minoración por discapacidad del declarante</div><div class="row-info">Si tiene reconocida discapacidad ≥33%: 300€/trim | ≥65%: 900€/trim</div></td>
+            <td><div class="row-casilla">11</div></td>
+            <td><div class="input-wrap"><input type="number" id="c11" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr class="calc-row">
+            <td><div class="row-label">Resultado previo (08 − 09 − 10 − 11)</div></td>
+            <td><div class="row-casilla">12</div></td>
+            <td><div class="auto-val" id="c12">0,00 €</div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Declaración complementaria — importe ingresado anteriormente</div><div class="row-info">Solo si se presenta una declaración complementaria al mismo período</div></td>
+            <td><div class="row-casilla">13</div></td>
+            <td><div class="input-wrap"><input type="number" id="c13" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="info-box green">
+        ✅ <span>Si el resultado es <strong>cero o negativo</strong>, no hay obligación de pago. Es recomendable presentar igualmente marcando "Resultado negativo/cero" para que conste en AEAT.</span>
       </div>
     </div>
   </div>
 
-  <!-- REDUCCIONES -->
-  <div class="section">
-    <div class="sh" onclick="tog(this)">
-      <div class="sicon sa">📉</div>
-      <div><div class="stitle">Reducciones del rendimiento neto</div><div class="ssub">Deja en 0 si no aplica ninguna reducción</div></div>
-      <span class="chev">▾</span>
+  <!-- RESULTADO -->
+  <div class="resultado">
+    <div class="resultado-label">Resultado final — Casilla 20</div>
+    <div class="resultado-num" id="resultado-num">0,00 €</div>
+    <div class="resultado-status" id="resultado-status">Rellena los campos para ver el resultado</div>
+    <div class="resultado-grid">
+      <div class="resultado-card"><div class="rc-label">Ingresos acumulados</div><div class="rc-val" id="rc-ing">0,00 €</div></div>
+      <div class="resultado-card"><div class="rc-label">Gastos acumulados</div><div class="rc-val" id="rc-gto">0,00 €</div></div>
+      <div class="resultado-card"><div class="rc-label">Rdto. neto reducido</div><div class="rc-val" id="rc-rdto">0,00 €</div></div>
+      <div class="resultado-card"><div class="rc-label">Base (20% Rdto.)</div><div class="rc-val" id="rc-base">0,00 €</div></div>
     </div>
-    <div class="sb-body">
-      <div class="ib bl">ℹ️ Las reducciones son opcionales y solo aplican en situaciones específicas. Si tienes dudas, déjalas en 0.</div>
-      <div class="crow">
-        <div><div class="rl b">Reducción por inicio de actividad (20%)</div><div class="rc">Casilla 08</div><div class="ri">Solo los dos primeros años naturales con rdto. neto positivo desde el inicio de actividad (art. 32.3 LIRPF). Introduce el importe a reducir (20% del rdto. neto previo positivo).</div></div>
-        <div class="rr"><div class="iw"><input type="number" id="ri" value="0" min="0" step="0.01" oninput="calc()"><span class="is">€</span></div></div>
-      </div>
-      <div class="crow">
-        <div><div class="rl b">Otras reducciones del rendimiento neto</div><div class="rc">Casilla 09</div><div class="ri">Reducción por rendimientos irregulares (30% si generados en más de 2 años), por discapacidad, u otras previstas en la normativa.</div></div>
-        <div class="rr"><div class="iw"><input type="number" id="ro" value="0" min="0" step="0.01" oninput="calc()"><span class="is">€</span></div></div>
-      </div>
-      <div class="crow sub">
-        <div><div class="rl b" style="color:var(--green-dark)">Rendimiento neto reducido — base del 20%</div><div class="rc" style="color:var(--green)">Casilla 03 — Base sobre la que se aplica el 20%</div></div>
-        <div class="rr"><div class="av sub" id="rdto_n">0,00 €</div></div>
-      </div>
+    <div class="export-row">
+      <button class="btn-export btn-pdf" onclick="exportPDF()">⬇ Descargar PDF</button>
+      <button class="btn-export btn-excel" onclick="exportCSV()">📊 Exportar datos</button>
+      <button class="btn-export btn-reset" onclick="resetForm()">↺ Limpiar todo</button>
     </div>
-  </div>
-
-  <!-- CÁLCULO -->
-  <div class="section">
-    <div class="sh" onclick="tog(this)">
-      <div class="sicon sg">🧮</div>
-      <div><div class="stitle">Cálculo del pago fraccionado (casillas 04 a 07)</div><div class="ssub">Resultado a ingresar en Hacienda</div></div>
-      <span class="stot" id="tot">0,00 €</span>
-      <span class="chev">▾</span>
-    </div>
-    <div class="sb-body">
-      <div class="crow">
-        <div><div class="rl b">20% del rendimiento neto reducido (si positivo)</div><div class="rc">Casilla 04</div><div class="ri">Tipo fijo del 20% aplicado sobre el rdto. neto reducido acumulado. Si es negativo o cero, el pago fraccionado es 0. Calculado automáticamente.</div></div>
-        <div class="rr"><div class="av lg" id="c04">0,00 €</div></div>
-      </div>
-      <div class="crow">
-        <div><div class="rl b">Retenciones e ingresos a cuenta soportados</div><div class="rc">Casilla 05</div><div class="ri">Total IRPF retenido por clientes en facturas emitidas acumulado desde el 1 de enero (el 15% o 7% de nuevos autónomos que aparece en cada factura).</div></div>
-        <div class="rr"><div class="iw"><input type="number" id="c05" value="0" min="0" step="0.01" oninput="calc()"><span class="is">€</span></div></div>
-      </div>
-      <div class="crow">
-        <div><div class="rl b">Pagos fraccionados ingresados en períodos anteriores del mismo año</div><div class="rc">Casilla 06</div><div class="ri">Suma de importes ya ingresados con este modelo 130 en trimestres anteriores del mismo ejercicio. En el 1T siempre es 0.</div></div>
-        <div class="rr"><div class="iw"><input type="number" id="c06" value="0" min="0" step="0.01" oninput="calc()"><span class="is">€</span></div></div>
-      </div>
-      <div class="crow sub">
-        <div><div class="rl b" style="color:var(--green-dark)">Resultado previo (04 − 05 − 06)</div><div class="rc" style="color:var(--green)">Si negativo, el resultado final es 0</div></div>
-        <div class="rr"><div class="av sub" id="c07p">0,00 €</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- RESULTADO FINAL -->
-  <div class="res">
-    <div class="res-lbl">Casilla 07 — Resultado final (mínimo 0)</div>
-    <div class="res-num" id="rnum">0,00 €</div>
-    <div class="res-sta" id="rsta">Rellena los campos para ver el resultado</div>
-    <div class="res-grid">
-      <div class="res-card"><div class="rclbl">Rdto. neto reducido (cas. 03)</div><div class="rcval" id="rc1">0,00 €</div></div>
-      <div class="res-card"><div class="rclbl">20% pago fraccionado (cas. 04)</div><div class="rcval" id="rc2">0,00 €</div></div>
-      <div class="res-card"><div class="rclbl">Retenciones + Pagos ant. (05+06)</div><div class="rcval" id="rc3">0,00 €</div></div>
-    </div>
-    <div class="exp-row">
-      <button class="btn-exp bp" onclick="exportPDF()">⬇ Descargar PDF</button>
-      <button class="btn-exp bc" onclick="exportCSV()">📊 Exportar datos</button>
-      <button class="btn-exp br" onclick="resetForm()">↺ Limpiar todo</button>
-    </div>
-  </div>
-
-  <div class="ib am" style="margin-top:1rem">
-    ⚠️ <span><strong>Recuerda:</strong> si el resultado es 0 o negativo no hay obligación de pago pero sí puedes presentar declaración negativa. No genera devolución en este modelo.</span>
   </div>
 </div>
 
 <script>
-const fmt=n=>(parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
-const v=id=>parseFloat(document.getElementById(id)?.value)||0;
-const sv=(id,n)=>{const e=document.getElementById(id);if(e)e.textContent=fmt(n)};
+let modalidad='normal';
+function fmt(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
+function v(id){return parseFloat(document.getElementById(id)?.value)||0;}
+function set(id,val){const el=document.getElementById(id);if(el)el.textContent=fmt(val);}
 
-function calc(){
-  const ing=v('c01'),gas=v('c02g'),amort=v('c02a');
-  const rdto_p=ing-gas-amort;
-  sv('rdto_p',rdto_p);
-
-  const isSimp=document.getElementById('mod').value==='simp';
-  let dj=0;
-  if(isSimp && rdto_p>0) dj=Math.min(rdto_p*0.05, 2000);
-  sv('dj',dj);
-
-  const red_i=v('ri'), red_o=v('ro');
-  const rdto_n=Math.max(0, rdto_p-(isSimp?dj:0)-red_i-red_o);
-  sv('rdto_n',rdto_n);
-
-  const c04=Math.max(0,rdto_n)*0.20;
-  sv('c04',c04);
-
-  const c05=v('c05'), c06=v('c06');
-  const previo=c04-c05-c06;
-  sv('c07p',previo);
-
-  const resultado=Math.max(0,previo);
-  document.getElementById('tot').textContent=fmt(resultado);
-
-  const numEl=document.getElementById('rnum');
-  const staEl=document.getElementById('rsta');
-  numEl.textContent=fmt(resultado);
-
-  const plazos={'1T':'20 de abril','2T':'20 de julio','3T':'20 de octubre','4T':'30 de enero'};
-  const per=document.getElementById('per').value;
-
-  if(resultado>0.005){
-    numEl.className='res-num pos';
-    staEl.innerHTML=`<strong>A ingresar en Hacienda</strong> — Plazo: hasta el ${plazos[per]}`;
-  } else {
-    numEl.className='res-num cer';
-    staEl.innerHTML=`<strong>Sin pago</strong> — Resultado 0 o negativo. No hay cantidad a ingresar.`;
-  }
-
-  sv('rc1',rdto_n); sv('rc2',c04); sv('rc3',c05+c06);
-}
-
-function tog(h){
-  const b=h.nextElementSibling, c=h.querySelector('.chev');
-  if(b.style.display==='none'){b.style.display='block';c.style.transform='';h.classList.remove('col')}
-  else{b.style.display='none';c.style.transform='rotate(-90deg)';h.classList.add('col')}
-}
-
-function toggleSimp(){
-  const isS=document.getElementById('mod').value==='simp';
-  document.getElementById('row-dj').style.display=isS?'grid':'none';
+function setModalidad(m,btn){
+  modalidad=m;
+  document.querySelectorAll('.mod-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('row-simp').style.display=m==='simplificada'?'table-row':'none';
   calc();
 }
 
+function calc(){
+  const ing=v('c01'), gtos=v('c02'), amor=v('c03');
+  const rdto_previo=ing-gtos-amor;
+  set('c04',rdto_previo);
+  document.getElementById('tot-rdto-label').textContent=fmt(rdto_previo);
+
+  let gastos_dj=0;
+  if(modalidad==='simplificada' && rdto_previo>0){
+    gastos_dj=Math.min(rdto_previo*0.05, 2000);
+  }
+  set('c04b',gastos_dj);
+
+  const red_inicio=v('c05'), red_otros=v('c06');
+  const rdto_reducido=rdto_previo-gastos_dj-red_inicio-red_otros;
+  set('c07',rdto_reducido);
+
+  const base=Math.max(0,rdto_reducido)*0.20;
+  set('c08',base);
+
+  const ret=v('c09'), pagos_ant=v('c10'), discap=v('c11');
+  const resultado_previo=base-ret-pagos_ant-discap;
+  set('c12',resultado_previo);
+
+  const complementaria=v('c13');
+  const resultado_final=Math.max(0,resultado_previo)-complementaria;
+
+  const numEl=document.getElementById('resultado-num');
+  const statusEl=document.getElementById('resultado-status');
+  numEl.textContent=fmt(Math.max(0,resultado_previo));
+
+  if(resultado_previo>0.005){
+    numEl.className='resultado-num positivo';
+    const plazos={'1T':'20 de abril','2T':'20 de julio','3T':'20 de octubre','4T':'30 de enero'};
+    const p=document.getElementById('periodo').value;
+    statusEl.innerHTML=`<strong>A ingresar</strong> — Plazo máximo: ${plazos[p]||'fecha oficial'}`;
+  } else {
+    numEl.className='resultado-num';
+    statusEl.innerHTML=`<strong>Resultado cero o negativo</strong> — No hay cantidad a ingresar. Se recomienda presentar igualmente marcando "Negativo"`;
+  }
+
+  set('rc-ing',ing); set('rc-gto',gtos+amor); set('rc-rdto',rdto_reducido); set('rc-base',base);
+}
+
+function toggleSection(header){
+  const body=header.nextElementSibling;
+  const chevron=header.querySelector('.chevron');
+  if(body.style.display==='none'){body.style.display='block';chevron.style.transform='rotate(0deg)';header.classList.remove('collapsed');}
+  else{body.style.display='none';chevron.style.transform='rotate(-90deg)';header.classList.add('collapsed');}
+}
+
 function resetForm(){
-  if(!confirm('¿Limpiar todos los datos?'))return;
+  if(!confirm('¿Limpiar todos los datos?')) return;
   document.querySelectorAll('input[type=number]').forEach(i=>i.value=0);
-  document.querySelectorAll('input[type=text]').forEach(i=>i.value='');
-  document.getElementById('ej').value='2026';
   calc();
 }
 
 function exportPDF(){
-  const ej=document.getElementById('ej').value||'2026';
-  const per=document.getElementById('per').value;
-  const nif=document.getElementById('nif').value||'—';
-  const nom=document.getElementById('nom').value||'—';
-  const act=document.getElementById('act').value||'—';
-  const mod=document.getElementById('mod').options[document.getElementById('mod').selectedIndex].text;
-  const res=document.getElementById('rnum').textContent;
-  const sta=document.getElementById('rsta').textContent;
-
   const w=window.open('','_blank','width=800,height=900');
-  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Modelo 130 — ${ej} ${per}</title>
-  <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;color:#1c1b18;padding:40px;background:white}
-  .hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid #1a7a4a}
-  .hdr h1{font-size:20px;font-weight:600;color:#1a7a4a;margin-bottom:2px}.hdr p{font-size:12px;color:#8c8b84}
-  .mn{font-size:24px;font-weight:700;color:#1c1b18;font-family:monospace;text-align:right}.ms{font-size:12px;color:#8c8b84;text-align:right}
-  .idg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;padding:14px;background:#f7f5ee;border-radius:8px}
-  .idf label{font-size:10px;font-weight:600;text-transform:uppercase;color:#8c8b84;display:block;margin-bottom:2px}
-  .idf span{font-size:13px}
-  .sec{font-size:11px;font-weight:600;text-transform:uppercase;color:white;background:#3d3d3d;padding:6px 10px;border-radius:4px;margin:16px 0 8px}
-  table{width:100%;border-collapse:collapse}th{font-size:10px;font-weight:600;text-transform:uppercase;color:#8c8b84;padding:6px 8px;background:#f0ede4;border-bottom:1px solid #e2ded2;text-align:left}
-  th.r{text-align:right}td{padding:6px 8px;border-bottom:1px solid #edeae0;font-size:13px}td.r{text-align:right;font-family:monospace}
-  .sub td{background:#e0f0ea;font-weight:600;font-size:14px}
-  .rb{background:#1c1b18;color:white;padding:20px;border-radius:10px;margin-top:20px}
-  .rb .l{font-size:10px;opacity:.4;text-transform:uppercase;margin-bottom:4px}.rb .n{font-size:28px;font-weight:600;font-family:monospace;color:#4ade80}.rb .s{font-size:13px;opacity:.6;margin-top:4px}
-  .ft{margin-top:24px;font-size:10px;color:#8c8b84;text-align:center;border-top:1px solid #edeae0;padding-top:12px}
-  </style></head><body>
-  <div class="hdr"><div><h1>NormaAlerta</h1><p>Calculadora fiscal</p></div><div><div class="mn">MOD. 130</div><div class="ms">Pago fraccionado IRPF</div></div></div>
-  <div class="idg">
-    <div class="idf"><label>Ejercicio</label><span>${ej}</span></div>
-    <div class="idf"><label>Período</label><span>${per}</span></div>
-    <div class="idf"><label>NIF</label><span>${nif}</span></div>
-    <div class="idf"><label>Declarante</label><span>${nom}</span></div>
-    <div class="idf"><label>Actividad</label><span>${act}</span></div>
-    <div class="idf"><label>Modalidad</label><span>${mod}</span></div>
+  const ej=document.getElementById('ejercicio').value;
+  const per=document.getElementById('periodo').value;
+  const nif=document.getElementById('nif').value||'—';
+  const nom=document.getElementById('nombre').value||'—';
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Modelo 130</title>
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Helvetica,Arial,sans-serif;font-size:13px;padding:40px;color:#1c1b18}
+  .hdr{display:flex;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #1a7a4a}
+  h1{font-size:18px;font-weight:600;color:#1a7a4a}h2{font-size:13px;font-weight:600;background:#3d3d3d;color:white;padding:6px 10px;border-radius:4px;margin:16px 0 8px}
+  .id{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#f7f5ee;padding:12px;border-radius:8px;margin-bottom:16px}
+  .id label{font-size:10px;text-transform:uppercase;color:#8c8b84;display:block;margin-bottom:2px}.id span{font-size:13px}
+  table{width:100%;border-collapse:collapse}th{font-size:10px;text-transform:uppercase;color:#8c8b84;background:#f0ede4;padding:6px 8px;text-align:left;border-bottom:1px solid #e2ded2}
+  td{padding:5px 8px;border-bottom:1px solid #edeae0;font-size:12px}td.r{text-align:right;font-family:monospace}
+  .sub td{background:#e0f0ea;font-weight:600}.res{background:#1c1b18;color:white;padding:20px;border-radius:10px;margin-top:20px;display:flex;justify-content:space-between}
+  .res .n{font-size:28px;font-weight:600;font-family:monospace;color:#4ade80}.ftr{margin-top:20px;font-size:10px;color:#8c8b84;text-align:center;border-top:1px solid #edeae0;padding-top:12px}
+  @media print{body{padding:20px}}</style></head><body>
+  <div class="hdr"><div><h1>NormaAlerta</h1><p style="font-size:11px;color:#8c8b84">Calculadora fiscal · normaalerta.com</p></div>
+  <div style="text-align:right"><div style="font-size:22px;font-weight:700;font-family:monospace">MOD. 130</div><div style="font-size:11px;color:#8c8b84">Pago Fraccionado IRPF</div></div></div>
+  <div class="id">
+    <div><label>Ejercicio</label><span>${ej}</span></div><div><label>Período</label><span>${per}</span></div>
+    <div><label>NIF</label><span>${nif}</span></div><div><label>Declarante</label><span>${nom}</span></div>
+    <div><label>Modalidad</label><span>${modalidad==='normal'?'Estimación Directa Normal':'Estimación Directa Simplificada'}</span></div>
   </div>
-  <div class="sec">Ingresos y gastos acumulados</div>
-  <table><tr><th>Concepto</th><th>Cas.</th><th class="r">Importe (€)</th></tr>
-  <tr><td>Ingresos computables de la actividad</td><td>01</td><td class="r">${(v('c01')).toLocaleString('es-ES',{minimumFractionDigits:2})}</td></tr>
-  <tr><td>Gastos fiscalmente deducibles</td><td>02</td><td class="r">${(v('c02g')).toLocaleString('es-ES',{minimumFractionDigits:2})}</td></tr>
-  <tr><td>Amortizaciones</td><td>02</td><td class="r">${(v('c02a')).toLocaleString('es-ES',{minimumFractionDigits:2})}</td></tr>
-  <tr><td>Reducción inicio actividad</td><td>08</td><td class="r">${(v('ri')).toLocaleString('es-ES',{minimumFractionDigits:2})}</td></tr>
-  <tr><td>Otras reducciones</td><td>09</td><td class="r">${(v('ro')).toLocaleString('es-ES',{minimumFractionDigits:2})}</td></tr>
-  <tr class="sub"><td colspan="2">Rendimiento neto reducido</td><td class="r">${document.getElementById('rdto_n').textContent}</td></tr>
-  </table>
-  <div class="sec">Cálculo del pago fraccionado</div>
-  <table><tr><th>Concepto</th><th>Cas.</th><th class="r">Importe (€)</th></tr>
-  <tr><td>20% rdto. neto reducido</td><td>04</td><td class="r">${document.getElementById('c04').textContent}</td></tr>
-  <tr><td>Retenciones soportadas acumuladas</td><td>05</td><td class="r">${(v('c05')).toLocaleString('es-ES',{minimumFractionDigits:2})}</td></tr>
-  <tr><td>Pagos fraccionados anteriores</td><td>06</td><td class="r">${(v('c06')).toLocaleString('es-ES',{minimumFractionDigits:2})}</td></tr>
-  <tr class="sub"><td colspan="2">Resultado final (casilla 07)</td><td class="r">${res}</td></tr>
-  </table>
-  <div class="rb"><div class="l">Casilla 07 — Resultado final</div><div class="n">${res}</div><div class="s">${sta}</div></div>
-  <div class="ft">Generado con NormaAlerta · normaalerta.com · Presentación oficial en sede.agenciatributaria.gob.es</div>
+  <h2>Ingresos y gastos acumulados</h2>
+  <table><tr><th style="width:55%">Concepto</th><th>Cas.</th><th>Importe (€)</th></tr>
+  <tr><td>Ingresos íntegros</td><td class="r">01</td><td class="r">${v('c01').toFixed(2)}</td></tr>
+  <tr><td>Gastos deducibles</td><td class="r">02</td><td class="r">${v('c02').toFixed(2)}</td></tr>
+  <tr><td>Amortizaciones</td><td class="r">03</td><td class="r">${v('c03').toFixed(2)}</td></tr>
+  <tr><td>Rendimiento neto previo</td><td class="r">04</td><td class="r">${document.getElementById('c04').textContent}</td></tr>
+  ${modalidad==='simplificada'?`<tr><td>Gastos difícil justificación 5%</td><td class="r">04b</td><td class="r">${document.getElementById('c04b').textContent}</td></tr>`:''}
+  <tr class="sub"><td>Rendimiento neto reducido</td><td class="r">07</td><td class="r">${document.getElementById('c07').textContent}</td></tr></table>
+  <h2>Cálculo del pago fraccionado</h2>
+  <table><tr><th style="width:55%">Concepto</th><th>Cas.</th><th>Importe (€)</th></tr>
+  <tr><td>Base (20% rdto. neto reducido positivo)</td><td class="r">08</td><td class="r">${document.getElementById('c08').textContent}</td></tr>
+  <tr><td>Retenciones soportadas acumuladas</td><td class="r">09</td><td class="r">${v('c09').toFixed(2)}</td></tr>
+  <tr><td>Pagos fraccionados anteriores</td><td class="r">10</td><td class="r">${v('c10').toFixed(2)}</td></tr>
+  <tr><td>Minoración por discapacidad</td><td class="r">11</td><td class="r">${v('c11').toFixed(2)}</td></tr>
+  <tr class="sub"><td>Resultado (casilla 20)</td><td class="r">20</td><td class="r">${document.getElementById('resultado-num').textContent}</td></tr></table>
+  <div class="res"><div><div style="font-size:11px;opacity:.5;text-transform:uppercase;margin-bottom:4px">Resultado — Casilla 20</div><div class="n">${document.getElementById('resultado-num').textContent}</div><div style="font-size:12px;opacity:.6;margin-top:4px">${document.getElementById('resultado-status').innerText}</div></div></div>
+  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Documento orientativo. Presentación oficial en sede.agenciatributaria.gob.es</div>
   <script>window.onload=()=>window.print()<\/script></body></html>`);
   w.document.close();
 }
 
 function exportCSV(){
-  const rows=[['MODELO 130 — PAGO FRACCIONADO IRPF'],['Ejercicio',document.getElementById('ej').value],['Período',document.getElementById('per').value],['NIF',document.getElementById('nif').value],['Declarante',document.getElementById('nom').value],[''],
-  ['CONCEPTO','CASILLA','IMPORTE (€)'],
-  ['Ingresos computables','01',v('c01').toFixed(2)],['Gastos deducibles','02',v('c02g').toFixed(2)],['Amortizaciones','02',v('c02a').toFixed(2)],
-  ['Rdto. neto reducido','03',document.getElementById('rdto_n').textContent.replace(' €','').replace(/\./g,'').replace(',','.')],
-  ['20% rdto. neto','04',document.getElementById('c04').textContent.replace(' €','').replace(/\./g,'').replace(',','.')],
-  ['Retenciones acumuladas','05',v('c05').toFixed(2)],['Pagos fraccionados anteriores','06',v('c06').toFixed(2)],
-  ['RESULTADO FINAL','07',document.getElementById('rnum').textContent.replace(' €','').replace(/\./g,'').replace(',','.')]];
-  let csv='sep=,\n';rows.forEach(r=>{csv+=r.map(c=>`"${c}"`).join(',')+'\n'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'}));
-  a.download=`Modelo130_${document.getElementById('ej').value}_${document.getElementById('per').value}.csv`;a.click();
+  const rows=[['MODELO 130 — PAGO FRACCIONADO IRPF'],['Ejercicio',document.getElementById('ejercicio').value],['Período',document.getElementById('periodo').value],['NIF',document.getElementById('nif').value],['Declarante',document.getElementById('nombre').value],['Modalidad',modalidad],[''],['Concepto','Casilla','Importe (€)'],['Ingresos íntegros','01',v('c01').toFixed(2)],['Gastos deducibles','02',v('c02').toFixed(2)],['Amortizaciones','03',v('c03').toFixed(2)],['Rdto. neto previo','04',document.getElementById('c04').textContent],['Rdto. neto reducido','07',document.getElementById('c07').textContent],['Base 20%','08',document.getElementById('c08').textContent],['Retenciones acumuladas','09',v('c09').toFixed(2)],['Pagos fraccionados ant.','10',v('c10').toFixed(2)],['RESULTADO','20',document.getElementById('resultado-num').textContent]];
+  let csv='sep=,\n';rows.forEach(r=>{csv+=r.map(c=>`"${c}"`).join(',')+'\n';});
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`Modelo130_${document.getElementById('ejercicio').value}_${document.getElementById('periodo').value}.csv`;a.click();
 }
-
 calc();
 </script>
-</body>
-</html>
+</body></html>
