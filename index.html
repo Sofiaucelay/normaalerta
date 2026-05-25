@@ -122,13 +122,11 @@ h1 em { font-style: italic; color: var(--green); font-weight: 300; }
 .tl-benefit { background: rgba(34,160,122,0.2); color: var(--green-mid); }
 .tl-risk { background: rgba(226,75,74,0.2); color: #E24B4A; }
 .tl-change { background: rgba(239,159,39,0.2); color: #EF9F27; }
-.social-proof { padding: 60px 40px; background: var(--white); border-bottom: 1px solid var(--border); }
-.social-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 40px; flex-wrap: wrap; justify-content: space-between; }
+.social-proof { padding: 20px 40px; background: var(--white); border-bottom: 1px solid var(--border); }
+.social-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
 .sp-text { font-size: 14px; color: var(--ink3); font-weight: 300; }
-.sp-nums { display: flex; gap: 40px; }
-.sp-num { text-align: center; }
-.sp-val { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 400; color: var(--ink); line-height: 1; }
-.sp-label { font-size: 12px; color: var(--ink3); margin-top: 4px; }
+.launch-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--green); background: var(--green-light); padding: 6px 14px; border-radius: 20px; }
+.launch-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green-mid); flex-shrink: 0; }
 .problem { padding: 100px 40px; background: var(--paper); }
 .section-inner { max-width: 1100px; margin: 0 auto; }
 .section-label { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--green); margin-bottom: 16px; }
@@ -206,17 +204,8 @@ h2 em { font-style: italic; font-weight: 300; }
 .pb-solid:hover { background: var(--green-mid); }
 .price-note { font-size: 12px; color: var(--ink3); text-align: center; margin-top: 8px; }
 .price-card.featured .price-note { color: rgba(255,255,255,0.3); }
-.pricing-guarantee { text-align: center; margin-top: 40px; font-size: 14px; color: var(--ink3); }
-.pricing-guarantee strong { color: var(--ink2); }
-.testimonials { padding: 100px 40px; background: var(--paper); }
-.testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 60px; }
-.testi-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
-.testi-quote { font-family: 'Fraunces', serif; font-size: 15px; font-weight: 300; font-style: italic; line-height: 1.7; color: var(--ink); margin-bottom: 20px; }
-.testi-author { display: flex; align-items: center; gap: 10px; }
-.testi-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--paper2); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: var(--ink2); }
-.testi-name { font-size: 13px; font-weight: 500; }
-.testi-role { font-size: 12px; color: var(--ink3); }
-.testi-stars { color: #EF9F27; font-size: 12px; margin-bottom: 12px; }
+
+
 .faq { padding: 100px 40px; background: var(--white); }
 .faq-inner { max-width: 700px; margin: 0 auto; }
 .faq-header { margin-bottom: 48px; }
@@ -255,11 +244,10 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
   nav { padding: 0 20px; }
   .nav-links { display: none; }
   .hero { padding: 100px 20px 60px; }
-  .problem-grid, .features-grid, .va-grid, .pricing-grid, .testi-grid { grid-template-columns: 1fr; }
+  .problem-grid, .features-grid, .va-grid, .pricing-grid { grid-template-columns: 1fr; }
   .pricing-grid .price-card.featured { transform: none; }
-  .social-proof, .problem, .features, .value-added, .pricing, .testimonials, .faq, .cta-final { padding-left: 20px; padding-right: 20px; }
+  .social-proof, .problem, .features, .value-added, .pricing, .faq, .cta-final { padding-left: 20px; padding-right: 20px; }
   .cta-form { flex-direction: column; }
-  .sp-nums { gap: 24px; }
 }
 </style>
 </head>
@@ -313,12 +301,10 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
 
 <section class="social-proof">
   <div class="social-inner">
-    <p class="sp-text">Usado por autónomos y pymes<br>en toda España</p>
-    <div class="sp-nums">
-      <div class="sp-num"><div class="sp-val">+2.400</div><div class="sp-label">empresas suscritas</div></div>
-      <div class="sp-num"><div class="sp-val">98%</div><div class="sp-label">renuevan cada mes</div></div>
-      <div class="sp-num"><div class="sp-val">3.200€</div><div class="sp-label">ahorro medio anual</div></div>
-      <div class="sp-num"><div class="sp-val">0</div><div class="sp-label">multas por olvido de plazo</div></div>
+    <p class="sp-text">Alertas normativas para autónomos y pymes en España</p>
+    <div class="launch-badge">
+      <span class="launch-dot"></span>
+      Lanzamiento 2026
     </div>
   </div>
 </section>
@@ -447,21 +433,10 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
         <div class="price-cta-wrap"><a href="#" class="price-btn pb-outline">Empezar gratis</a><p class="price-note">Para equipos y gestorías</p></div>
       </div>
     </div>
-    <p class="pricing-guarantee reveal">🔒 <strong>Garantía 30 días:</strong> si no te ahorra tiempo o dinero, te devolvemos el primer mes sin preguntas.</p>
+
   </div>
 </section>
 
-<section class="testimonials">
-  <div class="section-inner">
-    <p class="section-label reveal">Testimonios</p>
-    <h2 class="reveal">Lo que dicen nuestros <em>clientes</em></h2>
-    <div class="testi-grid reveal">
-      <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-quote">"Me enteré de la deducción por digitalización antes que mi propio gestor. Apliqué el 25% y me ahorré 1.400€ en la declaración. La suscripción se paga sola."</div><div class="testi-author"><div class="testi-avatar">MR</div><div><div class="testi-name">Miguel R.</div><div class="testi-role">Autónomo, consultor IT · Madrid</div></div></div></div>
-      <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-quote">"Tenemos 12 empleados y los cambios en cotizaciones nos afectan cada dos por tres. Ahora recibimos el aviso el mismo día y actualizamos nóminas sin prisas ni multas."</div><div class="testi-author"><div class="testi-avatar">AL</div><div><div class="testi-name">Ana L.</div><div class="testi-role">Administradora, hostelería · Barcelona</div></div></div></div>
-      <div class="testi-card"><div class="testi-stars">★★★★★</div><div class="testi-quote">"Las plantillas actualizadas son lo que más valoro. Antes perdía horas buscando si el modelo de la AEAT era el vigente. Ahora lo descargo en dos clics y listo."</div><div class="testi-author"><div class="testi-avatar">JF</div><div><div class="testi-name">Julia F.</div><div class="testi-role">Autónoma, diseño gráfico · Valencia</div></div></div></div>
-    </div>
-  </div>
-</section>
 
 <section class="faq" id="faq">
   <div class="faq-inner">
@@ -484,7 +459,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
       <input type="email" class="cta-input" placeholder="tu@empresa.com">
       <button class="cta-submit">Empezar gratis →</button>
     </div>
-    <p class="cta-final-note">Más de 2.400 autónomos y pymes ya lo usan · Cancela cuando quieras</p>
+    <p class="cta-final-note">Sin tarjeta de crédito · Sin permanencia · Cancela cuando quieras</p>
   </div>
 </section>
 
