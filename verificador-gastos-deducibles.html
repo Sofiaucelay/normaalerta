@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Me puedo deducir esto? Verificador de gastos | NormaAlerta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{--green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;--ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;--paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;--border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);--amber:#f59e0b;--amber-light:#fef3c7;--red:#dc2626;--red-light:#fef2f2;--blue-light:#eff6ff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-header{margin-bottom:2rem;text-align:center}
+.modelo-badge{display:inline-block;background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;font-family:'DM Mono',monospace;margin-bottom:.75rem}
+.page-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;letter-spacing:-.5px;margin-bottom:.5rem}
+.page-title em{font-style:italic;color:var(--green)}
+.page-subtitle{font-size:14px;color:var(--ink3);max-width:560px;margin:0 auto 1.5rem}
+
+/* BUSCADOR */
+.search-wrap{position:relative;max-width:600px;margin:0 auto 2rem}
+.search-input{width:100%;padding:1rem 1.25rem;padding-right:3rem;border:2px solid var(--border2);border-radius:12px;font-size:16px;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.search-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1),0 2px 12px rgba(0,0,0,.06)}
+.search-icon{position:absolute;right:1rem;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none;color:var(--ink3)}
+.search-note{font-size:12px;color:var(--ink3);text-align:center;margin-top:.5rem}
+
+/* CATEGORÍAS */
+.categorias{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:2rem}
+.cat-btn{font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid var(--border2);background:var(--white);color:var(--ink2);cursor:pointer;font-family:inherit;transition:all .15s}
+.cat-btn:hover{border-color:var(--green);color:var(--green)}
+.cat-btn.active{background:var(--green);color:var(--white);border-color:var(--green)}
+
+/* RESULTADOS */
+.resultados{display:flex;flex-direction:column;gap:10px}
+.gasto-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:box-shadow .15s}
+.gasto-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.gasto-header{padding:.875rem 1.25rem;display:flex;align-items:center;gap:12px;cursor:pointer}
+.gasto-icono{font-size:20px;flex-shrink:0}
+.gasto-nombre{font-size:14px;font-weight:500;color:var(--ink);flex:1}
+.gasto-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;flex-shrink:0}
+.gb-si{background:var(--green-light);color:var(--green-dark)}
+.gb-parcial{background:var(--amber-light);color:#92400e}
+.gb-no{background:var(--red-light);color:#991b1b}
+.gb-depende{background:var(--blue-light);color:#1e40af}
+.gasto-chevron{color:var(--ink3);font-size:16px;transition:transform .2s;flex-shrink:0}
+.gasto-body{display:none;padding:0 1.25rem 1.25rem;border-top:1px solid var(--border)}
+.gasto-body.open{display:block}
+.gasto-pct{font-size:28px;font-weight:500;font-family:'DM Mono',monospace;margin:.75rem 0 .25rem}
+.pct-si{color:var(--green-dark)}
+.pct-parcial{color:#92400e}
+.pct-no{color:var(--red)}
+.pct-depende{color:#1e40af}
+.gasto-desc{font-size:13px;color:var(--ink2);line-height:1.65;margin-bottom:.875rem}
+.gasto-condiciones{background:var(--paper);border-radius:8px;padding:.75rem 1rem;margin-bottom:.75rem}
+.condiciones-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);margin-bottom:.5rem}
+.condicion{font-size:12px;color:var(--ink2);line-height:1.6;display:flex;gap:6px;margin-bottom:.25rem}
+.condicion:last-child{margin-bottom:0}
+.condicion-ok{color:var(--green-dark)}
+.condicion-x{color:var(--red)}
+.gasto-fuente{font-size:11px;color:var(--ink3);font-style:italic}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:3rem 1rem;color:var(--ink3)}
+.empty-icon{font-size:40px;margin-bottom:.75rem}
+.empty-title{font-size:16px;font-weight:500;color:var(--ink2);margin-bottom:.375rem}
+
+/* INFO TOP */
+.info-top{background:var(--green-light);border:1px solid rgba(26,122,74,.2);border-radius:10px;padding:.875rem 1.25rem;margin-bottom:1.5rem;font-size:13px;color:var(--green-dark);display:flex;gap:8px;align-items:flex-start}
+
+.no-results{text-align:center;padding:2rem;color:var(--ink3);font-size:14px}
+
+@media(max-width:600px){.categorias{gap:6px}.cat-btn{font-size:11px;padding:4px 10px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/><circle cx="74" cy="22" r="13" fill="#f59e0b"/><text x="74" y="27" font-family="Arial" font-size="15" font-weight="700" fill="white" text-anchor="middle">!</text></svg>
+    NormaAlerta <span class="nav-badge">Herramienta fiscal</span>
+  </a>
+</nav>
+
+<div class="page">
+
+  <div class="page-header">
+    <div class="modelo-badge">IRPF · IVA · AEAT</div>
+    <h1 class="page-title">¿Me puedo <em>deducir</em> esto?</h1>
+    <p class="page-subtitle">Busca cualquier gasto y descubre si es deducible, en qué porcentaje y con qué condiciones. Basado en criterios AEAT y jurisprudencia vigente 2026.</p>
+  </div>
+
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="buscador" placeholder="Busca un gasto: móvil, gasolina, ordenador..." oninput="filtrar()">
+    <span class="search-icon">🔍</span>
+    <p class="search-note">más de 40 tipos de gastos analizados</p>
+  </div>
+
+  <div class="categorias" id="categorias">
+    <button class="cat-btn active" onclick="setCat('todos',this)">Todos</button>
+    <button class="cat-btn" onclick="setCat('oficina',this)">🏠 Oficina y local</button>
+    <button class="cat-btn" onclick="setCat('transporte',this)">🚗 Transporte</button>
+    <button class="cat-btn" onclick="setCat('tecnologia',this)">💻 Tecnología</button>
+    <button class="cat-btn" onclick="setCat('formacion',this)">📚 Formación</button>
+    <button class="cat-btn" onclick="setCat('personal',this)">👤 Gastos personales</button>
+    <button class="cat-btn" onclick="setCat('profesional',this)">💼 Servicios profesionales</button>
+    <button class="cat-btn" onclick="setCat('otros',this)">📦 Otros</button>
+  </div>
+
+  <div class="info-top">
+    ✅ <span><strong>Regla general:</strong> Un gasto es deducible si está <strong>vinculado a la actividad económica</strong>, está <strong>justificado con factura</strong> y está <strong>contabilizado o registrado</strong>. Si no cumple los tres requisitos, Hacienda puede rechazarlo.</span>
+  </div>
+
+  <div class="resultados" id="resultados"></div>
+
+</div>
+
+<script>
+const GASTOS = [
+  // ── OFICINA Y LOCAL ──
+  {
+    id:'alquiler_local', cat:'oficina', icono:'🏢', nombre:'Alquiler de local u oficina',
+    deducible:'si', pct:'100%',
+    desc:'El alquiler del local donde desarrollas tu actividad es deducible al 100% tanto en IRPF como en IVA. Debe ser un espacio destinado exclusivamente a la actividad profesional.',
+    condiciones:[
+      {ok:true, texto:'El local debe estar afecto exclusivamente a la actividad'},
+      {ok:true, texto:'Necesitas el contrato de arrendamiento y las facturas'},
+      {ok:true, texto:'Si pagas retención al arrendador (19%), presenta el Modelo 115'},
+      {ok:false, texto:'No es deducible si el local es también tu vivienda habitual'},
+    ],
+    fuente:'Art. 28 y 29 LIRPF | Art. 95 RIVA'
+  },
+  {
+    id:'oficina_casa', cat:'oficina', icono:'🏠', nombre:'Trabajar desde casa (oficina en casa)',
+    deducible:'parcial', pct:'Proporcional',
+    desc:'Si trabajas desde tu domicilio habitual, puedes deducir una parte de los gastos de suministros (luz, agua, gas, internet) proporcional a los metros cuadrados dedicados a la actividad. La AEAT aplica el criterio del 30% sobre la parte proporcional.',
+    condiciones:[
+      {ok:true, texto:'Calcula: (m² oficina / m² totales) × 30% = % deducible de suministros'},
+      {ok:true, texto:'Ejemplo: oficina 15m² en piso de 100m² → 15% × 30% = 4,5% de los suministros'},
+      {ok:true, texto:'Necesitas estar dado de alta con el domicilio como lugar de actividad'},
+      {ok:false, texto:'El alquiler o hipoteca de la vivienda NO es deducible en ningún caso'},
+      {ok:false, texto:'Si no estás dado de alta en ese domicilio, Hacienda puede rechazarlo'},
+    ],
+    fuente:'Art. 30 LIRPF | Consulta DGT V1185-16'
+  },
+  {
+    id:'suministros', cat:'oficina', icono:'💡', nombre:'Suministros — luz, agua, gas, internet',
+    deducible:'parcial', pct:'Ver condiciones',
+    desc:'Los suministros del local de trabajo son deducibles al 100% si el local está separado de la vivienda. Si trabajas desde casa, se aplica la fórmula proporcional explicada en "Oficina en casa".',
+    condiciones:[
+      {ok:true, texto:'Local separado: 100% deducible con facturas a nombre del negocio'},
+      {ok:true, texto:'Desde casa: (m² / m² totales) × 30% sobre el importe del suministro'},
+      {ok:true, texto:'Internet: suele ser 50% si se usa tanto personal como profesionalmente'},
+      {ok:false, texto:'Sin facturas a tu nombre o NIF, Hacienda puede rechazarlos'},
+    ],
+    fuente:'Art. 30.2 LIRPF | Consulta DGT V2736-15'
+  },
+  {
+    id:'material_oficina', cat:'oficina', icono:'📎', nombre:'Material de oficina — papel, tinta, carpetas...',
+    deducible:'si', pct:'100%',
+    desc:'El material de oficina necesario para desarrollar la actividad es deducible al 100%, tanto en IRPF como en IVA. Guarda siempre las facturas.',
+    condiciones:[
+      {ok:true, texto:'Factura con tu NIF y descripción del material'},
+      {ok:true, texto:'Debe ser material claramente vinculado a la actividad'},
+      {ok:false, texto:'Material mezclado con uso personal puede ser cuestionado'},
+    ],
+    fuente:'Art. 28 LIRPF'
+  },
+  // ── TRANSPORTE ──
+  {
+    id:'vehiculo_exclusivo', cat:'transporte', icono:'🚗', nombre:'Vehículo afecto exclusivamente a la actividad',
+    deducible:'si', pct:'100%',
+    desc:'Si el vehículo se usa EXCLUSIVAMENTE para la actividad (nunca para uso personal), es deducible al 100% en IRPF e IVA. Esto es muy difícil de justificar ante Hacienda y requiere prueba sólida.',
+    condiciones:[
+      {ok:true, texto:'Uso 100% profesional — nunca desplazamientos personales'},
+      {ok:true, texto:'Actividades que lo permiten: transporte, representantes comerciales, autoescuelas'},
+      {ok:true, texto:'Lleva un libro de registro de viajes como prueba'},
+      {ok:false, texto:'Si Hacienda detecta uso personal, pierde la totalidad de la deducción'},
+    ],
+    fuente:'Art. 29 LIRPF | Art. 95.Tres LIVA'
+  },
+  {
+    id:'vehiculo_mixto', cat:'transporte', icono:'🚙', nombre:'Vehículo de uso mixto (personal y profesional)',
+    deducible:'parcial', pct:'50% IVA | 0-50% IRPF',
+    desc:'Para el IVA, la LIVA presume un 50% de afectación empresarial salvo prueba en contrario. Para el IRPF, la deducción es mucho más restrictiva — Hacienda exige exclusividad o actividades tasadas.',
+    condiciones:[
+      {ok:true, texto:'IVA: deducible al 50% salvo que pruebes mayor porcentaje de uso profesional'},
+      {ok:true, texto:'IRPF: solo deducible si la actividad requiere el vehículo (art. 22 RIVA)'},
+      {ok:false, texto:'IRPF: para uso mixto general, Hacienda tiende a rechazar la deducción'},
+      {ok:false, texto:'Sin registro de kilometraje es muy difícil justificar el porcentaje'},
+    ],
+    fuente:'Art. 95.Tres LIVA | Art. 22 RIVA | Consulta DGT V1449-21'
+  },
+  {
+    id:'gasolina', cat:'transporte', icono:'⛽', nombre:'Gasolina y combustible',
+    deducible:'parcial', pct:'Vinculado al vehículo',
+    desc:'La deducción de la gasolina está directamente ligada a la deducción del vehículo. Si el vehículo es 100% profesional, la gasolina es 100% deducible. Si el vehículo no es deducible, la gasolina tampoco lo es.',
+    condiciones:[
+      {ok:true, texto:'Si el vehículo es 100% profesional → gasolina 100% deducible'},
+      {ok:true, texto:'Si el IVA del vehículo es 50% → gasolina también al 50% en IVA'},
+      {ok:false, texto:'Si el vehículo no está afecto a la actividad → gasolina no deducible'},
+      {ok:true, texto:'Guarda todos los tickets y facturas con tu NIF'},
+    ],
+    fuente:'Art. 95.Tres LIVA | Art. 29 LIRPF'
+  },
+  {
+    id:'transporte_publico', cat:'transporte', icono:'🚇', nombre:'Transporte público — tren, metro, taxi, avión',
+    deducible:'si', pct:'100%',
+    desc:'Los gastos de transporte público por desplazamientos de trabajo son deducibles al 100%. Esto incluye tren, avión, taxi, autobús, metro y similares cuando el viaje está justificado por motivos profesionales.',
+    condiciones:[
+      {ok:true, texto:'El desplazamiento debe ser por motivos profesionales (reunión, cliente, formación...)'},
+      {ok:true, texto:'Guarda los billetes, tickets y facturas'},
+      {ok:true, texto:'Los vuelos de trabajo son deducibles — guarda también el boarding pass'},
+      {ok:false, texto:'Desplazamientos al trabajo desde casa no son deducibles (son personales)'},
+    ],
+    fuente:'Art. 28 LIRPF'
+  },
+  {
+    id:'parking', cat:'transporte', icono:'🅿️', nombre:'Parking y peajes',
+    deducible:'parcial', pct:'Vinculado al vehículo',
+    desc:'El parking y los peajes siguen la misma lógica que el combustible — su deducción depende de si el vehículo está afecto a la actividad y en qué porcentaje.',
+    condiciones:[
+      {ok:true, texto:'Vehículo 100% profesional → parking y peajes 100% deducibles'},
+      {ok:true, texto:'Parking en desplazamientos profesionales con transporte público → deducible'},
+      {ok:false, texto:'Parking habitual en el trabajo → no deducible (gasto personal)'},
+    ],
+    fuente:'Art. 29 LIRPF'
+  },
+  // ── TECNOLOGÍA ──
+  {
+    id:'ordenador', cat:'tecnologia', icono:'💻', nombre:'Ordenador, tablet, portátil',
+    deducible:'parcial', pct:'100% si exclusivo | 50% si mixto',
+    desc:'Si el ordenador se usa exclusivamente para el trabajo, es deducible al 100%. Si tiene uso mixto (personal y profesional), Hacienda acepta generalmente el 50%, aunque puede cuestionarlo.',
+    condiciones:[
+      {ok:true, texto:'Uso exclusivo profesional: 100% deducible en IRPF e IVA'},
+      {ok:true, texto:'Uso mixto: 50% es el criterio generalmente aceptado'},
+      {ok:true, texto:'Si supera 300€, se amortiza en varios años (amortización inmovilizado)'},
+      {ok:false, texto:'Sin factura a tu nombre o NIF, no es deducible'},
+    ],
+    fuente:'Art. 28 y 29 LIRPF | Tabla amortización AEAT'
+  },
+  {
+    id:'movil', cat:'tecnologia', icono:'📱', nombre:'Teléfono móvil y factura del móvil',
+    deducible:'parcial', pct:'50%',
+    desc:'La AEAT acepta generalmente el 50% de deducción tanto del terminal como de la factura mensual del móvil, reconociendo que hay uso mixto. Si tienes una línea exclusivamente profesional, puede ser el 100%.',
+    condiciones:[
+      {ok:true, texto:'Línea mixta: 50% deducible tanto en IVA como en IRPF'},
+      {ok:true, texto:'Línea exclusivamente profesional: 100% deducible'},
+      {ok:true, texto:'Factura mensual a tu nombre o empresa con NIF'},
+      {ok:false, texto:'Si no tienes factura (tarjeta de prepago), no es deducible'},
+    ],
+    fuente:'Consulta DGT V0227-17 | Art. 29 LIRPF'
+  },
+  {
+    id:'software', cat:'tecnologia', icono:'⚙️', nombre:'Software, suscripciones y apps de trabajo',
+    deducible:'si', pct:'100%',
+    desc:'Las suscripciones a software y aplicaciones necesarias para la actividad son deducibles al 100%. Esto incluye herramientas de diseño, contabilidad, gestión, ofimática, etc.',
+    condiciones:[
+      {ok:true, texto:'El software debe estar vinculado a la actividad profesional'},
+      {ok:true, texto:'Factura o recibo con tu NIF'},
+      {ok:true, texto:'Ejemplos: Adobe, Microsoft 365, herramientas de gestión, CRM...'},
+      {ok:false, texto:'Suscripciones de ocio o entretenimiento no son deducibles'},
+    ],
+    fuente:'Art. 28 LIRPF'
+  },
+  {
+    id:'camara', cat:'tecnologia', icono:'📷', nombre:'Cámara de fotos o vídeo',
+    deducible:'parcial', pct:'100% si profesional | 50% si mixto',
+    desc:'Deducible al 100% si tu actividad requiere fotografía o vídeo (fotógrafo, diseñador, youtuber...). Si el uso es mixto, el criterio habitual es el 50%.',
+    condiciones:[
+      {ok:true, texto:'Actividad fotográfica o audiovisual: 100% justificable'},
+      {ok:true, texto:'Uso mixto en otras actividades: 50% es el criterio seguro'},
+      {ok:false, texto:'Si la actividad no requiere fotografía, es difícil de justificar'},
+    ],
+    fuente:'Art. 29 LIRPF'
+  },
+  // ── FORMACIÓN ──
+  {
+    id:'formacion', cat:'formacion', icono:'📚', nombre:'Cursos, másters y formación profesional',
+    deducible:'si', pct:'100%',
+    desc:'La formación directamente relacionada con tu actividad profesional es deducible al 100%. Esto incluye cursos online, presenciales, másters, certificaciones y libros técnicos.',
+    condiciones:[
+      {ok:true, texto:'La formación debe estar vinculada a tu actividad profesional'},
+      {ok:true, texto:'Factura con tu NIF y descripción del curso'},
+      {ok:true, texto:'Libros técnicos y de la especialidad: 100% deducibles'},
+      {ok:false, texto:'Formación de ocio o sin relación con la actividad: no deducible'},
+    ],
+    fuente:'Art. 28 LIRPF | Consulta DGT V1683-19'
+  },
+  {
+    id:'libros', cat:'formacion', icono:'📖', nombre:'Libros y publicaciones técnicas',
+    deducible:'si', pct:'100%',
+    desc:'Los libros, revistas y publicaciones técnicas relacionadas con tu actividad son deducibles al 100%. El IVA de los libros es del 4% (superreducido).',
+    condiciones:[
+      {ok:true, texto:'Libros de tu especialidad o sector: 100% deducibles'},
+      {ok:true, texto:'Suscripciones a revistas técnicas o profesionales: deducibles'},
+      {ok:false, texto:'Libros de ficción, entretenimiento o sin relación profesional: no deducibles'},
+    ],
+    fuente:'Art. 28 LIRPF | Art. 91 LIVA (tipo 4%)'
+  },
+  {
+    id:'congreso', cat:'formacion', icono:'🎤', nombre:'Congresos, ferias y eventos profesionales',
+    deducible:'si', pct:'100%',
+    desc:'La asistencia a congresos, ferias, conferencias y eventos de tu sector es deducible al 100%, incluyendo la inscripción y los gastos de desplazamiento y alojamiento asociados.',
+    condiciones:[
+      {ok:true, texto:'El evento debe estar relacionado con tu actividad profesional'},
+      {ok:true, texto:'Guarda la factura de inscripción, billetes de transporte y hotel'},
+      {ok:true, texto:'Las dietas durante el desplazamiento también son deducibles con límites'},
+      {ok:false, texto:'Eventos sociales o de entretenimiento no son deducibles'},
+    ],
+    fuente:'Art. 28 LIRPF'
+  },
+  // ── GASTOS PERSONALES ──
+  {
+    id:'ropa', cat:'personal', icono:'👔', nombre:'Ropa — trajes, ropa de trabajo...',
+    deducible:'depende', pct:'Solo uniforme o EPI',
+    desc:'La ropa de uso común (trajes, camisas, ropa formal) NO es deducible aunque se use para trabajar. Solo es deducible la ropa que sea exclusivamente profesional: uniformes, ropa de protección (EPI), indumentaria con logo de empresa.',
+    condiciones:[
+      {ok:true, texto:'Uniforme con logo de empresa: deducible al 100%'},
+      {ok:true, texto:'Equipos de Protección Individual (EPI): deducibles al 100%'},
+      {ok:true, texto:'Ropa de trabajo específica (bata médica, mono de mecánico): deducible'},
+      {ok:false, texto:'Traje, corbata, ropa formal de uso común: NO deducible'},
+      {ok:false, texto:'Hacienda considera que la ropa de calle tiene uso personal'},
+    ],
+    fuente:'Consulta DGT V1727-13 | Art. 29 LIRPF'
+  },
+  {
+    id:'gimnasio', cat:'personal', icono:'💪', nombre:'Gimnasio y deporte',
+    deducible:'no', pct:'0%',
+    desc:'Los gastos de gimnasio, deporte y actividad física NO son deducibles en ningún caso, aunque alegues que mejoran tu productividad o bienestar laboral. Hacienda los considera gastos personales.',
+    condiciones:[
+      {ok:false, texto:'Gimnasio: NO deducible en ningún caso'},
+      {ok:false, texto:'Actividades deportivas: NO deducibles'},
+      {ok:true, texto:'Excepción: si eres entrenador personal o profesional del deporte'},
+    ],
+    fuente:'Resolución TEAC 00/01517/2011'
+  },
+  {
+    id:'peluqueria', cat:'personal', icono:'✂️', nombre:'Peluquería y estética',
+    deducible:'depende', pct:'Solo actividades específicas',
+    desc:'Con carácter general NO es deducible. Solo puede plantearse si tu actividad profesional requiere una imagen específica (modelo, actor, presentador) y con criterio muy restrictivo.',
+    condiciones:[
+      {ok:false, texto:'Uso personal general: NO deducible'},
+      {ok:true, texto:'Modelo, actor, presentador con exigencia profesional de imagen: puede plantearse'},
+      {ok:false, texto:'Hacienda rechaza habitualmente este gasto — riesgo de comprobación'},
+    ],
+    fuente:'Criterio AEAT restrictivo'
+  },
+  {
+    id:'alimentacion_casa', cat:'personal', icono:'🛒', nombre:'Compra del supermercado y alimentación en casa',
+    deducible:'no', pct:'0%',
+    desc:'Los gastos de alimentación en casa o el supermercado NO son deducibles bajo ningún concepto, aunque trabajes desde casa. Son gastos personales.',
+    condiciones:[
+      {ok:false, texto:'Compra del supermercado: NO deducible'},
+      {ok:false, texto:'Comida en casa: NO deducible aunque trabajas desde casa'},
+      {ok:true, texto:'Restaurante en reunión de trabajo con cliente: sí deducible (ver "Comidas de trabajo")'},
+    ],
+    fuente:'Art. 29 LIRPF'
+  },
+  {
+    id:'comidas_trabajo', cat:'personal', icono:'🍽️', nombre:'Comidas y restaurantes de trabajo',
+    deducible:'parcial', pct:'50% IVA | con límites en IRPF',
+    desc:'Las comidas con clientes o proveedores son deducibles, pero con condiciones. En IVA al 50%. En IRPF deben estar justificadas como gastos de representación. Los autónomos tienen un límite de 26,67€/día en España.',
+    condiciones:[
+      {ok:true, texto:'Debe haber una razón de negocio: reunión con cliente, proveedor, colaborador'},
+      {ok:true, texto:'Factura con NIF (no vale ticket sin NIF)'},
+      {ok:true, texto:'IVA: deducible al 50% (art. 96.Uno.2 LIVA)'},
+      {ok:true, texto:'IRPF: deducible como gasto de representación con límites razonables'},
+      {ok:false, texto:'Comida diaria sin cliente: no es deducible como representación'},
+      {ok:false, texto:'Alcohol en exceso o gastos ostentosos pueden ser rechazados'},
+    ],
+    fuente:'Art. 96.Uno.2 LIVA | Art. 28 LIRPF | Resolución TEAC'
+  },
+  {
+    id:'dietas', cat:'personal', icono:'🧳', nombre:'Dietas por desplazamiento fuera del municipio',
+    deducible:'si', pct:'Hasta límites legales',
+    desc:'Cuando te desplazas por trabajo fuera de tu municipio habitual, puedes deducir las dietas con los límites establecidos: 26,67€/día en España, 48,08€ en el extranjero. Con pernocta los límites suben.',
+    condiciones:[
+      {ok:true, texto:'Desplazamiento fuera del municipio habitual por motivo profesional'},
+      {ok:true, texto:'España sin pernocta: hasta 26,67€/día'},
+      {ok:true, texto:'España con pernocta: hasta 53,34€/día'},
+      {ok:true, texto:'Extranjero sin pernocta: hasta 48,08€/día'},
+      {ok:true, texto:'Extranjero con pernocta: hasta 91,35€/día'},
+      {ok:false, texto:'Desplazamientos al trabajo habitual no generan dietas deducibles'},
+    ],
+    fuente:'Art. 9 RIRPF | RD 439/2007'
+  },
+  // ── SERVICIOS PROFESIONALES ──
+  {
+    id:'gestoria', cat:'profesional', icono:'👨‍💼', nombre:'Gestoría y asesoría fiscal',
+    deducible:'si', pct:'100%',
+    desc:'Los honorarios de gestoría, asesoría fiscal, contable o laboral son gastos deducibles al 100%. Son gastos de la actividad económica y tienen además una clara relación con el negocio.',
+    condiciones:[
+      {ok:true, texto:'Factura con NIF y descripción de los servicios'},
+      {ok:true, texto:'100% deducible tanto en IRPF como en IVA'},
+      {ok:true, texto:'También deducibles: abogado, notario, asesoría jurídica...'},
+    ],
+    fuente:'Art. 28 LIRPF'
+  },
+  {
+    id:'seguro_rc', cat:'profesional', icono:'🛡️', nombre:'Seguro de responsabilidad civil profesional',
+    deducible:'si', pct:'100%',
+    desc:'El seguro de responsabilidad civil profesional es deducible al 100% como gasto necesario para el ejercicio de la actividad.',
+    condiciones:[
+      {ok:true, texto:'Seguro de RC vinculado a la actividad: 100% deducible'},
+      {ok:true, texto:'Factura o recibo del seguro a tu nombre'},
+      {ok:false, texto:'Seguro de vida o accidentes personales: no deducible en general'},
+    ],
+    fuente:'Art. 28 LIRPF'
+  },
+  {
+    id:'publicidad', cat:'profesional', icono:'📣', nombre:'Publicidad, marketing y diseño web',
+    deducible:'si', pct:'100%',
+    desc:'Los gastos de publicidad, marketing, diseño de web, redes sociales, SEO y similares son deducibles al 100% como gastos de la actividad.',
+    condiciones:[
+      {ok:true, texto:'Google Ads, Facebook Ads, publicidad online: 100% deducibles'},
+      {ok:true, texto:'Diseño web, desarrollo, hosting, dominio: 100% deducibles'},
+      {ok:true, texto:'Servicios de marketing o agencia: 100% deducibles'},
+      {ok:true, texto:'Factura con NIF en todos los casos'},
+    ],
+    fuente:'Art. 28 LIRPF'
+  },
+  {
+    id:'cuotas_colegios', cat:'profesional', icono:'🏛️', nombre:'Cuotas de colegio profesional y asociaciones',
+    deducible:'si', pct:'100%',
+    desc:'Las cuotas de colegio profesional (médicos, abogados, arquitectos...) y de asociaciones empresariales o sindicales son deducibles al 100%.',
+    condiciones:[
+      {ok:true, texto:'Colegio profesional: 100% deducible'},
+      {ok:true, texto:'Asociación empresarial del sector: 100% deducible'},
+      {ok:true, texto:'Recibo o factura de la cuota anual'},
+    ],
+    fuente:'Art. 28 LIRPF'
+  },
+  {
+    id:'banco', cat:'profesional', icono:'🏦', nombre:'Comisiones y gastos bancarios',
+    deducible:'si', pct:'100%',
+    desc:'Las comisiones y gastos de la cuenta bancaria que uses para la actividad son deducibles al 100%. Se recomienda tener una cuenta separada para el negocio.',
+    condiciones:[
+      {ok:true, texto:'Comisiones de mantenimiento de cuenta profesional: 100% deducibles'},
+      {ok:true, texto:'Comisiones por transferencias, TPV, Bizum profesional: deducibles'},
+      {ok:false, texto:'Si mezclas cuenta personal y profesional, es más difícil de justificar'},
+    ],
+    fuente:'Art. 28 LIRPF'
+  },
+  // ── OTROS ──
+  {
+    id:'cuota_autonomo', cat:'otros', icono:'💰', nombre:'Cuota de autónomo (RETA)',
+    deducible:'si', pct:'100%',
+    desc:'La cuota que pagas a la Seguridad Social como autónomo (RETA) es deducible al 100% en el IRPF como gasto de la actividad. No tiene IVA, así que no hay nada que deducir en ese impuesto.',
+    condiciones:[
+      {ok:true, texto:'100% deducible en IRPF como gasto de la actividad'},
+      {ok:true, texto:'Incluye la cuota base más cualquier mejora voluntaria'},
+      {ok:true, texto:'No tiene IVA — no aplica deducción en ese impuesto'},
+    ],
+    fuente:'Art. 30.2.f LIRPF'
+  },
+  {
+    id:'mutualidad', cat:'otros', icono:'🏥', nombre:'Mutualidad alternativa al RETA',
+    deducible:'si', pct:'100% con límite',
+    desc:'Las aportaciones a mutualidades de previsión social alternativas al RETA son deducibles en IRPF con el mismo límite que la cuota de autónomo.',
+    condiciones:[
+      {ok:true, texto:'Mutualidad reconocida como alternativa al RETA: 100% deducible'},
+      {ok:true, texto:'El importe deducible no puede superar la cuota máxima del RETA'},
+    ],
+    fuente:'Art. 30.2.f LIRPF'
+  },
+  {
+    id:'regalo_clientes', cat:'otros', icono:'🎁', nombre:'Regalos a clientes',
+    deducible:'parcial', pct:'IVA no deducible | IRPF limitado',
+    desc:'Los regalos a clientes tienen un tratamiento desfavorable: el IVA NO es deducible (art. 96.Uno.1 LIVA). En IRPF sí pueden deducirse como gasto de representación pero con criterio restrictivo.',
+    condiciones:[
+      {ok:false, texto:'IVA: NO deducible en ningún caso (art. 96.Uno.1 LIVA)'},
+      {ok:true, texto:'IRPF: deducible como gasto de representación con moderación'},
+      {ok:false, texto:'Regalos excesivos o sin relación comercial pueden ser rechazados'},
+      {ok:true, texto:'Guardar factura y documentar el motivo comercial del regalo'},
+    ],
+    fuente:'Art. 96.Uno.1 LIVA | Art. 28 LIRPF'
+  },
+  {
+    id:'intereses_prestamo', cat:'otros', icono:'🏛️', nombre:'Intereses de préstamo para la actividad',
+    deducible:'si', pct:'100%',
+    desc:'Los intereses de préstamos o créditos utilizados para financiar la actividad económica son deducibles al 100%. El capital amortizado no es deducible, solo los intereses.',
+    condiciones:[
+      {ok:true, texto:'Solo los intereses son deducibles — no el capital devuelto'},
+      {ok:true, texto:'El préstamo debe estar vinculado a la actividad'},
+      {ok:false, texto:'Préstamos personales para gastos ajenos a la actividad: no deducibles'},
+    ],
+    fuente:'Art. 28 LIRPF'
+  },
+  {
+    id:'correos', cat:'otros', icono:'📮', nombre:'Correos, mensajería y envíos',
+    deducible:'si', pct:'100%',
+    desc:'Los gastos de correos, paquetería y mensajería necesarios para la actividad son deducibles al 100%.',
+    condiciones:[
+      {ok:true, texto:'Envíos de productos, documentos o muestras a clientes: deducibles'},
+      {ok:true, texto:'Factura o justificante del envío'},
+    ],
+    fuente:'Art. 28 LIRPF'
+  },
+  {
+    id:'tarjeta_credito', cat:'profesional', icono:'💳', nombre:'Tarjeta de crédito o débito de empresa',
+    deducible:'si', pct:'100% los gastos pagados',
+    desc:'La tarjeta en sí no es un gasto deducible, pero todos los gastos pagados con ella que estén vinculados a la actividad sí lo son. Se recomienda tener una tarjeta exclusiva para el negocio.',
+    condiciones:[
+      {ok:true, texto:'Los gastos pagados con la tarjeta son deducibles si son profesionales'},
+      {ok:true, texto:'Tarjeta exclusiva para el negocio: facilita la justificación'},
+      {ok:false, texto:'Gastos personales mezclados con profesionales: difícil de justificar'},
+      {ok:true, texto:'Guarda siempre las facturas — el extracto bancario no es suficiente'},
+    ],
+    fuente:'Art. 28 LIRPF'
+  },
+  {
+    id:'dominio_hosting', cat:'tecnologia', icono:'🌐', nombre:'Dominio web y hosting',
+    deducible:'si', pct:'100%',
+    desc:'El registro de dominios, el hosting y cualquier servicio de alojamiento web son gastos deducibles al 100% como gastos de la actividad.',
+    condiciones:[
+      {ok:true, texto:'Dominio .com, .es o cualquier extensión: 100% deducible'},
+      {ok:true, texto:'Hosting, VPS, servidores: 100% deducibles'},
+      {ok:true, texto:'Factura o recibo con tu NIF'},
+      {ok:true, texto:'IVA deducible al 100%'},
+    ],
+    fuente:'Art. 28 LIRPF'
+  },
+  {
+    id:'seguro_salud', cat:'otros', icono:'🩺', nombre:'Seguro médico privado',
+    deducible:'parcial', pct:'Hasta 500€/persona/año',
+    desc:'El autónomo puede deducir las primas de seguro de enfermedad pagadas para sí mismo, su cónyuge e hijos menores de 25 años con un límite de 500€ por persona (1.500€ si tienen discapacidad).',
+    condiciones:[
+      {ok:true, texto:'Deducible para el autónomo, cónyuge e hijos menores de 25 años'},
+      {ok:true, texto:'Límite: 500€ por persona y año (1.500€ si hay discapacidad)'},
+      {ok:true, texto:'Recibo del seguro a tu nombre'},
+      {ok:false, texto:'El exceso sobre el límite no es deducible'},
+      {ok:false, texto:'Seguros de vida o accidentes no están incluidos en este beneficio'},
+    ],
+    fuente:'Art. 30.2.g LIRPF (Ley 6/2017)'
+  },
+  {
+    id:'hotel_viaje', cat:'otros', icono:'🏨', nombre:'Hotel y alojamiento en viajes de trabajo',
+    deducible:'si', pct:'100%',
+    desc:'El alojamiento en viajes de trabajo es deducible al 100% cuando el desplazamiento está justificado por motivos profesionales.',
+    condiciones:[
+      {ok:true, texto:'El viaje debe tener motivo profesional (cliente, formación, evento...)'},
+      {ok:true, texto:'Factura del hotel con tu NIF'},
+      {ok:true, texto:'IVA deducible al 100% si hay justificación profesional'},
+      {ok:false, texto:'Días de turismo en el mismo viaje de trabajo: no deducibles'},
+    ],
+    fuente:'Art. 28 LIRPF | Art. 96 LIVA'
+  },
+];
+
+let catActiva = 'todos';
+let busqueda = '';
+
+function setCat(cat, btn){
+  catActiva = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderizar();
+}
+
+function filtrar(){
+  busqueda = document.getElementById('buscador').value.toLowerCase().trim();
+  renderizar();
+}
+
+function renderizar(){
+  const cont = document.getElementById('resultados');
+  let filtrados = GASTOS.filter(g => {
+    const matchCat = catActiva === 'todos' || g.cat === catActiva;
+    const matchBusq = busqueda === '' ||
+      g.nombre.toLowerCase().includes(busqueda) ||
+      g.desc.toLowerCase().includes(busqueda) ||
+      g.condiciones.some(c => c.texto.toLowerCase().includes(busqueda));
+    return matchCat && matchBusq;
+  });
+
+  if(filtrados.length === 0){
+    cont.innerHTML = `<div class="no-results">
+      <div style="font-size:36px;margin-bottom:.5rem">🔍</div>
+      <div style="font-size:15px;font-weight:500;color:var(--ink2);margin-bottom:.375rem">No hemos encontrado ese gasto</div>
+      <div style="font-size:13px;color:var(--ink3)">Prueba con otra búsqueda o consulta con tu gestor</div>
+    </div>`;
+    return;
+  }
+
+  cont.innerHTML = filtrados.map(g => {
+    const badgeClass = {si:'gb-si',parcial:'gb-parcial',no:'gb-no',depende:'gb-depende'}[g.deducible];
+    const pctClass = {si:'pct-si',parcial:'pct-parcial',no:'pct-no',depende:'pct-depende'}[g.deducible];
+    const badgeTexto = {si:'✓ Deducible',parcial:'⚠ Parcialmente',no:'✗ No deducible',depende:'? Depende'}[g.deducible];
+    
+    const condicionesHTML = g.condiciones.map(c =>
+      `<div class="condicion">
+        <span class="${c.ok ? 'condicion-ok' : 'condicion-x'}">${c.ok ? '✓' : '✗'}</span>
+        <span>${c.texto}</span>
+      </div>`
+    ).join('');
+
+    return `<div class="gasto-card">
+      <div class="gasto-header" onclick="toggleGasto('${g.id}')">
+        <span class="gasto-icono">${g.icono}</span>
+        <span class="gasto-nombre">${g.nombre}</span>
+        <span class="gasto-badge ${badgeClass}">${badgeTexto}</span>
+        <span class="gasto-chevron" id="chev-${g.id}">▾</span>
+      </div>
+      <div class="gasto-body" id="body-${g.id}">
+        <div class="gasto-pct ${pctClass}">${g.pct}</div>
+        <p class="gasto-desc">${g.desc}</p>
+        <div class="gasto-condiciones">
+          <div class="condiciones-title">Condiciones para deducirlo</div>
+          ${condicionesHTML}
+        </div>
+        <p class="gasto-fuente">📋 Base legal: ${g.fuente}</p>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleGasto(id){
+  const body = document.getElementById('body-' + id);
+  const chev = document.getElementById('chev-' + id);
+  if(body.classList.contains('open')){
+    body.classList.remove('open');
+    chev.style.transform = 'rotate(0deg)';
+  } else {
+    body.classList.add('open');
+    chev.style.transform = 'rotate(180deg)';
+  }
+}
+
+// Init
+renderizar();
+
+// Si viene con búsqueda en la URL
+const urlParams = new URLSearchParams(window.location.search);
+const q = urlParams.get('q');
+if(q){
+  document.getElementById('buscador').value = q;
+  busqueda = q.toLowerCase();
+  renderizar();
+}
+</script>
+</body>
+</html>
