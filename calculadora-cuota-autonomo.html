@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora Cuota de Autónomo 2026 | NormaAlerta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{--green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;--ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;--paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;--border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);--amber-light:#fef3c7;--blue-light:#eff6ff;--red-light:#fef2f2}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.nav-actions{display:flex;gap:8px}
+.btn-nav{font-size:13px;padding:6px 14px;border-radius:7px;border:none;cursor:pointer;font-family:inherit;font-weight:500}
+.btn-nav-outline{background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8)}
+.btn-nav-primary{background:var(--green);color:var(--white)}
+.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-header{margin-bottom:2rem;text-align:center}
+.modelo-badge{display:inline-block;background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;font-family:'DM Mono',monospace;margin-bottom:.75rem}
+.page-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;letter-spacing:-.5px;margin-bottom:.5rem}
+.page-title em{font-style:italic;color:var(--green)}
+.page-subtitle{font-size:14px;color:var(--ink3);max-width:540px;margin:0 auto}
+.section{background:var(--white);border:1px solid var(--border);border-radius:14px;margin-bottom:1rem;overflow:hidden}
+.section-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--green-light)}
+.section-title{font-size:15px;font-weight:500;flex:1}
+.section-subtitle{font-size:12px;color:var(--ink3);margin-top:1px}
+.section-body{padding:1.25rem}
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.full{grid-column:1/-1}
+.field label{font-size:12px;font-weight:500;color:var(--ink3)}
+.field input,.field select{padding:.5rem .75rem;border:1px solid var(--border2);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;width:100%}
+.field input:focus,.field select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238c8b84' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .5rem center;padding-right:2rem}
+.input-note{font-size:11px;color:var(--ink3);font-style:italic;margin-top:2px}
+.info-box{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12px;color:#92400e;display:flex;gap:8px;align-items:flex-start}
+.info-box.green{background:var(--green-light);border-color:rgba(26,122,74,.2);color:var(--green-dark)}
+.info-box.blue{background:var(--blue-light);border-color:rgba(37,99,235,.2);color:#1e40af}
+
+/* TABLA TRAMOS */
+.tramos-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:.5rem}
+.tramos-table th{font-size:11px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;padding:.5rem .75rem;background:var(--paper);border-bottom:1px solid var(--border);text-align:left}
+.tramos-table th:not(:first-child){text-align:center}
+.tramos-table td{padding:.4rem .75rem;border-bottom:1px solid var(--border);vertical-align:middle;text-align:center}
+.tramos-table td:first-child{text-align:left}
+.tramos-table tr:last-child td{border-bottom:none}
+.tramos-table tr.activo td{background:var(--green-light);font-weight:500}
+.tramos-table tr.activo td:first-child{color:var(--green-dark)}
+.tramo-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500}
+.tb-activo{background:var(--green);color:white}
+.tb-normal{background:var(--paper2);color:var(--ink3)}
+
+/* RESULTADO */
+.resultado{background:var(--ink);border-radius:14px;padding:1.5rem;margin-top:1.5rem;position:relative;overflow:hidden}
+.resultado::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(34,160,122,.08)}
+.resultado-label{font-size:12px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.375rem}
+.resultado-num{font-size:44px;font-weight:500;font-family:'DM Mono',monospace;color:#4ade80;line-height:1.1;margin-bottom:.25rem}
+.resultado-sub{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:1.5rem}
+.resultado-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+.rc{background:rgba(255,255,255,.07);border-radius:8px;padding:.75rem}
+.rc-label{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:3px}
+.rc-val{font-size:14px;font-weight:500;font-family:'DM Mono',monospace;color:rgba(255,255,255,.85)}
+.export-row{display:flex;gap:8px;flex-wrap:wrap}
+.btn-export{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:none;transition:all .15s}
+.btn-pdf{background:var(--green);color:var(--white)}
+.btn-pdf:hover{background:var(--green-mid)}
+.btn-reset{background:rgba(255,255,255,.1);color:var(--white);border:1px solid rgba(255,255,255,.2)}
+
+/* CONSEJOS */
+.consejos{margin-top:1.5rem}
+.consejo{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start}
+.consejo-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.consejo-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.consejo-desc{font-size:12px;color:var(--ink3);line-height:1.5}
+
+/* PLAZOS CAMBIO BASE */
+.plazos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:.75rem}
+.plazo-chip{background:var(--paper);border:1px solid var(--border2);border-radius:8px;padding:.625rem .75rem;text-align:center}
+.plazo-mes{font-size:12px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.plazo-efecto{font-size:10px;color:var(--ink3)}
+.plazo-chip.proximo{background:var(--green-light);border-color:rgba(26,122,74,.3)}
+.plazo-chip.proximo .plazo-mes{color:var(--green-dark)}
+
+@media(max-width:640px){
+  .input-grid{grid-template-columns:1fr}
+  .resultado-grid{grid-template-columns:1fr 1fr}
+  .plazos-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/><circle cx="74" cy="22" r="13" fill="#f59e0b"/><text x="74" y="27" font-family="Arial" font-size="15" font-weight="700" fill="white" text-anchor="middle">!</text></svg>
+    NormaAlerta <span class="nav-badge">Calculadora fiscal</span>
+  </a>
+  <div class="nav-actions">
+    <button class="btn-nav btn-nav-outline" onclick="window.print()">🖨 Imprimir</button>
+    <button class="btn-nav btn-nav-primary" onclick="exportPDF()">⬇ Exportar PDF</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="page-header">
+    <div class="modelo-badge">RETA 2026</div>
+    <h1 class="page-title">Calculadora de cuota<br>de <em>autónomo</em> 2026</h1>
+    <p class="page-subtitle">Sistema de cotización por ingresos reales. Introduce tus ingresos netos previstos y calcula cuánto pagas de cuota mensual, tu tramo y cuándo puedes cambiar la base.</p>
+  </div>
+
+  <!-- DATOS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">💰</div>
+      <div>
+        <div class="section-title">Tus ingresos previstos este año</div>
+        <div class="section-subtitle">Rendimiento neto anual — ingresos menos gastos deducibles</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="input-grid">
+        <div class="field">
+          <label>Ingresos brutos anuales previstos (sin IVA)</label>
+          <input type="number" id="ingresos" value="30000" min="0" step="100" oninput="calcular()">
+          <span class="input-note">Total de facturas que prevés emitir este año</span>
+        </div>
+        <div class="field">
+          <label>Gastos deducibles anuales previstos</label>
+          <input type="number" id="gastos" value="8000" min="0" step="100" oninput="calcular()">
+          <span class="input-note">Alquiler, suministros, material, gestoría, SS...</span>
+        </div>
+        <div class="field">
+          <label>¿Llevas menos de 2 años de alta?</label>
+          <select id="nuevo" onchange="calcular()">
+            <option value="no">No — llevo más de 2 años</option>
+            <option value="si">Sí — soy nuevo autónomo</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>¿Tienes derecho a tarifa plana de 80€?</label>
+          <select id="tarifa_plana" onchange="calcular()">
+            <option value="no">No</option>
+            <option value="si">Sí — primer alta o reingreso tras 2 años</option>
+          </select>
+        </div>
+      </div>
+      <div class="info-box">
+        ℹ️ <span>El <strong>rendimiento neto</strong> es lo que usará la Seguridad Social para asignarte el tramo. Se calcula como: ingresos − gastos deducibles. Si estás en estimación directa simplificada, resta también el 5% de gastos de difícil justificación (máx. 2.000€).</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLA DE TRAMOS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">📊</div>
+      <div>
+        <div class="section-title">Tabla de tramos 2026 — tu tramo resaltado</div>
+        <div class="section-subtitle">Real Decreto-ley de cotización por ingresos reales · RETA</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <table class="tramos-table" id="tabla-tramos">
+        <thead>
+          <tr>
+            <th>Tramo</th>
+            <th>Rdto. neto anual</th>
+            <th>Base mínima/mes</th>
+            <th>Base máxima/mes</th>
+            <th>Cuota mín./mes</th>
+            <th>Cuota máx./mes</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-tramos"></tbody>
+      </table>
+      <div style="font-size:11px;color:var(--ink3);margin-top:.5rem;font-style:italic">
+        Tipo de cotización aplicado: 31,20% (contingencias comunes + cese de actividad + formación + MEI). Fuente: Ley 14/2022 y RD 504/2022 · TGSS.
+      </div>
+    </div>
+  </div>
+
+  <!-- PLAZOS CAMBIO BASE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">📅</div>
+      <div>
+        <div class="section-title">¿Cuándo puedes cambiar tu base de cotización?</div>
+        <div class="section-subtitle">6 ventanas al año para ajustar tu cuota a tus ingresos reales</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <p style="font-size:13px;color:var(--ink2);margin-bottom:.75rem">Si tus ingresos cambian, puedes ajustar tu base de cotización hasta 6 veces al año. Cada cambio tiene una fecha límite de solicitud y una fecha de efecto:</p>
+      <div class="plazos-grid">
+        <div class="plazo-chip"><div class="plazo-mes">1 marzo</div><div class="plazo-efecto">Efecto: 1 abril</div></div>
+        <div class="plazo-chip"><div class="plazo-mes">1 mayo</div><div class="plazo-efecto">Efecto: 1 junio</div></div>
+        <div class="plazo-chip proximo"><div class="plazo-mes">1 julio</div><div class="plazo-efecto">Efecto: 1 agosto</div></div>
+        <div class="plazo-chip"><div class="plazo-mes">1 septiembre</div><div class="plazo-efecto">Efecto: 1 octubre</div></div>
+        <div class="plazo-chip"><div class="plazo-mes">1 noviembre</div><div class="plazo-efecto">Efecto: 1 diciembre</div></div>
+        <div class="plazo-chip"><div class="plazo-mes">1 enero</div><div class="plazo-efecto">Efecto: 1 febrero</div></div>
+      </div>
+      <div class="info-box green" style="margin-top:.875rem">
+        ✅ <span>Si al final del año tus ingresos reales son diferentes a los previstos, la TGSS hará una <strong>regularización</strong>. Si pagaste de más, te devuelven. Si pagaste de menos, debes ingresar la diferencia. El plazo para la regularización es antes del 31 de diciembre del año siguiente.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado" id="resultado">
+    <div class="resultado-label">Tu cuota mensual estimada</div>
+    <div class="resultado-num" id="resultado-num">—</div>
+    <div class="resultado-sub" id="resultado-sub">Introduce tus ingresos para ver el resultado</div>
+    <div class="resultado-grid">
+      <div class="rc"><div class="rc-label">Rdto. neto anual</div><div class="rc-val" id="rc-rdto">—</div></div>
+      <div class="rc"><div class="rc-label">Rdto. neto mensual</div><div class="rc-val" id="rc-rdto-mes">—</div></div>
+      <div class="rc"><div class="rc-label">Tramo asignado</div><div class="rc-val" id="rc-tramo">—</div></div>
+      <div class="rc"><div class="rc-label">Base cotización/mes</div><div class="rc-val" id="rc-base">—</div></div>
+    </div>
+    <div class="export-row">
+      <button class="btn-export btn-pdf" onclick="exportPDF()">⬇ Descargar PDF</button>
+      <button class="btn-export btn-reset" onclick="resetForm()">↺ Limpiar</button>
+    </div>
+  </div>
+
+  <!-- CONSEJOS -->
+  <div class="consejos">
+    <div class="consejo">
+      <div class="consejo-icon">💡</div>
+      <div>
+        <div class="consejo-title">Elige siempre la base mínima de tu tramo si puedes</div>
+        <div class="consejo-desc">La base mínima te da la cobertura obligatoria (incapacidad temporal, cese de actividad, jubilación). Solo tiene sentido elegir una base más alta si quieres mejorar la pensión futura o la prestación por baja.</div>
+      </div>
+    </div>
+    <div class="consejo">
+      <div class="consejo-icon">⚠️</div>
+      <div>
+        <div class="consejo-title">Declara tus ingresos reales — no los estimes a la baja</div>
+        <div class="consejo-desc">Si declaras ingresos inferiores a los reales y la TGSS lo detecta en la regularización de fin de año, tendrás que pagar la diferencia con posibles recargos. Es mejor declarar correctamente desde el principio.</div>
+      </div>
+    </div>
+    <div class="consejo">
+      <div class="consejo-icon">📱</div>
+      <div>
+        <div class="consejo-title">Cambia tu base desde la app "Import@ss"</div>
+        <div class="consejo-desc">La Seguridad Social tiene una app oficial desde la que puedes gestionar tu base de cotización, ver tus cuotas y solicitar cambios sin necesidad de ir a la oficina. Disponible para iOS y Android.</div>
+      </div>
+    </div>
+    <div class="consejo">
+      <div class="consejo-icon">🎯</div>
+      <div>
+        <div class="consejo-title">Tarifa plana de 80€ — condiciones 2026</div>
+        <div class="consejo-desc">Si es tu primera alta como autónomo o llevas más de 2 años sin cotizar al RETA, tienes derecho a pagar 80€/mes durante los primeros 12 meses (prorrogables a 24 si los ingresos son inferiores al SMI). Solicítala en el momento del alta.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// TRAMOS RETA 2026 — Fuente: Ley 14/2022 y tabla de tramos vigente
+const TRAMOS = [
+  { num:1,  min:0,       max:670,    baseMin:225.83,  baseMax:500,    label:'Hasta 670 €' },
+  { num:2,  min:670,     max:900,    baseMin:250.00,  baseMax:900,    label:'670 € – 900 €' },
+  { num:3,  min:900,     max:1166.7, baseMin:267.07,  baseMax:1166.7, label:'900 € – 1.166,70 €' },
+  { num:4,  min:1166.7,  max:1300,   baseMin:291.67,  baseMax:1300,   label:'1.166,70 € – 1.300 €' },
+  { num:5,  min:1300,    max:1500,   baseMin:294.35,  baseMax:1500,   label:'1.300 € – 1.500 €' },
+  { num:6,  min:1500,    max:1700,   baseMin:294.35,  baseMax:1700,   label:'1.500 € – 1.700 €' },
+  { num:7,  min:1700,    max:1850,   baseMin:390.00,  baseMax:1850,   label:'1.700 € – 1.850 €' },
+  { num:8,  min:1850,    max:2030,   baseMin:461.25,  baseMax:2030,   label:'1.850 € – 2.030 €' },
+  { num:9,  min:2030,    max:2330,   baseMin:530.98,  baseMax:2330,   label:'2.030 € – 2.330 €' },
+  { num:10, min:2330,    max:2760,   baseMin:600.25,  baseMax:2760,   label:'2.330 € – 2.760 €' },
+  { num:11, min:2760,    max:3190,   baseMin:900.00,  baseMax:3190,   label:'2.760 € – 3.190 €' },
+  { num:12, min:3190,    max:99999,  baseMin:1139.75, baseMax:4720.5, label:'Más de 3.190 €' },
+];
+const TIPO = 0.312; // 31,2% contingencias + cese + formación + MEI
+
+function fmt(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+'€';}
+function fmtN(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function v(id){return parseFloat(document.getElementById(id)?.value)||0;}
+
+function getTramo(rdtoMensual){
+  return TRAMOS.find(t => rdtoMensual >= t.min && rdtoMensual < t.max) || TRAMOS[TRAMOS.length-1];
+}
+
+function renderTabla(tramoActivo){
+  const tbody = document.getElementById('tbody-tramos');
+  tbody.innerHTML = '';
+  TRAMOS.forEach(t => {
+    const esActivo = t.num === tramoActivo?.num;
+    const tr = document.createElement('tr');
+    if(esActivo) tr.className = 'activo';
+    const cuotaMin = t.baseMin * TIPO;
+    const cuotaMax = t.baseMax * TIPO;
+    tr.innerHTML = `
+      <td><strong>Tramo ${t.num}</strong></td>
+      <td>${t.label}/mes</td>
+      <td>${fmtN(t.baseMin)} €</td>
+      <td>${fmtN(t.baseMax)} €</td>
+      <td style="color:var(--green-dark);font-weight:500">${fmtN(cuotaMin)} €</td>
+      <td>${fmtN(cuotaMax)} €</td>
+      <td>${esActivo ? '<span class="tramo-badge tb-activo">← Tu tramo</span>' : '<span class="tramo-badge tb-normal">—</span>'}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function calcular(){
+  const ingresos = v('ingresos');
+  const gastos = v('gastos');
+  const esTarifaPlana = document.getElementById('tarifa_plana').value === 'si';
+
+  // Rendimiento neto
+  const rdtoAnual = Math.max(0, ingresos - gastos);
+  const rdtoMensual = rdtoAnual / 12;
+
+  // Tramo
+  const tramo = getTramo(rdtoMensual);
+
+  // Cuota
+  let cuotaMensual;
+  let subLabel = '';
+  if(esTarifaPlana){
+    cuotaMensual = 80;
+    subLabel = 'Tarifa plana aplicada — 80€/mes durante 12 meses';
+  } else {
+    cuotaMensual = tramo.baseMin * TIPO;
+    subLabel = `Tramo ${tramo.num} · Base mínima ${fmtN(tramo.baseMin)}€ × 31,2%`;
+  }
+
+  const cuotaAnual = cuotaMensual * 12;
+
+  // Actualizar resultado
+  document.getElementById('resultado-num').textContent = fmtN(cuotaMensual) + ' €/mes';
+  document.getElementById('resultado-sub').textContent = subLabel;
+  document.getElementById('rc-rdto').textContent = fmtN(rdtoAnual) + ' €';
+  document.getElementById('rc-rdto-mes').textContent = fmtN(rdtoMensual) + ' €';
+  document.getElementById('rc-tramo').textContent = esTarifaPlana ? 'Tarifa plana' : `Tramo ${tramo.num}`;
+  document.getElementById('rc-base').textContent = esTarifaPlana ? '—' : fmtN(tramo.baseMin) + ' €';
+
+  // Render tabla
+  renderTabla(tramo);
+}
+
+function resetForm(){
+  document.getElementById('ingresos').value = 30000;
+  document.getElementById('gastos').value = 8000;
+  document.getElementById('nuevo').value = 'no';
+  document.getElementById('tarifa_plana').value = 'no';
+  calcular();
+}
+
+function exportPDF(){
+  const ingresos = v('ingresos');
+  const gastos = v('gastos');
+  const rdtoAnual = Math.max(0, ingresos - gastos);
+  const rdtoMensual = rdtoAnual / 12;
+  const tramo = getTramo(rdtoMensual);
+  const cuota = document.getElementById('resultado-num').textContent;
+  const esTarifaPlana = document.getElementById('tarifa_plana').value === 'si';
+
+  const w = window.open('', '_blank', 'width=800,height=900');
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Cuota Autónomo 2026</title>
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Helvetica,Arial,sans-serif;font-size:13px;padding:40px;color:#1c1b18}
+  .hdr{display:flex;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #1a7a4a}
+  h1{font-size:18px;font-weight:600;color:#1a7a4a}h2{font-size:13px;font-weight:600;background:#3d3d3d;color:white;padding:6px 10px;border-radius:4px;margin:16px 0 8px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#f7f5ee;padding:14px;border-radius:8px;margin-bottom:16px}
+  .grid label{font-size:10px;text-transform:uppercase;color:#8c8b84;display:block;margin-bottom:2px}.grid span{font-size:13px;font-weight:500}
+  table{width:100%;border-collapse:collapse}th{font-size:10px;text-transform:uppercase;color:#8c8b84;background:#f0ede4;padding:5px 8px;text-align:left;border-bottom:1px solid #e2ded2}
+  td{padding:4px 8px;border-bottom:1px solid #edeae0;font-size:11px}td.c{text-align:center}
+  .activo td{background:#e0f0ea;font-weight:600}
+  .res{background:#1c1b18;color:white;padding:18px;border-radius:10px;margin-top:16px;display:flex;justify-content:space-between;align-items:center}
+  .res .n{font-size:28px;font-weight:600;font-family:monospace;color:#4ade80}.ftr{margin-top:18px;font-size:10px;color:#8c8b84;text-align:center;border-top:1px solid #edeae0;padding-top:10px}
+  @media print{body{padding:20px}}</style></head><body>
+  <div class="hdr"><div><h1>NormaAlerta — Calculadora cuota autónomo 2026</h1><p style="font-size:11px;color:#8c8b84">Sistema de cotización por ingresos reales · RETA</p></div>
+  <div style="text-align:right;font-size:11px;color:#8c8b84">normaalerta.com</div></div>
+  <div class="grid">
+    <div><label>Ingresos brutos anuales</label><span>${fmtN(ingresos)} €</span></div>
+    <div><label>Gastos deducibles anuales</label><span>${fmtN(gastos)} €</span></div>
+    <div><label>Rendimiento neto anual</label><span>${fmtN(rdtoAnual)} €</span></div>
+    <div><label>Rendimiento neto mensual</label><span>${fmtN(rdtoMensual)} €</span></div>
+    <div><label>Tramo asignado</label><span>${esTarifaPlana ? 'Tarifa plana' : 'Tramo ' + tramo.num}</span></div>
+    <div><label>Base de cotización mínima</label><span>${esTarifaPlana ? '—' : fmtN(tramo.baseMin) + ' €/mes'}</span></div>
+  </div>
+  <h2>Tabla de tramos RETA 2026</h2>
+  <table><tr><th>Tramo</th><th>Rdto. neto mensual</th><th class="c">Base mín. (€)</th><th class="c">Base máx. (€)</th><th class="c">Cuota mín. (€)</th><th class="c">Cuota máx. (€)</th></tr>
+  ${TRAMOS.map(t => {
+    const activo = t.num === tramo.num && !esTarifaPlana;
+    return `<tr ${activo?'class="activo"':''}><td>Tramo ${t.num}</td><td>${t.label}/mes</td><td class="c">${fmtN(t.baseMin)}</td><td class="c">${fmtN(t.baseMax)}</td><td class="c">${fmtN(t.baseMin*0.312)}</td><td class="c">${fmtN(t.baseMax*0.312)}</td></tr>`;
+  }).join('')}</table>
+  <div class="res">
+    <div><div style="font-size:10px;opacity:.5;text-transform:uppercase;margin-bottom:4px">Cuota mensual estimada</div>
+    <div class="n">${cuota}</div>
+    <div style="font-size:12px;opacity:.6;margin-top:4px">${document.getElementById('resultado-sub').textContent}</div></div>
+    <div style="text-align:right">
+      <div style="font-size:10px;opacity:.5;margin-bottom:3px">Cuota anual estimada</div>
+      <div style="font-family:monospace;font-size:16px;color:#4ade80">${fmtN(parseFloat(cuota)*12)} €/año</div>
+    </div>
+  </div>
+  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Cálculo orientativo basado en la tabla de tramos RETA 2026. Fuente: Ley 14/2022 · TGSS. Consulta siempre con tu gestor.</div>
+  <script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.close();
+}
+
+// Init
+renderTabla(null);
+calcular();
+</script>
+</body>
+</html>
