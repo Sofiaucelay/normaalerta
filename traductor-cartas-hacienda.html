@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traductor de cartas de Hacienda | NormaAlerta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{--green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;--ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;--paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;--border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);--amber-light:#fef3c7;--red:#dc2626;--red-light:#fef2f2;--blue-light:#eff6ff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.page{max-width:800px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-header{margin-bottom:2rem;text-align:center}
+.modelo-badge{display:inline-block;background:var(--red);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;font-family:'DM Mono',monospace;margin-bottom:.75rem}
+.page-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;letter-spacing:-.5px;margin-bottom:.5rem}
+.page-title em{font-style:italic;color:var(--green)}
+.page-subtitle{font-size:14px;color:var(--ink3);max-width:540px;margin:0 auto}
+
+/* EJEMPLOS RÁPIDOS */
+.ejemplos{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:1.5rem}
+.ejemplo-btn{font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid var(--border2);background:var(--white);color:var(--ink2);cursor:pointer;font-family:inherit;transition:all .15s}
+.ejemplo-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-light)}
+
+/* INPUT */
+.input-section{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1rem}
+.input-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.input-icon{width:32px;height:32px;border-radius:8px;background:var(--red-light);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.input-title{font-size:15px;font-weight:500}
+.input-body{padding:1.25rem}
+.carta-textarea{width:100%;min-height:180px;border:1.5px solid var(--border2);border-radius:10px;padding:.875rem 1rem;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--white);outline:none;resize:vertical;transition:border-color .15s;line-height:1.6}
+.carta-textarea:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(220,38,38,.08)}
+.carta-textarea::placeholder{color:var(--ink3)}
+.input-nota{font-size:11px;color:var(--ink3);margin-top:.5rem;font-style:italic}
+
+.btn-traducir{width:100%;padding:14px;background:var(--ink);color:var(--white);border:none;border-radius:10px;font-size:15px;font-weight:500;font-family:inherit;cursor:pointer;transition:all .15s;margin-top:.75rem;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-traducir:hover{background:#2d2c29}
+.btn-traducir:disabled{background:var(--paper2);color:var(--ink3);cursor:not-allowed}
+
+/* RESULTADO */
+.resultado-section{display:none;background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1rem}
+.resultado-section.visible{display:block}
+.resultado-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.resultado-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ri-green{background:var(--green-light)}
+.ri-amber{background:var(--amber-light)}
+.ri-red{background:var(--red-light)}
+.resultado-titulo{font-size:15px;font-weight:500}
+.resultado-body{padding:1.25rem}
+
+/* TARJETA DE URGENCIA */
+.urgencia-card{border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem;display:flex;align-items:flex-start;gap:12px}
+.uc-green{background:var(--green-light);border:1px solid rgba(26,122,74,.2)}
+.uc-amber{background:var(--amber-light);border:1px solid rgba(245,158,11,.3)}
+.uc-red{background:var(--red-light);border:1px solid rgba(220,38,38,.2)}
+.urgencia-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.urgencia-texto{font-size:13px;line-height:1.6}
+.urgencia-texto strong{font-size:14px;display:block;margin-bottom:3px}
+
+/* RESPUESTA IA */
+.ia-respuesta{font-size:14px;color:var(--ink2);line-height:1.75}
+.ia-respuesta p{margin-bottom:.875rem}
+.ia-respuesta p:last-child{margin-bottom:0}
+.ia-respuesta strong{color:var(--ink);font-weight:500}
+.ia-respuesta ul,.ia-respuesta ol{padding-left:1.25rem;margin:.5rem 0 .875rem}
+.ia-respuesta li{margin-bottom:.375rem}
+
+/* TYPING */
+.typing{display:flex;align-items:center;gap:5px;padding:.5rem 0}
+.typing span{width:8px;height:8px;border-radius:50%;background:var(--ink3);animation:bounce .8s infinite}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+
+/* DISCLAIMER */
+.disclaimer{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:.875rem 1.25rem;font-size:12px;color:var(--ink3);margin-top:1rem;display:flex;gap:8px}
+
+/* NUEVA CONSULTA */
+.btn-nueva{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:1px solid var(--border2);background:var(--white);color:var(--ink2);margin-top:.75rem;transition:all .15s}
+.btn-nueva:hover{border-color:var(--green);color:var(--green)}
+
+/* TIPOS FRECUENTES */
+.tipos-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:1rem}
+.tipo-card{background:var(--paper);border-radius:8px;padding:.75rem 1rem;font-size:12px;color:var(--ink2);border-left:3px solid var(--border2)}
+.tipo-card.tc-info{border-left-color:var(--green)}
+.tipo-card.tc-warning{border-left-color:var(--amber)}
+.tipo-card.tc-danger{border-left-color:var(--red)}
+.tipo-nombre{font-size:12px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.tipo-desc{font-size:11px;color:var(--ink3);line-height:1.4}
+
+@media(max-width:600px){
+  .ejemplos{gap:6px}
+  .tipos-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/><circle cx="74" cy="22" r="13" fill="#f59e0b"/><text x="74" y="27" font-family="Arial" font-size="15" font-weight="700" fill="white" text-anchor="middle">!</text></svg>
+    NormaAlerta <span class="nav-badge">Asistente IA</span>
+  </a>
+</nav>
+
+<div class="page">
+
+  <div class="page-header">
+    <div class="modelo-badge">AEAT · TGSS · TEAC</div>
+    <h1 class="page-title">Traductor de cartas<br>de <em>Hacienda</em></h1>
+    <p class="page-subtitle">Pega el texto de cualquier carta de la AEAT, Seguridad Social o Tribunal Económico-Administrativo. Te explicamos qué significa, si es urgente y qué tienes que hacer.</p>
+  </div>
+
+  <!-- EJEMPLOS -->
+  <div class="ejemplos">
+    <button class="ejemplo-btn" onclick="usarEjemplo('requerimiento')">📋 Requerimiento AEAT</button>
+    <button class="ejemplo-btn" onclick="usarEjemplo('paralela')">📊 Propuesta de liquidación</button>
+    <button class="ejemplo-btn" onclick="usarEjemplo('sancion')">⚠️ Inicio expediente sancionador</button>
+    <button class="ejemplo-btn" onclick="usarEjemplo('embargo')">🔒 Diligencia de embargo</button>
+    <button class="ejemplo-btn" onclick="usarEjemplo('aplazamiento')">📅 Resolución aplazamiento</button>
+  </div>
+
+  <!-- INPUT -->
+  <div class="input-section">
+    <div class="input-header">
+      <div class="input-icon">📬</div>
+      <div>
+        <div class="input-title">Pega aquí el texto de la carta</div>
+      </div>
+    </div>
+    <div class="input-body">
+
+      <!-- TABS -->
+      <div style="display:flex;gap:0;margin-bottom:1rem;border:1px solid var(--border2);border-radius:8px;overflow:hidden">
+        <button class="tab-btn active" id="tab-texto" onclick="setTab('texto')" style="flex:1;padding:.5rem;font-size:13px;font-family:inherit;border:none;cursor:pointer;background:var(--ink);color:white;font-weight:500">✍️ Pegar texto</button>
+        <button class="tab-btn" id="tab-foto" onclick="setTab('foto')" style="flex:1;padding:.5rem;font-size:13px;font-family:inherit;border:none;cursor:pointer;background:var(--white);color:var(--ink2)">📷 Subir foto</button>
+      </div>
+
+      <!-- TAB TEXTO -->
+      <div id="panel-texto">
+        <textarea class="carta-textarea" id="carta-input" placeholder="Pega aquí el contenido de la carta de Hacienda, Seguridad Social o cualquier organismo fiscal...
+
+Ejemplo: 'En virtud de lo dispuesto en el artículo 93 de la Ley 58/2003, de 17 de diciembre, General Tributaria, se le requiere para que en el plazo de 10 días hábiles...'"></textarea>
+      </div>
+
+      <!-- TAB FOTO -->
+      <div id="panel-foto" style="display:none">
+        <div id="drop-zone" style="border:2px dashed var(--border2);border-radius:10px;padding:2rem;text-align:center;cursor:pointer;transition:all .15s;background:var(--paper)" onclick="document.getElementById('file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
+          <div style="font-size:36px;margin-bottom:.5rem">📷</div>
+          <div style="font-size:14px;font-weight:500;color:var(--ink);margin-bottom:.25rem">Sube una foto de la carta</div>
+          <div style="font-size:12px;color:var(--ink3)">Haz clic o arrastra la imagen aquí · JPG, PNG, WEBP · Máx. 5MB</div>
+          <input type="file" id="file-input" accept="image/*" style="display:none" onchange="fileSeleccionado(event)">
+        </div>
+        <div id="preview-wrap" style="display:none;margin-top:.75rem;position:relative">
+          <img id="preview-img" style="width:100%;border-radius:8px;border:1px solid var(--border);max-height:300px;object-fit:contain;background:var(--paper)">
+          <button onclick="quitarFoto()" style="position:absolute;top:8px;right:8px;background:var(--ink);color:white;border:none;border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:inherit">✕ Quitar</button>
+        </div>
+        <div class="info-box green" style="margin-top:.75rem;font-size:12px;color:var(--green-dark);background:var(--green-light);border:1px solid rgba(26,122,74,.2);border-radius:8px;padding:.75rem 1rem;display:flex;gap:8px">
+          ✅ <span>La IA lee directamente el texto de la imagen — no necesitas transcribir nada. Funciona con fotos de móvil aunque no sean perfectas.</span>
+        </div>
+      </div>
+
+      <p class="input-nota" style="margin-top:.75rem">🔒 El contenido que introduces no se almacena. La consulta se procesa de forma segura y no queda guardada.</p>
+      <button class="btn-traducir" id="btn-traducir" onclick="traducir()">
+        🔍 Traducir carta al lenguaje humano
+      </button>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado-section" id="resultado-section">
+    <div class="resultado-header" id="resultado-header">
+      <div class="resultado-icon" id="resultado-icon">📋</div>
+      <div class="resultado-titulo" id="resultado-titulo">Analizando la carta...</div>
+    </div>
+    <div class="resultado-body">
+      <div id="urgencia-wrap"></div>
+      <div class="ia-respuesta" id="ia-respuesta"></div>
+      <button class="btn-nueva" onclick="nuevaConsulta()">↺ Analizar otra carta</button>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    ⚠️ <span>Este traductor es <strong>orientativo</strong>. Ante cualquier carta de la AEAT con plazos legales, consulta siempre con un gestor o asesor fiscal antes de actuar. Los plazos son vinculantes y su incumplimiento puede tener consecuencias graves.</span>
+  </div>
+
+  <!-- TIPOS MÁS FRECUENTES -->
+  <div style="margin-top:2rem">
+    <p style="font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);margin-bottom:.75rem">Tipos de cartas más frecuentes</p>
+    <div class="tipos-grid">
+      <div class="tipo-card tc-info">
+        <div class="tipo-nombre">📋 Requerimiento de información</div>
+        <div class="tipo-desc">Hacienda pide que aportes documentos o acredites algo. Plazo habitual: 10 días hábiles. No es una sanción — es una solicitud.</div>
+      </div>
+      <div class="tipo-card tc-warning">
+        <div class="tipo-nombre">📊 Propuesta de liquidación paralela</div>
+        <div class="tipo-desc">Hacienda cree que debes pagar más. Tienes 15 días para alegaciones. Si no contestas, se convierte en definitiva.</div>
+      </div>
+      <div class="tipo-card tc-warning">
+        <div class="tipo-nombre">🔍 Inicio de actuaciones inspectoras</div>
+        <div class="tipo-desc">Comienzo de una inspección formal. Interrumpe la prescripción. Necesitas asesor desde el primer momento.</div>
+      </div>
+      <div class="tipo-card tc-danger">
+        <div class="tipo-nombre">⚠️ Expediente sancionador</div>
+        <div class="tipo-desc">Hacienda considera que hay una infracción. Tienes derecho a alegaciones. Puedes obtener reducción del 30% si no recurres.</div>
+      </div>
+      <div class="tipo-card tc-danger">
+        <div class="tipo-nombre">🔒 Diligencia de embargo</div>
+        <div class="tipo-desc">Hacienda va a embargar bienes o cuentas. Urgente: tienes plazos muy cortos para actuar o solicitar aplazamiento.</div>
+      </div>
+      <div class="tipo-card tc-info">
+        <div class="tipo-nombre">📅 Resolución de aplazamiento</div>
+        <div class="tipo-desc">Respuesta a tu solicitud de pago aplazado. Puede ser aceptación, denegación o con condiciones.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const SYSTEM_PROMPT = `Eres un experto en derecho tributario español y procedimiento administrativo fiscal. Tu función es analizar cartas y notificaciones de organismos fiscales españoles (AEAT, Agencia Tributaria, Seguridad Social, TGSS, Tribunal Económico-Administrativo, ayuntamientos...) y explicarlas en lenguaje claro y accesible para autónomos y pequeñas empresas.
+
+INSTRUCCIONES:
+1. Identifica el tipo de documento (requerimiento, liquidación, sanción, embargo, aplazamiento, notificación informativa...)
+2. Explica en lenguaje claro qué está pidiendo o comunicando el organismo
+3. Indica si es URGENTE, IMPORTANTE o INFORMATIVO
+4. Especifica los plazos exactos si aparecen en el texto
+5. Explica las consecuencias de no actuar a tiempo
+6. Da los pasos concretos que debe seguir el receptor
+7. Indica si necesita asesor fiscal urgentemente o puede gestionarlo solo
+
+FORMATO DE RESPUESTA:
+- Empieza con "**¿Qué es esta carta?**" — explicación en 2-3 frases sencillas
+- Luego "**¿Es urgente?**" — nivel de urgencia y plazo si lo hay
+- Luego "**¿Qué te están pidiendo?**" — en puntos concretos
+- Luego "**¿Qué pasa si no actúas?**" — consecuencias reales
+- Finalmente "**Qué debes hacer ahora**" — pasos concretos ordenados
+- Termina siempre con una nota sobre si necesita o no asesor fiscal
+
+IMPORTANTE:
+- Usa siempre lenguaje claro, sin jerga legal
+- Si el texto está incompleto o es ambiguo, indícalo y pide más información
+- Si es una carta muy grave (embargo, inspección), recomienda encarecidamente buscar asesor
+- Nunca inventes plazos — solo usa los que aparezcan en el texto
+- Si no hay plazo mencionado, indica que deben revisar la carta original para encontrarlo
+- Responde siempre en español`;
+
+const EJEMPLOS = {
+  requerimiento: `AGENCIA ESTATAL DE ADMINISTRACIÓN TRIBUTARIA
+Dependencia Regional de Gestión Tributaria
+
+NIF: 12345678A
+Nombre: [Contribuyente]
+
+ASUNTO: Requerimiento de información
+
+En virtud de lo dispuesto en el artículo 93 de la Ley 58/2003, de 17 de diciembre, General Tributaria, en relación con el artículo 30 del Real Decreto 1065/2007, de 27 de julio, por el que se aprueba el Reglamento General de las actuaciones y los procedimientos de gestión e inspección tributaria, se le requiere para que en el plazo de 10 DÍAS HÁBILES a contar desde el día siguiente al de la recepción de la presente notificación, aporte la siguiente documentación:
+
+- Facturas emitidas correspondientes al ejercicio 2024
+- Contratos con clientes suscritos durante el mismo período
+- Justificantes de los gastos declarados en el Modelo 130
+
+El incumplimiento de este requerimiento podrá dar lugar a la imposición de sanciones previstas en los artículos 199 y 203 de la Ley General Tributaria.`,
+
+  paralela: `AGENCIA TRIBUTARIA
+Administración de [Ciudad]
+
+PROPUESTA DE LIQUIDACIÓN PROVISIONAL
+Expediente: [número]
+Modelo: 303 - Autoliquidación IVA - Tercer Trimestre 2024
+
+De conformidad con lo dispuesto en el artículo 157 de la Ley General Tributaria, se le notifica propuesta de liquidación provisional por los siguientes motivos:
+
+Se han detectado discrepancias entre los datos declarados en el Modelo 303 y los datos en poder de esta Administración procedentes de terceros declarantes.
+
+Cuota propuesta: 2.340,00 €
+Intereses de demora: 87,50 €
+Total deuda propuesta: 2.427,50 €
+
+Dispone de un plazo de QUINCE DÍAS HÁBILES para formular alegaciones y aportar los documentos y justificantes que estime pertinentes.`,
+
+  sancion: `AGENCIA ESTATAL DE ADMINISTRACIÓN TRIBUTARIA
+
+INICIO DE EXPEDIENTE SANCIONADOR
+
+Se pone en su conocimiento que se ha iniciado expediente sancionador por la posible comisión de la infracción tributaria tipificada en el artículo 191 de la Ley 58/2003, General Tributaria, consistente en dejar de ingresar dentro del plazo establecido en la normativa de cada tributo la totalidad o parte de la deuda tributaria.
+
+Período: Cuarto trimestre 2024
+Modelo: 303
+Cuota no ingresada: 1.850,00 €
+Sanción propuesta (50%): 925,00 €
+
+De acuerdo con lo previsto en el artículo 211 de la LGT, dispone de un plazo de DIEZ DÍAS HÁBILES para formular alegaciones. Si presta conformidad a la propuesta de sanción, se aplicará una reducción del 30%.`,
+
+  embargo: `AGENCIA TRIBUTARIA
+Dependencia de Recaudación
+
+DILIGENCIA DE EMBARGO DE CUENTAS CORRIENTES
+
+En el procedimiento de apremio seguido contra Ud. por deudas tributarias pendientes de pago, he acordado el embargo de los saldos que existan en las cuentas bancarias de su titularidad hasta cubrir el importe de la deuda pendiente:
+
+Deuda principal: 3.420,00 €
+Recargo de apremio: 684,00 €
+Intereses: 156,30 €
+Costas: 0,00 €
+TOTAL: 4.260,30 €
+
+Se ha librado orden de embargo a las entidades financieras en las que constan cuentas a su nombre. El importe embargado quedará retenido hasta la resolución del procedimiento.
+
+Para evitar el embargo puede ingresar el importe total en el plazo de 24 HORAS o solicitar un aplazamiento con garantía suficiente.`,
+
+  aplazamiento: `AGENCIA TRIBUTARIA
+
+RESOLUCIÓN DE SOLICITUD DE APLAZAMIENTO/FRACCIONAMIENTO
+
+En relación con la solicitud de aplazamiento/fraccionamiento presentada el día [fecha], referente a la deuda por el concepto de IVA - Modelo 303 - Primer Trimestre 2026, por importe de 1.240,00 €, se le comunica que:
+
+SE CONCEDE el aplazamiento solicitado en los siguientes términos:
+
+Plazo concedido: 6 meses
+Fecha límite de pago: [fecha]
+Intereses de demora aplicables: 4,0625% anual
+Importe total a pagar: 1.265,20 €
+
+El pago deberá realizarse antes de la fecha indicada. El incumplimiento dará lugar al inicio del procedimiento de apremio con el recargo correspondiente.`
+};
+
+let tabActiva = 'texto';
+let imagenBase64 = null;
+let imagenMediaType = 'image/jpeg';
+
+function setTab(tab){
+  tabActiva = tab;
+  document.getElementById('panel-texto').style.display = tab === 'texto' ? 'block' : 'none';
+  document.getElementById('panel-foto').style.display = tab === 'foto' ? 'block' : 'none';
+  document.getElementById('tab-texto').style.background = tab === 'texto' ? 'var(--ink)' : 'var(--white)';
+  document.getElementById('tab-texto').style.color = tab === 'texto' ? 'white' : 'var(--ink2)';
+  document.getElementById('tab-foto').style.background = tab === 'foto' ? 'var(--ink)' : 'var(--white)';
+  document.getElementById('tab-foto').style.color = tab === 'foto' ? 'white' : 'var(--ink2)';
+}
+
+function dragOver(e){
+  e.preventDefault();
+  document.getElementById('drop-zone').style.borderColor = 'var(--green)';
+  document.getElementById('drop-zone').style.background = 'var(--green-light)';
+}
+function dragLeave(e){
+  document.getElementById('drop-zone').style.borderColor = 'var(--border2)';
+  document.getElementById('drop-zone').style.background = 'var(--paper)';
+}
+function dropFile(e){
+  e.preventDefault();
+  dragLeave(e);
+  const file = e.dataTransfer.files[0];
+  if(file) procesarImagen(file);
+}
+function fileSeleccionado(e){
+  const file = e.target.files[0];
+  if(file) procesarImagen(file);
+}
+
+function procesarImagen(file){
+  if(!file.type.startsWith('image/')){
+    alert('Por favor sube una imagen (JPG, PNG, WEBP)');
+    return;
+  }
+  if(file.size > 5 * 1024 * 1024){
+    alert('La imagen no puede superar los 5MB');
+    return;
+  }
+  imagenMediaType = file.type;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const dataUrl = e.target.result;
+    imagenBase64 = dataUrl.split(',')[1];
+    document.getElementById('preview-img').src = dataUrl;
+    document.getElementById('preview-wrap').style.display = 'block';
+    document.getElementById('drop-zone').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function quitarFoto(){
+  imagenBase64 = null;
+  document.getElementById('preview-wrap').style.display = 'none';
+  document.getElementById('drop-zone').style.display = 'block';
+  document.getElementById('file-input').value = '';
+}
+
+function usarEjemplo(tipo){
+  setTab('texto');
+  document.getElementById('carta-input').value = EJEMPLOS[tipo] || '';
+  document.getElementById('carta-input').focus();
+}
+
+function nuevaConsulta(){
+  document.getElementById('carta-input').value = '';
+  quitarFoto();
+  setTab('texto');
+  document.getElementById('resultado-section').classList.remove('visible');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+async function traducir(){
+  const texto = document.getElementById('carta-input').value.trim();
+  const tieneTexto = tabActiva === 'texto' && texto.length >= 20;
+  const tieneImagen = tabActiva === 'foto' && imagenBase64;
+
+  if(!tieneTexto && !tieneImagen){
+    alert(tabActiva === 'texto' ? 'Por favor pega el texto de la carta antes de traducir.' : 'Por favor sube una foto de la carta antes de traducir.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-traducir');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="typing"><span></span><span></span><span></span></div> Analizando la carta...';
+
+  const seccion = document.getElementById('resultado-section');
+  seccion.classList.add('visible');
+  document.getElementById('resultado-titulo').textContent = 'Analizando la carta...';
+  document.getElementById('resultado-icon').textContent = '⏳';
+  document.getElementById('urgencia-wrap').innerHTML = '';
+  document.getElementById('ia-respuesta').innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+  seccion.scrollIntoView({behavior:'smooth', block:'start'});
+
+  try {
+    // Construir mensaje según sea texto o imagen
+    let contenido;
+    if(tieneImagen){
+      contenido = [
+        {
+          type: 'image',
+          source: { type: 'base64', media_type: imagenMediaType, data: imagenBase64 }
+        },
+        {
+          type: 'text',
+          text: 'Analiza esta carta de Hacienda/AEAT/organismo fiscal que aparece en la imagen y explícame en lenguaje claro qué significa, si es urgente y qué tengo que hacer.'
+        }
+      ];
+    } else {
+      contenido = `Analiza esta carta de Hacienda/AEAT/organismo fiscal y explícame en lenguaje claro qué significa, si es urgente y qué tengo que hacer:\n\n${texto}`;
+    }
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: [{ role: 'user', content: contenido }]
+      })
+    });
+
+    const data = await response.json();
+    const respuesta = data.content?.[0]?.text || 'No se pudo analizar la carta. Por favor inténtalo de nuevo.';
+
+    // Detectar urgencia
+    const textoLower = respuesta.toLowerCase();
+    let urgencia = 'green';
+
+    if(textoLower.includes('embargo') || textoLower.includes('24 horas') || textoLower.includes('apremio') || textoLower.includes('urgentísimo')){
+      urgencia = 'red';
+      document.getElementById('resultado-icon').textContent = '🚨';
+      document.getElementById('resultado-titulo').textContent = 'Carta urgente — acción inmediata requerida';
+    } else if(textoLower.includes('10 días') || textoLower.includes('quince días') || textoLower.includes('15 días') || textoLower.includes('sanción') || textoLower.includes('inspección') || textoLower.includes('plazo')){
+      urgencia = 'amber';
+      document.getElementById('resultado-icon').textContent = '⚠️';
+      document.getElementById('resultado-titulo').textContent = 'Carta con plazo — actúa antes de que venza';
+    } else {
+      document.getElementById('resultado-icon').textContent = '📋';
+      document.getElementById('resultado-titulo').textContent = 'Carta analizada';
+    }
+
+    const urgenciaTextos = {
+      red: '🚨 URGENTE — Actúa en las próximas horas. Consulta con un gestor o asesor fiscal inmediatamente.',
+      amber: '⚠️ IMPORTANTE — Tienes un plazo concreto para responder. No lo dejes para el último día.',
+      green: 'ℹ️ Notificación informativa — No requiere acción urgente, pero léela con atención.'
+    };
+
+    document.getElementById('urgencia-wrap').innerHTML = `
+      <div class="urgencia-card uc-${urgencia}">
+        <div class="urgencia-texto">${urgenciaTextos[urgencia]}</div>
+      </div>`;
+
+    // Formatear HTML
+    const html = respuesta
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/^- (.+)$/gm, '<li>$1</li>')
+      .replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>')
+      .replace(/(<li>.*<\/li>\n?)+/g, m => `<ul>${m}</ul>`)
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\n/g, '<br>')
+      .replace(/^(.+)$/, '<p>$1</p>');
+
+    document.getElementById('ia-respuesta').innerHTML = html;
+
+  } catch(err){
+    document.getElementById('resultado-icon').textContent = '❌';
+    document.getElementById('resultado-titulo').textContent = 'Error al analizar';
+    document.getElementById('ia-respuesta').innerHTML = '<p>Ha ocurrido un error al conectar con el asistente. Por favor inténtalo de nuevo en unos segundos.</p>';
+    console.error(err);
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '🔍 Traducir carta al lenguaje humano';
+}
+</script>
+</body>
+</html>
