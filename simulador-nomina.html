@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de nómina y costes laborales 2026 | NormaAlerta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;500&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{--green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;--ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;--paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;--border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);--amber-light:#fef3c7;--blue-light:#eff6ff;--red-light:#fef2f2}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.nav-actions{display:flex;gap:8px}
+.btn-nav{font-size:13px;padding:6px 14px;border-radius:7px;border:none;cursor:pointer;font-family:inherit;font-weight:500}
+.btn-nav-outline{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8)}
+.btn-nav-primary{background:var(--green);color:var(--white)}
+.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-header{margin-bottom:2rem;text-align:center}
+.modelo-badge{display:inline-block;background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;font-family:'DM Mono',monospace;margin-bottom:.75rem}
+.page-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;letter-spacing:-.5px;margin-bottom:.5rem}
+.page-title em{font-style:italic;color:var(--green)}
+.page-subtitle{font-size:14px;color:var(--ink3);max-width:560px;margin:0 auto}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.section{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1rem}
+.section-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.si-green{background:var(--green-light)}
+.si-blue{background:var(--blue-light)}
+.si-amber{background:var(--amber-light)}
+.section-title{font-size:15px;font-weight:500;flex:1}
+.section-subtitle{font-size:12px;color:var(--ink3);margin-top:1px}
+.section-body{padding:1.25rem}
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.full{grid-column:1/-1}
+.field label{font-size:12px;font-weight:500;color:var(--ink3)}
+.field input,.field select{padding:.5rem .75rem;border:1px solid var(--border2);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;width:100%}
+.field input:focus,.field select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238c8b84' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .5rem center;padding-right:2rem}
+.input-note{font-size:11px;color:var(--ink3);font-style:italic;margin-top:2px}
+.info-box{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12px;color:#92400e;display:flex;gap:8px}
+.info-box.green{background:var(--green-light);border-color:rgba(26,122,74,.2);color:var(--green-dark)}
+.info-box.blue{background:var(--blue-light);border-color:rgba(37,99,235,.2);color:#1e40af}
+
+/* RESULTADO */
+.resultado{background:var(--ink);border-radius:14px;padding:1.5rem;margin-top:1rem;position:relative;overflow:hidden}
+.resultado::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(34,160,122,.08)}
+.res-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1.25rem}
+.res-card{background:rgba(255,255,255,.07);border-radius:10px;padding:1rem}
+.res-label{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em}
+.res-val{font-size:22px;font-weight:500;font-family:'DM Mono',monospace;color:rgba(255,255,255,.9);line-height:1.1}
+.res-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:2px}
+.res-card.destacado{background:rgba(34,160,122,.15);border:1px solid rgba(34,160,122,.3)}
+.res-card.destacado .res-val{color:#4ade80}
+
+/* DESGLOSE */
+.desglose{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:1rem}
+.desglose-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);font-size:15px;font-weight:500}
+.desglose-tabs{display:flex;border-bottom:1px solid var(--border)}
+.dtab{flex:1;padding:.625rem;font-size:13px;font-weight:500;font-family:inherit;border:none;cursor:pointer;background:transparent;color:var(--ink3);border-bottom:2px solid transparent;transition:all .15s}
+.dtab.active{color:var(--green);border-bottom-color:var(--green)}
+.desglose-panel{padding:1.25rem;display:none}
+.desglose-panel.active{display:block}
+.desglose-row{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:.5px solid var(--border);font-size:13px}
+.desglose-row:last-child{border-bottom:none}
+.desglose-row.subtotal{font-weight:500;color:var(--ink);background:var(--paper);margin:0 -.5rem;padding:.5rem .5rem;border-radius:6px;border-bottom:none;margin-top:4px}
+.desglose-row.total-row{font-weight:600;color:var(--green-dark);font-size:14px;margin-top:4px}
+.dr-label{color:var(--ink2);flex:1}
+.dr-pct{font-size:11px;color:var(--ink3);margin:0 .5rem;font-family:'DM Mono',monospace}
+.dr-val{font-family:'DM Mono',monospace;color:var(--ink);font-weight:500;text-align:right}
+
+/* EXPORT */
+.export-row{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
+.btn-export{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:none;transition:all .15s}
+.btn-pdf{background:var(--green);color:white}
+.btn-reset{background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.2)}
+
+/* COMPARADOR RÁPIDO */
+.comparador{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:1rem}
+.comp-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);font-size:15px;font-weight:500}
+.comp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-bottom:1px solid var(--border)}
+.comp-col{padding:.875rem 1rem}
+.comp-col:not(:last-child){border-right:1px solid var(--border)}
+.comp-titulo{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);margin-bottom:.625rem}
+.comp-item{font-size:13px;color:var(--ink2);margin-bottom:.375rem;display:flex;justify-content:space-between;gap:8px}
+.comp-item span{font-family:'DM Mono',monospace;color:var(--ink);font-weight:500}
+
+@media(max-width:640px){
+  .grid{grid-template-columns:1fr}
+  .input-grid{grid-template-columns:1fr}
+  .res-grid{grid-template-columns:1fr 1fr}
+  .comp-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/><circle cx="74" cy="22" r="13" fill="#f59e0b"/><text x="74" y="27" font-family="Arial" font-size="15" font-weight="700" fill="white" text-anchor="middle">!</text></svg>
+    NormaAlerta <span class="nav-badge">Calculadora laboral</span>
+  </a>
+  <div class="nav-actions">
+    <button class="btn-nav btn-nav-outline" onclick="window.print()">🖨 Imprimir</button>
+    <button class="btn-nav btn-nav-primary" onclick="exportPDF()">⬇ Exportar PDF</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="page-header">
+    <div class="modelo-badge">NÓMINA 2026</div>
+    <h1 class="page-title">Simulador de <em>nómina</em><br>y costes laborales 2026</h1>
+    <p class="page-subtitle">Calcula el coste real de un empleado para tu empresa, lo que cobra en neto y todas las cotizaciones. Basado en tablas de cotización 2026.</p>
+  </div>
+
+  <!-- DATOS EMPLEADO -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon si-green">👤</div>
+      <div>
+        <div class="section-title">Datos del empleado</div>
+        <div class="section-subtitle">Salario y características del contrato</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="input-grid">
+        <div class="field">
+          <label>Salario bruto mensual (€)</label>
+          <input type="number" id="salario_bruto" value="1800" min="0" step="10" oninput="calcular()">
+          <span class="input-note">SMI 2026: 1.221€/mes (14 pagas)</span>
+        </div>
+        <div class="field">
+          <label>Número de pagas al año</label>
+          <select id="num_pagas" onchange="calcular()">
+            <option value="12">12 pagas</option>
+            <option value="14" selected>14 pagas (2 extras)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tipo de contrato</label>
+          <select id="tipo_contrato" onchange="calcular()">
+            <option value="indefinido">Indefinido a jornada completa</option>
+            <option value="indefinido_parcial">Indefinido a tiempo parcial</option>
+            <option value="temporal">Temporal</option>
+            <option value="formacion">Formación y aprendizaje</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Grupo de cotización</label>
+          <select id="grupo_cotizacion" onchange="calcular()">
+            <option value="1">Grupo 1 — Ingenieros y Licenciados</option>
+            <option value="2">Grupo 2 — Ingenieros Técnicos y Peritos</option>
+            <option value="3">Grupo 3 — Jefes Administrativos</option>
+            <option value="4">Grupo 4 — Ayudantes no Titulados</option>
+            <option value="5" selected>Grupo 5 — Oficiales Administrativos</option>
+            <option value="6">Grupo 6 — Subalternos</option>
+            <option value="7">Grupo 7 — Auxiliares Administrativos</option>
+            <option value="8">Grupo 8 — Oficiales 1ª y 2ª (por horas)</option>
+            <option value="9">Grupo 9 — Oficiales 3ª y Especialistas</option>
+            <option value="10">Grupo 10 — Peones (por horas)</option>
+            <option value="11">Grupo 11 — Trabajadores menores 18 años</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Situación familiar (IRPF)</label>
+          <select id="situacion_familiar" onchange="calcular()">
+            <optgroup label="Soltero/a">
+              <option value="soltero_sin_hijos">Soltero/a sin hijos</option>
+              <option value="soltero_con_hijos">Soltero/a con hijos a cargo</option>
+              <option value="viudo">Viudo/a con hijos a cargo</option>
+              <option value="separado">Separado/a legal o divorciado/a con hijos</option>
+            </optgroup>
+            <optgroup label="Casado/a o pareja de hecho">
+              <option value="casado_un_ingreso">Casado/a — único ingreso familiar</option>
+              <option value="casado_dos_ingresos" selected>Casado/a — dos ingresos</option>
+              <option value="casado_conyuge_discapacidad">Casado/a — cónyuge con discapacidad ≥33%</option>
+            </optgroup>
+            <optgroup label="Con discapacidad">
+              <option value="discapacidad_33">Trabajador con discapacidad 33-65%</option>
+              <option value="discapacidad_65">Trabajador con discapacidad ≥65%</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="field">
+          <label>Hijos a cargo menores de 25 años</label>
+          <select id="num_hijos" onchange="calcular()">
+            <option value="0" selected>Sin hijos</option>
+            <option value="1">1 hijo</option>
+            <option value="2">2 hijos</option>
+            <option value="3">3 hijos</option>
+            <option value="4">4 o más hijos (familia numerosa general)</option>
+            <option value="5">5 o más hijos (familia numerosa especial)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Edad del trabajador</label>
+          <select id="edad_trabajador" onchange="calcular()">
+            <option value="menor30">Menor de 30 años</option>
+            <option value="30_52" selected>Entre 30 y 52 años</option>
+            <option value="mayor52">Mayor de 52 años</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Jornada laboral</label>
+          <select id="jornada" onchange="calcular()">
+            <option value="100" selected>Jornada completa (100%)</option>
+            <option value="75">Jornada parcial 75%</option>
+            <option value="50">Jornada parcial 50%</option>
+            <option value="25">Jornada parcial 25%</option>
+          </select>
+        </div>
+      </div>
+      <div class="info-box green">
+        ✅ <span>El cálculo usa las <strong>tablas de cotización 2026</strong> y los tipos de retención de IRPF aprobados. Los tipos de IRPF son estimados según la situación familiar — para un cálculo exacto consulta con tu gestoría.</span>
+      </div>
+      <div class="info-box" id="aviso-base-min" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- RESULTADO PRINCIPAL -->
+  <div class="resultado" id="resultado">
+    <div class="res-grid">
+      <div class="res-card destacado">
+        <div class="res-label">Coste total empresa/mes</div>
+        <div class="res-val" id="r-coste-mes">—</div>
+        <div class="res-sub" id="r-coste-mes-sub">—</div>
+      </div>
+      <div class="res-card">
+        <div class="res-label">Salario neto empleado/mes</div>
+        <div class="res-val" id="r-neto-mes">—</div>
+        <div class="res-sub">Lo que recibe en cuenta</div>
+      </div>
+      <div class="res-card">
+        <div class="res-label">Retención IRPF estimada</div>
+        <div class="res-val" id="r-irpf-pct">—</div>
+        <div class="res-sub" id="r-irpf-eur">—</div>
+      </div>
+      <div class="res-card">
+        <div class="res-label">SS a cargo empresa/mes</div>
+        <div class="res-val" id="r-ss-emp">—</div>
+        <div class="res-sub">Contingencias + desempleo + FOGASA</div>
+      </div>
+      <div class="res-card">
+        <div class="res-label">SS a cargo empleado/mes</div>
+        <div class="res-val" id="r-ss-trab">—</div>
+        <div class="res-sub">Descontado del bruto</div>
+      </div>
+      <div class="res-card">
+        <div class="res-label">Coste anual total empresa</div>
+        <div class="res-val" id="r-coste-anual">—</div>
+        <div class="res-sub">12 meses + cuotas SS anuales</div>
+      </div>
+    </div>
+    <div class="export-row">
+      <button class="btn-export btn-pdf" onclick="exportPDF()">⬇ Descargar PDF</button>
+      <button class="btn-export btn-reset" onclick="resetForm()">↺ Limpiar</button>
+    </div>
+  </div>
+
+  <!-- DESGLOSE NÓMINA -->
+  <div class="desglose">
+    <div class="desglose-header">📋 Desglose completo de la nómina</div>
+    <div class="desglose-tabs">
+      <button class="dtab active" onclick="setTab('empresa',this)">Coste empresa</button>
+      <button class="dtab" onclick="setTab('nomina',this)">Nómina empleado</button>
+    </div>
+    <div class="desglose-panel active" id="panel-empresa">
+      <div class="desglose-row"><span class="dr-label">Salario bruto mensual</span><span class="dr-val" id="d-bruto">—</span></div>
+      <div class="desglose-row"><span class="dr-label">+ SS empresa — Contingencias comunes (23,60%)</span><span class="dr-pct">23,60%</span><span class="dr-val" id="d-ss-cc">—</span></div>
+      <div class="desglose-row"><span class="dr-label">+ SS empresa — Desempleo tipo general (5,50%)</span><span class="dr-pct">5,50%</span><span class="dr-val" id="d-ss-desempleo">—</span></div>
+      <div class="desglose-row"><span class="dr-label">+ SS empresa — FOGASA (0,20%)</span><span class="dr-pct">0,20%</span><span class="dr-val" id="d-ss-fogasa">—</span></div>
+      <div class="desglose-row"><span class="dr-label">+ SS empresa — Formación profesional (0,60%)</span><span class="dr-pct">0,60%</span><span class="dr-val" id="d-ss-fp">—</span></div>
+      <div class="desglose-row"><span class="dr-label">+ SS empresa — MEI (0,58%)</span><span class="dr-pct">0,58%</span><span class="dr-val" id="d-ss-mei">—</span></div>
+      <div class="desglose-row total-row"><span class="dr-label">= COSTE TOTAL EMPRESA/MES</span><span class="dr-val" id="d-total-emp">—</span></div>
+    </div>
+    <div class="desglose-panel" id="panel-nomina">
+      <div class="desglose-row"><span class="dr-label">Salario bruto</span><span class="dr-val" id="d2-bruto">—</span></div>
+      <div class="desglose-row"><span class="dr-label">− SS trabajador — Contingencias comunes (4,70%)</span><span class="dr-pct">4,70%</span><span class="dr-val" id="d2-ss-cc">—</span></div>
+      <div class="desglose-row"><span class="dr-label">− SS trabajador — Desempleo (1,55%)</span><span class="dr-pct">1,55%</span><span class="dr-val" id="d2-ss-desempleo">—</span></div>
+      <div class="desglose-row"><span class="dr-label">− SS trabajador — Formación profesional (0,10%)</span><span class="dr-pct">0,10%</span><span class="dr-val" id="d2-ss-fp">—</span></div>
+      <div class="desglose-row subtotal"><span class="dr-label">Base IRPF (bruto − SS trabajador)</span><span class="dr-val" id="d2-base-irpf">—</span></div>
+      <div class="desglose-row"><span class="dr-label">− Retención IRPF estimada</span><span class="dr-pct" id="d2-irpf-pct">—</span><span class="dr-val" id="d2-irpf">—</span></div>
+      <div class="desglose-row total-row"><span class="dr-label">= SALARIO NETO</span><span class="dr-val" id="d2-neto">—</span></div>
+    </div>
+  </div>
+
+  <!-- COMPARADOR RÁPIDO -->
+  <div class="comparador" id="comparador">
+    <div class="comp-header">📊 Perspectiva de las 3 partes</div>
+    <div class="comp-grid">
+      <div class="comp-col">
+        <div class="comp-titulo">🏢 Lo que paga la empresa</div>
+        <div class="comp-item">Salario bruto <span id="c-bruto">—</span></div>
+        <div class="comp-item">SS empresa <span id="c-ss-emp">—</span></div>
+        <div class="comp-item" style="font-weight:500;color:var(--ink)">Total/mes <span id="c-total">—</span></div>
+        <div class="comp-item">Total/año <span id="c-anual">—</span></div>
+      </div>
+      <div class="comp-col">
+        <div class="comp-titulo">👤 Lo que recibe el empleado</div>
+        <div class="comp-item">Salario bruto <span id="c2-bruto">—</span></div>
+        <div class="comp-item">− SS empleado <span id="c2-ss-trab">—</span></div>
+        <div class="comp-item">− IRPF retenido <span id="c2-irpf">—</span></div>
+        <div class="comp-item" style="font-weight:500;color:var(--green-dark)">Neto/mes <span id="c2-neto">—</span></div>
+      </div>
+      <div class="comp-col">
+        <div class="comp-titulo">🏛️ Lo que va a Hacienda/SS</div>
+        <div class="comp-item">SS empresa <span id="c3-ss-emp">—</span></div>
+        <div class="comp-item">SS empleado <span id="c3-ss-trab">—</span></div>
+        <div class="comp-item">IRPF retenido <span id="c3-irpf">—</span></div>
+        <div class="comp-item" style="font-weight:500;color:var(--ink)">Total/mes <span id="c3-total">—</span></div>
+      </div>
+    </div>
+    <div style="padding:.875rem 1.25rem;font-size:11px;color:var(--ink3);border-top:1px solid var(--border)">
+      Fuente: Tablas cotización SS 2026 · Orden PCM/51/2026 · IRPF estimado según Reglamento IRPF art. 80 y ss. Tipos orientativos — para un cálculo exacto consulta con tu gestoría.
+    </div>
+  </div>
+
+</div>
+
+<script>
+// BASES MÍNIMAS POR GRUPO DE COTIZACIÓN 2026 (€/mes)
+const BASES_MINIMAS = {
+  1: 1847.40, 2: 1531.80, 3: 1331.40, 4: 1323.60,
+  5: 1323.60, 6: 1323.60, 7: 1323.60,
+  8: 43.23, 9: 43.23, 10: 43.23, 11: 43.23
+};
+const BASE_MAX = 4720.50;
+
+// TIPOS COTIZACIÓN SS 2026
+const SS_EMP = {
+  cc: 0.236,        // Contingencias comunes
+  desempleo: 0.055, // Desempleo tipo general (indefinido)
+  fogasa: 0.002,    // FOGASA
+  fp: 0.006,        // Formación profesional
+  mei: 0.0058,      // Mecanismo Equidad Intergeneracional
+};
+const SS_TRAB = {
+  cc: 0.047,        // Contingencias comunes
+  desempleo: 0.0155,// Desempleo
+  fp: 0.001,        // Formación profesional
+};
+
+// TIPOS IRPF ESTIMADOS 2026 según situación familiar y salario bruto anual
+function calcIRPF_pct(brutoAnual, situacion, numHijos){
+  let base = 0;
+
+  if(situacion === 'soltero_sin_hijos'){
+    if(brutoAnual <= 12450) base = 0;
+    else if(brutoAnual <= 16000) base = 0.08;
+    else if(brutoAnual <= 20000) base = 0.12;
+    else if(brutoAnual <= 25000) base = 0.15;
+    else if(brutoAnual <= 30000) base = 0.18;
+    else if(brutoAnual <= 40000) base = 0.22;
+    else if(brutoAnual <= 50000) base = 0.26;
+    else base = 0.30;
+  } else if(['soltero_con_hijos','viudo','separado'].includes(situacion)){
+    if(brutoAnual <= 14000) base = 0;
+    else if(brutoAnual <= 18000) base = 0.05;
+    else if(brutoAnual <= 22000) base = 0.09;
+    else if(brutoAnual <= 28000) base = 0.12;
+    else if(brutoAnual <= 35000) base = 0.16;
+    else if(brutoAnual <= 45000) base = 0.20;
+    else base = 0.25;
+    // Viudo/separado tienen mínimo personal más alto
+    if(['viudo','separado'].includes(situacion)) base = Math.max(0, base - 0.01);
+  } else if(situacion === 'casado_un_ingreso'){
+    if(brutoAnual <= 14000) base = 0;
+    else if(brutoAnual <= 18000) base = 0.04;
+    else if(brutoAnual <= 22000) base = 0.08;
+    else if(brutoAnual <= 28000) base = 0.11;
+    else if(brutoAnual <= 35000) base = 0.15;
+    else if(brutoAnual <= 45000) base = 0.19;
+    else base = 0.24;
+  } else if(situacion === 'casado_conyuge_discapacidad'){
+    if(brutoAnual <= 15000) base = 0;
+    else if(brutoAnual <= 20000) base = 0.05;
+    else if(brutoAnual <= 26000) base = 0.09;
+    else if(brutoAnual <= 33000) base = 0.13;
+    else if(brutoAnual <= 42000) base = 0.17;
+    else base = 0.22;
+  } else if(situacion === 'discapacidad_33'){
+    // Reducción mínimo personal por discapacidad 33-65%: +3.000€
+    if(brutoAnual <= 14000) base = 0;
+    else if(brutoAnual <= 18000) base = 0.06;
+    else if(brutoAnual <= 23000) base = 0.10;
+    else if(brutoAnual <= 30000) base = 0.14;
+    else if(brutoAnual <= 40000) base = 0.18;
+    else base = 0.23;
+  } else if(situacion === 'discapacidad_65'){
+    // Reducción mínimo personal por discapacidad ≥65%: +9.000€
+    if(brutoAnual <= 16000) base = 0;
+    else if(brutoAnual <= 21000) base = 0.04;
+    else if(brutoAnual <= 27000) base = 0.08;
+    else if(brutoAnual <= 35000) base = 0.12;
+    else if(brutoAnual <= 45000) base = 0.16;
+    else base = 0.21;
+  } else { // casado dos ingresos (default)
+    if(brutoAnual <= 12450) base = 0;
+    else if(brutoAnual <= 16000) base = 0.09;
+    else if(brutoAnual <= 20000) base = 0.13;
+    else if(brutoAnual <= 25000) base = 0.16;
+    else if(brutoAnual <= 30000) base = 0.19;
+    else if(brutoAnual <= 40000) base = 0.23;
+    else if(brutoAnual <= 50000) base = 0.27;
+    else base = 0.31;
+  }
+
+  // Reducción por hijos (mínimo familiar IRPF)
+  // 1º hijo: 1.836€, 2º: 2.040€, 3º: 3.672€, 4º+: 4.182€
+  const n = parseInt(numHijos);
+  let reduccionHijos = 0;
+  if(n >= 1) reduccionHijos += 0.010;
+  if(n >= 2) reduccionHijos += 0.012;
+  if(n >= 3) reduccionHijos += 0.020; // familia numerosa general
+  if(n >= 4) reduccionHijos += 0.025; // familia numerosa especial
+  if(n >= 5) reduccionHijos += 0.030;
+
+  return Math.max(0, base - reduccionHijos);
+}
+
+function fmt(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
+function fmtN(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function set(id,val){const el=document.getElementById(id);if(el)el.textContent=fmt(val);}
+function v(id){return parseFloat(document.getElementById(id)?.value)||0;}
+
+function calcular(){
+  const bruto_mes = v('salario_bruto');
+  const num_pagas = parseInt(document.getElementById('num_pagas').value);
+  const situacion = document.getElementById('situacion_familiar').value;
+  const num_hijos = document.getElementById('num_hijos').value;
+  const grupo = parseInt(document.getElementById('grupo_cotizacion').value);
+  const jornada_pct = parseInt(document.getElementById('jornada').value) / 100;
+
+  if(bruto_mes <= 0) return;
+
+  // Base de cotización efectiva (mínimo por grupo proporcional a jornada)
+  const base_min_grupo = (BASES_MINIMAS[grupo] || 1323.60) * jornada_pct;
+  const base_cotizacion = Math.max(bruto_mes, base_min_grupo);
+
+  // Salario bruto anual
+  const bruto_anual = bruto_mes * num_pagas;
+
+  // SS empresa sobre base de cotización
+  const ss_emp_cc = base_cotizacion * SS_EMP.cc;
+  const ss_emp_desempleo = base_cotizacion * SS_EMP.desempleo;
+  const ss_emp_fogasa = base_cotizacion * SS_EMP.fogasa;
+  const ss_emp_fp = base_cotizacion * SS_EMP.fp;
+  const ss_emp_mei = base_cotizacion * SS_EMP.mei;
+  const ss_emp_total = ss_emp_cc + ss_emp_desempleo + ss_emp_fogasa + ss_emp_fp + ss_emp_mei;
+
+  // Coste total empresa/mes
+  const coste_mes = bruto_mes + ss_emp_total;
+  const coste_anual = coste_mes * 12;
+
+  // SS trabajador sobre base de cotización
+  const ss_trab_cc = base_cotizacion * SS_TRAB.cc;
+  const ss_trab_desempleo = base_cotizacion * SS_TRAB.desempleo;
+  const ss_trab_fp = base_cotizacion * SS_TRAB.fp;
+  const ss_trab_total = ss_trab_cc + ss_trab_desempleo + ss_trab_fp;
+
+  // Base IRPF
+  const base_irpf = bruto_mes - ss_trab_total;
+
+  // IRPF
+  const irpf_pct = calcIRPF_pct(bruto_anual, situacion, num_hijos);
+  const irpf_mes = base_irpf * irpf_pct;
+
+  // Neto
+  const neto_mes = bruto_mes - ss_trab_total - irpf_mes;
+
+  // Aviso base mínima
+  const avisoEl = document.getElementById('aviso-base-min');
+  if(bruto_mes < base_min_grupo && avisoEl){
+    avisoEl.style.display = 'flex';
+    avisoEl.innerHTML = `⚠️ <span>El salario de <strong>${fmt(bruto_mes)}</strong> está por debajo de la base mínima del Grupo ${grupo} (<strong>${fmt(base_min_grupo)}</strong>). La cotización se calculará sobre la base mínima.</span>`;
+  } else if(avisoEl){
+    avisoEl.style.display = 'none';
+  }
+
+  // ── ACTUALIZAR RESULTADO PRINCIPAL ──
+  set('r-coste-mes', coste_mes);
+  document.getElementById('r-coste-mes-sub').textContent = `${fmtN(coste_anual)}€/año`;
+  set('r-neto-mes', neto_mes);
+  document.getElementById('r-irpf-pct').textContent = (irpf_pct * 100).toFixed(1) + '%';
+  document.getElementById('r-irpf-eur').textContent = `${fmtN(irpf_mes)}€/mes retenidos`;
+  set('r-ss-emp', ss_emp_total);
+  set('r-ss-trab', ss_trab_total);
+  set('r-coste-anual', coste_anual);
+
+  // ── DESGLOSE EMPRESA ──
+  set('d-bruto', bruto_mes);
+  set('d-ss-cc', ss_emp_cc);
+  set('d-ss-desempleo', ss_emp_desempleo);
+  set('d-ss-fogasa', ss_emp_fogasa);
+  set('d-ss-fp', ss_emp_fp);
+  set('d-ss-mei', ss_emp_mei);
+  set('d-total-emp', coste_mes);
+
+  // ── DESGLOSE NÓMINA ──
+  set('d2-bruto', bruto_mes);
+  set('d2-ss-cc', -ss_trab_cc);
+  set('d2-ss-desempleo', -ss_trab_desempleo);
+  set('d2-ss-fp', -ss_trab_fp);
+  set('d2-base-irpf', base_irpf);
+  document.getElementById('d2-irpf-pct').textContent = (irpf_pct*100).toFixed(1)+'%';
+  set('d2-irpf', -irpf_mes);
+  set('d2-neto', neto_mes);
+
+  // ── COMPARADOR 3 PARTES ──
+  set('c-bruto', bruto_mes); set('c-ss-emp', ss_emp_total); set('c-total', coste_mes); set('c-anual', coste_anual);
+  set('c2-bruto', bruto_mes); set('c2-ss-trab', ss_trab_total); set('c2-irpf', irpf_mes); set('c2-neto', neto_mes);
+  set('c3-ss-emp', ss_emp_total); set('c3-ss-trab', ss_trab_total); set('c3-irpf', irpf_mes);
+  set('c3-total', ss_emp_total + ss_trab_total + irpf_mes);
+}
+
+function setTab(tab, btn){
+  document.querySelectorAll('.dtab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.desglose-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+}
+
+function resetForm(){
+  document.getElementById('salario_bruto').value = 1800;
+  document.getElementById('num_pagas').value = '14';
+  document.getElementById('tipo_contrato').value = 'indefinido';
+  document.getElementById('grupo_cotizacion').value = '5';
+  document.getElementById('situacion_familiar').value = 'casado_dos_ingresos';
+  document.getElementById('num_hijos').value = '0';
+  calcular();
+}
+
+function exportPDF(){
+  const bruto = v('salario_bruto');
+  const coste = document.getElementById('r-coste-mes').textContent;
+  const neto = document.getElementById('r-neto-mes').textContent;
+  const irpf = document.getElementById('r-irpf-pct').textContent;
+  const anual = document.getElementById('r-coste-anual').textContent;
+  const situacion = document.getElementById('situacion_familiar').options[document.getElementById('situacion_familiar').selectedIndex].text;
+  const pagas = document.getElementById('num_pagas').value;
+
+  const w = window.open('','_blank','width=800,height=900');
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Simulador nómina 2026</title>
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Helvetica,Arial,sans-serif;font-size:13px;padding:40px;color:#1c1b18}
+  .hdr{display:flex;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #1a7a4a}
+  h1{font-size:17px;font-weight:600;color:#1a7a4a}h2{font-size:12px;font-weight:600;background:#3d3d3d;color:white;padding:5px 8px;border-radius:4px;margin:14px 0 6px}
+  .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+  .card{background:#f7f5ee;padding:12px;border-radius:8px}.card label{font-size:10px;text-transform:uppercase;color:#8c8b84;display:block;margin-bottom:2px}.card span{font-size:15px;font-weight:500;font-family:monospace}
+  table{width:100%;border-collapse:collapse;margin-bottom:12px}th{font-size:10px;text-transform:uppercase;color:#8c8b84;background:#f0ede4;padding:4px 8px;text-align:left;border-bottom:1px solid #e2ded2}
+  td{padding:4px 8px;border-bottom:1px solid #edeae0;font-size:11px}td.r{text-align:right;font-family:monospace}
+  .tot td{background:#e0f0ea;font-weight:600;color:#0f5235}
+  .ftr{margin-top:14px;font-size:10px;color:#8c8b84;text-align:center;border-top:1px solid #edeae0;padding-top:10px}
+  @media print{body{padding:20px}}</style></head><body>
+  <div class="hdr"><div><h1>NormaAlerta — Simulador de nómina y costes laborales 2026</h1><p style="font-size:10px;color:#8c8b84">normaalerta.com · Cálculo orientativo</p></div></div>
+  <div class="grid">
+    <div class="card"><label>Salario bruto/mes</label><span>${fmtN(bruto)} €</span></div>
+    <div class="card"><label>Número de pagas</label><span>${pagas} pagas/año</span></div>
+    <div class="card"><label>Situación familiar</label><span style="font-size:11px">${situacion}</span></div>
+  </div>
+  <h2>Resumen</h2>
+  <div class="grid">
+    <div class="card"><label>Coste empresa/mes</label><span>${coste}</span></div>
+    <div class="card"><label>Neto empleado/mes</label><span>${neto}</span></div>
+    <div class="card"><label>Retención IRPF</label><span>${irpf}</span></div>
+    <div class="card"><label>Coste empresa/año</label><span>${anual}</span></div>
+  </div>
+  <h2>Desglose coste empresa</h2>
+  <table>
+    <tr><th style="width:65%">Concepto</th><th>%</th><th class="r">Importe/mes</th></tr>
+    <tr><td>Salario bruto</td><td>—</td><td class="r">${document.getElementById('d-bruto').textContent}</td></tr>
+    <tr><td>SS empresa — Contingencias comunes</td><td>23,60%</td><td class="r">${document.getElementById('d-ss-cc').textContent}</td></tr>
+    <tr><td>SS empresa — Desempleo</td><td>5,50%</td><td class="r">${document.getElementById('d-ss-desempleo').textContent}</td></tr>
+    <tr><td>SS empresa — FOGASA</td><td>0,20%</td><td class="r">${document.getElementById('d-ss-fogasa').textContent}</td></tr>
+    <tr><td>SS empresa — Formación profesional</td><td>0,60%</td><td class="r">${document.getElementById('d-ss-fp').textContent}</td></tr>
+    <tr><td>SS empresa — MEI</td><td>0,58%</td><td class="r">${document.getElementById('d-ss-mei').textContent}</td></tr>
+    <tr class="tot"><td colspan="2">COSTE TOTAL EMPRESA/MES</td><td class="r">${document.getElementById('d-total-emp').textContent}</td></tr>
+  </table>
+  <h2>Desglose nómina empleado</h2>
+  <table>
+    <tr><th style="width:65%">Concepto</th><th>%</th><th class="r">Importe/mes</th></tr>
+    <tr><td>Salario bruto</td><td>—</td><td class="r">${document.getElementById('d2-bruto').textContent}</td></tr>
+    <tr><td>− SS trabajador — Contingencias comunes</td><td>4,70%</td><td class="r">${document.getElementById('d2-ss-cc').textContent}</td></tr>
+    <tr><td>− SS trabajador — Desempleo</td><td>1,55%</td><td class="r">${document.getElementById('d2-ss-desempleo').textContent}</td></tr>
+    <tr><td>− SS trabajador — Formación profesional</td><td>0,10%</td><td class="r">${document.getElementById('d2-ss-fp').textContent}</td></tr>
+    <tr><td>− Retención IRPF estimada</td><td>${irpf}</td><td class="r">${document.getElementById('d2-irpf').textContent}</td></tr>
+    <tr class="tot"><td colspan="2">SALARIO NETO</td><td class="r">${document.getElementById('d2-neto').textContent}</td></tr>
+  </table>
+  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Cálculo orientativo basado en tablas cotización SS 2026 y tipos IRPF estimados. Consulta con tu gestoría para un cálculo exacto.</div>
+  <script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.close();
+}
+
+calcular();
+</script>
+</body>
+</html>
