@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Cómo de seguro estás ante una inspección? | NormaAlerta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{--green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;--ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;--paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;--border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);--amber:#f59e0b;--amber-light:#fef3c7;--red:#dc2626;--red-light:#fef2f2;--blue-light:#eff6ff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.page{max-width:800px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+/* HEADER */
+.page-header{margin-bottom:2rem;text-align:center}
+.modelo-badge{display:inline-block;background:var(--red);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;font-family:'DM Mono',monospace;margin-bottom:.75rem}
+.page-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;letter-spacing:-.5px;margin-bottom:.5rem}
+.page-title em{font-style:italic;color:var(--red)}
+.page-subtitle{font-size:14px;color:var(--ink3);max-width:540px;margin:0 auto}
+
+/* PROGRESO */
+.quiz-progreso{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:.875rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:12px}
+.quiz-progreso-bar{flex:1;background:var(--paper2);border-radius:10px;height:6px;overflow:hidden}
+.quiz-progreso-fill{background:var(--red);height:100%;border-radius:10px;transition:width .4s ease}
+.quiz-progreso-txt{font-size:12px;font-family:'DM Mono',monospace;color:var(--ink3);flex-shrink:0}
+
+/* PREGUNTA */
+.pregunta-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1rem}
+.pregunta-header{padding:1.25rem 1.25rem .875rem;border-bottom:1px solid var(--border)}
+.pregunta-num{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3);margin-bottom:.375rem}
+.pregunta-texto{font-size:16px;font-weight:500;color:var(--ink);line-height:1.5}
+.pregunta-nota{font-size:12px;color:var(--ink3);margin-top:.375rem}
+.opciones{padding:.875rem 1.25rem;display:flex;flex-direction:column;gap:8px}
+.opcion{display:flex;align-items:flex-start;gap:10px;padding:.75rem 1rem;border:1.5px solid var(--border2);border-radius:10px;cursor:pointer;transition:all .15s;background:var(--white)}
+.opcion:hover{border-color:var(--red);background:var(--red-light)}
+.opcion.seleccionada{border-color:var(--red);background:var(--red-light)}
+.opcion.seleccionada .opcion-radio{background:var(--red);border-color:var(--red)}
+.opcion.seleccionada .opcion-radio::after{display:block}
+.opcion-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--border2);flex-shrink:0;margin-top:2px;position:relative;transition:all .15s}
+.opcion-radio::after{content:'';display:none;width:8px;height:8px;border-radius:50%;background:white;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+.opcion-texto{font-size:14px;color:var(--ink2);line-height:1.5}
+.opcion-texto strong{color:var(--ink);display:block;margin-bottom:1px}
+
+/* NAV BOTONES */
+.nav-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:.5rem}
+.btn-siguiente{padding:.625rem 1.5rem;background:var(--ink);color:white;border:none;border-radius:8px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;transition:all .15s}
+.btn-siguiente:hover{background:#2d2c29}
+.btn-siguiente:disabled{background:var(--paper2);color:var(--ink3);cursor:not-allowed}
+.btn-anterior{padding:.625rem 1.25rem;background:transparent;color:var(--ink2);border:1px solid var(--border2);border-radius:8px;font-size:14px;font-family:inherit;cursor:pointer}
+.btn-anterior:hover{border-color:var(--ink);color:var(--ink)}
+
+/* RESULTADO */
+.resultado-section{display:none}
+.resultado-section.visible{display:block}
+.resultado-gauge{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:2rem;text-align:center;margin-bottom:1rem}
+.gauge-label{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:.75rem}
+.gauge-num{font-size:64px;font-weight:500;font-family:'DM Mono',monospace;line-height:1;margin-bottom:.375rem}
+.gauge-nivel{font-size:18px;font-weight:500;margin-bottom:.5rem}
+.gauge-desc{font-size:14px;color:var(--ink3);max-width:420px;margin:0 auto}
+.nivel-verde .gauge-num{color:var(--green-dark)}
+.nivel-verde .gauge-nivel{color:var(--green-dark)}
+.nivel-amarillo .gauge-num{color:#92400e}
+.nivel-amarillo .gauge-nivel{color:#92400e}
+.nivel-rojo .gauge-num{color:var(--red)}
+.nivel-rojo .gauge-nivel{color:var(--red)}
+
+/* BARRA NIVEL */
+.nivel-bar{height:12px;border-radius:10px;background:var(--paper2);margin:1rem auto;max-width:320px;overflow:hidden;position:relative}
+.nivel-fill{height:100%;border-radius:10px;transition:width 1s ease}
+.nf-verde{background:var(--green)}
+.nf-amarillo{background:var(--amber)}
+.nf-rojo{background:var(--red)}
+
+/* FACTORES */
+.factores{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1rem}
+.factores-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);font-size:15px;font-weight:500}
+.factor-row{display:flex;align-items:flex-start;gap:12px;padding:.875rem 1.25rem;border-bottom:.5px solid var(--border)}
+.factor-row:last-child{border-bottom:none}
+.factor-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.factor-content{flex:1}
+.factor-titulo{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.factor-desc{font-size:12px;color:var(--ink3);line-height:1.5}
+.factor-nivel{font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;flex-shrink:0;margin-top:2px}
+.fn-ok{background:var(--green-light);color:var(--green-dark)}
+.fn-medio{background:var(--amber-light);color:#92400e}
+.fn-alto{background:var(--red-light);color:#991b1b}
+
+/* ACCIONES */
+.acciones{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1rem}
+.acciones-header{padding:1rem 1.25rem;border-bottom:1px solid var(--border);font-size:15px;font-weight:500}
+.accion{display:flex;gap:10px;padding:.875rem 1.25rem;border-bottom:.5px solid var(--border);align-items:flex-start}
+.accion:last-child{border-bottom:none}
+.accion-num{width:24px;height:24px;border-radius:50%;background:var(--ink);color:white;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.accion-texto{font-size:13px;color:var(--ink2);line-height:1.6}
+.accion-texto strong{color:var(--ink);display:block;margin-bottom:1px}
+
+.btn-reiniciar{display:inline-flex;align-items:center;gap:6px;padding:.625rem 1.25rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:1px solid var(--border2);background:var(--white);color:var(--ink2);margin-top:.5rem;transition:all .15s}
+.btn-reiniciar:hover{border-color:var(--green);color:var(--green)}
+
+.disclaimer{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:.875rem 1.25rem;font-size:12px;color:var(--ink3);margin-top:1rem;display:flex;gap:8px}
+
+@media(max-width:600px){.nav-btns{justify-content:space-between}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/><circle cx="74" cy="22" r="13" fill="#f59e0b"/><text x="74" y="27" font-family="Arial" font-size="15" font-weight="700" fill="white" text-anchor="middle">!</text></svg>
+    NormaAlerta <span class="nav-badge">Simulador</span>
+  </a>
+</nav>
+
+<div class="page">
+
+  <div class="page-header">
+    <div class="modelo-badge">AEAT · RIESGO FISCAL</div>
+    <h1 class="page-title">¿Cómo de seguro estás ante<br>una <em>inspección</em>?</h1>
+    <p class="page-subtitle">10 preguntas basadas en los criterios reales de selección de la AEAT. Descubre tu nivel de riesgo y qué puedes hacer para reducirlo.</p>
+  </div>
+
+  <!-- PROGRESO -->
+  <div class="quiz-progreso" id="quiz-progreso">
+    <div class="quiz-progreso-bar"><div class="quiz-progreso-fill" id="progreso-fill" style="width:0%"></div></div>
+    <span class="quiz-progreso-txt" id="progreso-txt">0 / 10</span>
+  </div>
+
+  <!-- PREGUNTAS -->
+  <div id="quiz-container"></div>
+
+  <!-- RESULTADO -->
+  <div class="resultado-section" id="resultado-section">
+
+    <div class="resultado-gauge" id="resultado-gauge">
+      <div class="gauge-label">Tu nivel de riesgo ante inspección</div>
+      <div class="gauge-num" id="gauge-num">—</div>
+      <div class="nivel-bar"><div class="nivel-fill" id="nivel-fill"></div></div>
+      <div class="gauge-nivel" id="gauge-nivel">—</div>
+      <div class="gauge-desc" id="gauge-desc">—</div>
+    </div>
+
+    <div class="factores" id="factores-section">
+      <div class="factores-header">📊 Análisis de tus factores de riesgo</div>
+      <div id="factores-lista"></div>
+    </div>
+
+    <div class="acciones" id="acciones-section">
+      <div class="acciones-header">✅ Qué puedes hacer para reducir el riesgo</div>
+      <div id="acciones-lista"></div>
+    </div>
+
+    <button class="btn-reiniciar" onclick="reiniciar()">↺ Volver a hacer el test</button>
+
+    <div class="disclaimer">
+      ℹ️ <span>Este simulador es <strong>orientativo</strong> y está basado en criterios generales de riesgo fiscal. No predice con certeza si serás inspeccionado. La AEAT aplica criterios adicionales y confidenciales. Ante cualquier duda, consulta con tu gestor o asesor fiscal.</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const PREGUNTAS = [
+  {
+    id: 'declaraciones',
+    texto: '¿Estás al día con todas tus declaraciones fiscales?',
+    nota: 'Modelo 303, 130, 111, 115 y declaraciones anuales',
+    opciones: [
+      { texto: 'Sí, siempre presento en plazo', puntos: 0, nivel: 'ok' },
+      { texto: 'Alguna vez me he retrasado pero siempre presento', puntos: 15, nivel: 'medio' },
+      { texto: 'Tengo declaraciones atrasadas o sin presentar', puntos: 35, nivel: 'alto' },
+    ]
+  },
+  {
+    id: 'facturas',
+    texto: '¿Tienes facturas para todos tus gastos deducibles?',
+    nota: 'La AEAT puede pedir facturas de hasta 4 años atrás',
+    opciones: [
+      { texto: 'Sí, guardo todas las facturas con NIF correctamente', puntos: 0, nivel: 'ok' },
+      { texto: 'Tengo la mayoría pero algunas las pierdo o uso tickets', puntos: 15, nivel: 'medio' },
+      { texto: 'No tengo facturas de muchos gastos que he deducido', puntos: 30, nivel: 'alto' },
+    ]
+  },
+  {
+    id: 'ingresos',
+    texto: '¿Declaras todos tus ingresos, incluyendo los cobros en efectivo?',
+    nota: 'La AEAT cruza datos bancarios, Bizum y declaraciones de terceros',
+    opciones: [
+      { texto: 'Sí, declaro absolutamente todos mis ingresos', puntos: 0, nivel: 'ok' },
+      { texto: 'Puede que algún ingreso pequeño se me haya escapado', puntos: 20, nivel: 'medio' },
+      { texto: 'Tengo ingresos en efectivo o Bizum que no declaro', puntos: 40, nivel: 'alto' },
+    ]
+  },
+  {
+    id: 'gastos',
+    texto: '¿Tus gastos deducidos son razonables para tu sector y nivel de ingresos?',
+    nota: 'La AEAT compara tus gastos con la media de tu sector',
+    opciones: [
+      { texto: 'Sí, mis gastos son proporcionales a mis ingresos y actividad', puntos: 0, nivel: 'ok' },
+      { texto: 'Deduzco algunos gastos mixtos (personal y profesional)', puntos: 15, nivel: 'medio' },
+      { texto: 'Mis gastos son muy elevados en relación a mis ingresos', puntos: 30, nivel: 'alto' },
+    ]
+  },
+  {
+    id: 'vehiculo',
+    texto: '¿Cómo tratas fiscalmente el vehículo en tu actividad?',
+    nota: 'El vehículo es uno de los puntos más revisados en inspecciones a autónomos',
+    opciones: [
+      { texto: 'No deduzco vehículo o solo deduzco el IVA al 50% correctamente', puntos: 0, nivel: 'ok' },
+      { texto: 'Deduzco el vehículo parcialmente con justificación', puntos: 10, nivel: 'medio' },
+      { texto: 'Deduzco el vehículo al 100% sin que mi actividad lo justifique claramente', puntos: 25, nivel: 'alto' },
+    ]
+  },
+  {
+    id: 'retenciones',
+    texto: '¿Las retenciones en tus facturas cuadran con lo declarado en el Modelo 111 o 130?',
+    nota: 'Las discrepancias entre modelos son un indicador automático de riesgo',
+    opciones: [
+      { texto: 'Sí, todo cuadra perfectamente', puntos: 0, nivel: 'ok' },
+      { texto: 'No estoy seguro, puede que haya alguna diferencia', puntos: 20, nivel: 'medio' },
+      { texto: 'Sé que hay discrepancias entre mis modelos', puntos: 35, nivel: 'alto' },
+    ]
+  },
+  {
+    id: 'iva',
+    texto: '¿Hay grandes variaciones en tu IVA trimestral sin causa justificada?',
+    nota: 'Variaciones bruscas del +/- 40% entre trimestres activan alertas automáticas',
+    opciones: [
+      { texto: 'No, mi actividad es bastante estable trimestralmente', puntos: 0, nivel: 'ok' },
+      { texto: 'Hay variaciones pero tengo justificación (estacionalidad, proyectos grandes)', puntos: 10, nivel: 'medio' },
+      { texto: 'Hay grandes variaciones sin una razón clara', puntos: 25, nivel: 'alto' },
+    ]
+  },
+  {
+    id: 'efectivo',
+    texto: '¿Realizas muchos cobros o pagos en efectivo?',
+    nota: 'Desde 2021 el límite de pagos en efectivo entre empresas/profesionales es de 1.000€',
+    opciones: [
+      { texto: 'No, prácticamente todo es por transferencia o tarjeta', puntos: 0, nivel: 'ok' },
+      { texto: 'Algún cobro en efectivo por importes pequeños', puntos: 10, nivel: 'medio' },
+      { texto: 'Muchos cobros o pagos en efectivo por importes significativos', puntos: 30, nivel: 'alto' },
+    ]
+  },
+  {
+    id: 'requerimientos',
+    texto: '¿Has recibido algún requerimiento o carta de la AEAT en los últimos 3 años?',
+    nota: 'Haber sido ya contactado por la AEAT aumenta la probabilidad de seguimiento',
+    opciones: [
+      { texto: 'No, nunca he recibido ningún requerimiento', puntos: 0, nivel: 'ok' },
+      { texto: 'Sí, un requerimiento informativo que ya resolví', puntos: 15, nivel: 'medio' },
+      { texto: 'Sí, he tenido liquidaciones, sanciones o inspecciones previas', puntos: 30, nivel: 'alto' },
+    ]
+  },
+  {
+    id: 'contabilidad',
+    texto: '¿Llevas los libros de registro de ingresos y gastos al día?',
+    nota: 'En estimación directa es obligatorio. Su ausencia es infracción grave',
+    opciones: [
+      { texto: 'Sí, al día y correctamente con todas las facturas registradas', puntos: 0, nivel: 'ok' },
+      { texto: 'Los llevo pero no siempre al día — los actualizo antes de los plazos', puntos: 10, nivel: 'medio' },
+      { texto: 'No llevo libros de registro o los tengo muy incompletos', puntos: 30, nivel: 'alto' },
+    ]
+  },
+];
+
+let respuestas = {};
+let preguntaActual = 0;
+
+function renderPregunta(idx){
+  const p = PREGUNTAS[idx];
+  const respActual = respuestas[p.id];
+
+  const pct = Math.round((idx / PREGUNTAS.length) * 100);
+  document.getElementById('progreso-fill').style.width = pct + '%';
+  document.getElementById('progreso-txt').textContent = `${idx} / ${PREGUNTAS.length}`;
+
+  const opcionesHTML = p.opciones.map((op, i) => `
+    <div class="opcion ${respActual === i ? 'seleccionada' : ''}" onclick="seleccionarOpcion(${i})">
+      <div class="opcion-radio"></div>
+      <div class="opcion-texto">${op.texto}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('quiz-container').innerHTML = `
+    <div class="pregunta-card">
+      <div class="pregunta-header">
+        <div class="pregunta-num">Pregunta ${idx + 1} de ${PREGUNTAS.length}</div>
+        <div class="pregunta-texto">${p.texto}</div>
+        ${p.nota ? `<div class="pregunta-nota">ℹ️ ${p.nota}</div>` : ''}
+      </div>
+      <div class="opciones">${opcionesHTML}</div>
+    </div>
+    <div class="nav-btns">
+      ${idx > 0 ? `<button class="btn-anterior" onclick="anterior()">← Anterior</button>` : '<span></span>'}
+      <button class="btn-siguiente" id="btn-sig" onclick="siguiente()" ${respActual === undefined ? 'disabled' : ''}>
+        ${idx === PREGUNTAS.length - 1 ? 'Ver resultado →' : 'Siguiente →'}
+      </button>
+    </div>
+  `;
+}
+
+function seleccionarOpcion(idx){
+  const p = PREGUNTAS[preguntaActual];
+  respuestas[p.id] = idx;
+  renderPregunta(preguntaActual);
+}
+
+function siguiente(){
+  if(respuestas[PREGUNTAS[preguntaActual].id] === undefined) return;
+  if(preguntaActual === PREGUNTAS.length - 1){
+    mostrarResultado();
+  } else {
+    preguntaActual++;
+    renderPregunta(preguntaActual);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+}
+
+function anterior(){
+  if(preguntaActual > 0){
+    preguntaActual--;
+    renderPregunta(preguntaActual);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+}
+
+function mostrarResultado(){
+  // Calcular puntuación total
+  let totalPuntos = 0;
+  const factores = [];
+
+  PREGUNTAS.forEach(p => {
+    const respIdx = respuestas[p.id];
+    if(respIdx !== undefined){
+      const op = p.opciones[respIdx];
+      totalPuntos += op.puntos;
+      factores.push({
+        pregunta: p.texto,
+        respuesta: op.texto,
+        nivel: op.nivel,
+        puntos: op.puntos,
+      });
+    }
+  });
+
+  // Máximo posible: suma de la opción más alta de cada pregunta
+  const maxPuntos = PREGUNTAS.reduce((acc, p) => acc + Math.max(...p.opciones.map(o => o.puntos)), 0);
+  const pctRiesgo = Math.round((totalPuntos / maxPuntos) * 100);
+
+  // Determinar nivel
+  let nivel, claseNivel, claseFill, descripcion;
+  if(pctRiesgo <= 25){
+    nivel = '🟢 Riesgo BAJO';
+    claseNivel = 'nivel-verde';
+    claseFill = 'nf-verde';
+    descripcion = 'Tu perfil fiscal es ordenado y poco llamativo para la AEAT. Sigue así: mantén las facturas, presenta en plazo y no deduzcas gastos cuestionables.';
+  } else if(pctRiesgo <= 55){
+    nivel = '🟡 Riesgo MEDIO';
+    claseNivel = 'nivel-amarillo';
+    claseFill = 'nf-amarillo';
+    descripcion = 'Hay algunos puntos que podrían llamar la atención de la AEAT. No es alarmante, pero conviene revisar y corregir las áreas marcadas en rojo antes de que se conviertan en un problema.';
+  } else {
+    nivel = '🔴 Riesgo ALTO';
+    claseNivel = 'nivel-rojo';
+    claseFill = 'nf-rojo';
+    descripcion = 'Tu perfil tiene varios indicadores que la AEAT podría detectar. Te recomendamos consultar con un gestor o asesor fiscal para revisar tu situación y corregir los puntos críticos cuanto antes.';
+  }
+
+  // Ocultar quiz, mostrar resultado
+  document.getElementById('quiz-container').style.display = 'none';
+  document.getElementById('quiz-progreso').style.display = 'none';
+  const resultadoSection = document.getElementById('resultado-section');
+  resultadoSection.classList.add('visible');
+
+  // Gauge
+  const gaugeEl = document.getElementById('resultado-gauge');
+  gaugeEl.className = `resultado-gauge ${claseNivel}`;
+  document.getElementById('gauge-num').textContent = pctRiesgo + '%';
+  document.getElementById('nivel-fill').className = `nivel-fill ${claseFill}`;
+  document.getElementById('nivel-fill').style.width = '0%';
+  setTimeout(() => document.getElementById('nivel-fill').style.width = pctRiesgo + '%', 100);
+  document.getElementById('gauge-nivel').textContent = nivel;
+  document.getElementById('gauge-desc').textContent = descripcion;
+
+  // Factores
+  const factoresAltos = factores.filter(f => f.nivel === 'alto');
+  const factoresMedios = factores.filter(f => f.nivel === 'medio');
+  const factoresOk = factores.filter(f => f.nivel === 'ok');
+
+  const todosOrdenados = [...factoresAltos, ...factoresMedios, ...factoresOk];
+  document.getElementById('factores-lista').innerHTML = todosOrdenados.map(f => `
+    <div class="factor-row">
+      <div class="factor-icon">${f.nivel === 'ok' ? '✅' : f.nivel === 'medio' ? '⚠️' : '🚨'}</div>
+      <div class="factor-content">
+        <div class="factor-titulo">${f.pregunta}</div>
+        <div class="factor-desc">${f.respuesta}</div>
+      </div>
+      <span class="factor-nivel ${f.nivel === 'ok' ? 'fn-ok' : f.nivel === 'medio' ? 'fn-medio' : 'fn-alto'}">
+        ${f.nivel === 'ok' ? 'Bien' : f.nivel === 'medio' ? 'Revisar' : 'Riesgo alto'}
+      </span>
+    </div>
+  `).join('');
+
+  // Acciones recomendadas
+  const acciones = [];
+  respuestas['declaraciones'] !== undefined && PREGUNTAS[0].opciones[respuestas['declaraciones']].nivel !== 'ok' && acciones.push({titulo:'Regulariza tus declaraciones pendientes', desc:'Presenta las declaraciones atrasadas voluntariamente. El recargo por extemporaneidad es mucho menor que una sanción por inspección. Si es el 303 o el 130, usa las calculadoras de NormaAlerta para calcular el importe exacto.'});
+  respuestas['facturas'] !== undefined && PREGUNTAS[1].opciones[respuestas['facturas']].nivel !== 'ok' && acciones.push({titulo:'Organiza y completa tu archivo de facturas', desc:'Pide facturas con NIF a todos tus proveedores para los gastos que has deducido. Crea una carpeta por año y mes. Las facturas deben conservarse 4 años.'});
+  respuestas['ingresos'] !== undefined && PREGUNTAS[2].opciones[respuestas['ingresos']].nivel !== 'ok' && acciones.push({titulo:'Declara todos tus ingresos desde ya', desc:'La AEAT cruza datos bancarios, Bizum, y declaraciones de terceros (clientes que te han pagado). Regularizar voluntariamente siempre es mejor que esperar a que te lo detecten.'});
+  respuestas['gastos'] !== undefined && PREGUNTAS[3].opciones[respuestas['gastos']].nivel !== 'ok' && acciones.push({titulo:'Revisa la proporcionalidad de tus gastos', desc:'Si tus gastos representan más del 70-80% de tus ingresos sin una justificación clara, puede llamar la atención. Usa el verificador de gastos de NormaAlerta para comprobar qué es deducible.'});
+  respuestas['vehiculo'] !== undefined && PREGUNTAS[4].opciones[respuestas['vehiculo']].nivel !== 'ok' && acciones.push({titulo:'Revisa el tratamiento fiscal de tu vehículo', desc:'El vehículo es el punto más inspeccionado. Si deduces el 100% sin que tu actividad lo justifique claramente (transporte, comercial...), reconsidera reducirlo al 50% en IVA y no deducirlo en IRPF.'});
+  respuestas['retenciones'] !== undefined && PREGUNTAS[5].opciones[respuestas['retenciones']].nivel !== 'ok' && acciones.push({titulo:'Concilia tus modelos de retenciones', desc:'Compara lo que declaraste en el 111/130 con las retenciones que aparecen en tus facturas. Cualquier discrepancia la verá la AEAT. Presenta declaraciones complementarias si es necesario.'});
+  respuestas['contabilidad'] !== undefined && PREGUNTAS[9].opciones[respuestas['contabilidad']].nivel !== 'ok' && acciones.push({titulo:'Pon al día tus libros de registro', desc:'Es obligatorio en estimación directa. Registra todas las facturas emitidas y recibidas. No es solo una obligación formal — sin libros no puedes probar tus gastos en una inspección.'});
+
+  if(acciones.length === 0){
+    acciones.push({titulo:'Mantén tus buenas prácticas', desc:'Tu perfil fiscal es ordenado. Sigue presentando en plazo, guardando facturas y declarando todos tus ingresos. Revisa las alertas de NormaAlerta para estar al día de cualquier cambio normativo.'});
+  }
+
+  // Añadir siempre al final
+  acciones.push({titulo:'Suscríbete a NormaAlerta', desc:'Los cambios fiscales que no conoces son los que más daño hacen. NormaAlerta te alerta de todo lo que cambia y afecta a tu actividad, en lenguaje claro y con lo que tienes que hacer.'});
+
+  document.getElementById('acciones-lista').innerHTML = acciones.map((a, i) => `
+    <div class="accion">
+      <div class="accion-num">${i + 1}</div>
+      <div class="accion-texto"><strong>${a.titulo}</strong>${a.desc}</div>
+    </div>
+  `).join('');
+
+  resultadoSection.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function reiniciar(){
+  respuestas = {};
+  preguntaActual = 0;
+  document.getElementById('quiz-container').style.display = 'block';
+  document.getElementById('quiz-progreso').style.display = 'flex';
+  document.getElementById('resultado-section').classList.remove('visible');
+  renderPregunta(0);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// Init
+renderPregunta(0);
+</script>
+</body>
+</html>
