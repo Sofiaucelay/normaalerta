@@ -204,8 +204,6 @@ h2 em { font-style: italic; font-weight: 300; }
 .pb-solid:hover { background: var(--green-mid); }
 .price-note { font-size: 12px; color: var(--ink3); text-align: center; margin-top: 8px; }
 .price-card.featured .price-note { color: rgba(255,255,255,0.3); }
-
-
 .faq { padding: 100px 40px; background: var(--white); }
 .faq-inner { max-width: 700px; margin: 0 auto; }
 .faq-header { margin-bottom: 48px; }
@@ -222,12 +220,15 @@ h2 em { font-style: italic; font-weight: 300; }
 .cta-final h2 { color: var(--white); font-family: 'Fraunces', serif; font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 400; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
 .cta-final h2 em { color: rgba(34,160,122,0.9); }
 .cta-sub { font-size: 17px; color: rgba(255,255,255,0.5); font-weight: 300; margin-bottom: 40px; line-height: 1.6; }
-.cta-form { display: flex; gap: 10px; max-width: 440px; margin: 0 auto 16px; }
-.cta-input { flex: 1; padding: 13px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.07); color: var(--white); font-size: 14px; font-family: inherit; outline: none; transition: border-color 0.15s; }
-.cta-input::placeholder { color: rgba(255,255,255,0.3); }
-.cta-input:focus { border-color: var(--green-mid); }
-.cta-submit { padding: 13px 22px; background: var(--green); color: var(--white); border: none; border-radius: 10px; font-size: 14px; font-weight: 500; font-family: inherit; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
-.cta-submit:hover { background: var(--green-mid); }
+.cta-btn-espera {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--green); color: var(--white);
+  padding: 16px 32px; border-radius: 10px;
+  font-size: 16px; font-weight: 500; font-family: inherit;
+  text-decoration: none; transition: background 0.15s, transform 0.1s;
+  margin-bottom: 16px;
+}
+.cta-btn-espera:hover { background: var(--green-mid); transform: translateY(-1px); }
 .cta-final-note { font-size: 13px; color: rgba(255,255,255,0.3); }
 footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); padding: 40px; }
 .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
@@ -247,7 +248,6 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
   .problem-grid, .features-grid, .va-grid, .pricing-grid { grid-template-columns: 1fr; }
   .pricing-grid .price-card.featured { transform: none; }
   .social-proof, .problem, .features, .value-added, .pricing, .faq, .cta-final { padding-left: 20px; padding-right: 20px; }
-  .cta-form { flex-direction: column; }
 }
 </style>
 </head>
@@ -260,7 +260,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
     <a href="#valor-anadido">Qué incluye</a>
     <a href="#precios">Precios</a>
     <a href="#faq">FAQ</a>
-    <a href="#" class="nav-cta">Empezar gratis</a>
+    <a href="/lista-espera.html" class="nav-cta">Únete a la lista de espera</a>
   </div>
 </nav>
 
@@ -271,14 +271,14 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
     <div class="hero-grid-line" style="left:66%"></div>
   </div>
   <div class="hero-inner">
-    <div class="hero-badge"><span class="hero-badge-dot"></span>15 herramientas para autónomos y pymes — Lanzamiento 2026</div>
+    <div class="hero-badge"><span class="hero-badge-dot"></span>16 herramientas para autónomos y pymes — Lanzamiento julio 2026</div>
     <h1>Nunca más una sorpresa <em>fiscal o legal</em> en tu empresa</h1>
     <p class="hero-sub">Alertas del BOE filtradas, 7 calculadoras fiscales, auditoría IA personalizada, asistente fiscal 24/7, simuladores, verificador de gastos y mucho más — todo en un solo lugar, en lenguaje claro.</p>
     <div class="hero-cta-row">
-      <a href="https://chang38044.softr.app" class="btn-primary">Acceder al portal →</a>
+      <a href="/lista-espera.html" class="btn-primary">Reservar mi plaza →</a>
       <a href="/calculadora-modelo-303.html" class="btn-outline" target="_blank">Probar calculadora gratis</a>
     </div>
-    <p class="hero-note">Sin tarjeta de crédito · Cancela cuando quieras · Configuración en 3 minutos</p>
+    <p class="hero-note">Sin tarjeta de crédito · Acceso prioritario en julio · Configuración en 3 minutos</p>
   </div>
 </section>
 
@@ -304,7 +304,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
     <p class="sp-text">Alertas normativas para autónomos y pymes en España</p>
     <div class="launch-badge">
       <span class="launch-dot"></span>
-      Lanzamiento 2026
+      Lanzamiento julio 2026
     </div>
   </div>
 </section>
@@ -411,7 +411,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
     <div class="pricing-header reveal">
       <p class="section-label">Precios</p>
       <h2>Sin letra pequeña.<br><em>Sin sorpresas.</em></h2>
-      <p style="font-size:15px;color:var(--ink2);margin-top:12px;">14 días gratis en cualquier plan. Cancela cuando quieras.</p>
+      <p style="font-size:15px;color:var(--ink2);margin-top:12px;">Acceso prioritario para los primeros en apuntarse. Lanzamiento julio 2026.</p>
     </div>
     <div class="pricing-grid reveal">
       <div class="price-card">
@@ -429,7 +429,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
         <div class="price-feat"><span class="pf-lock">–</span> Asistente IA fiscal</div>
         <div class="price-feat"><span class="pf-lock">–</span> Plantillas Excel completas</div>
         <div class="price-feat"><span class="pf-lock">–</span> Alertas por WhatsApp</div>
-        <div class="price-cta-wrap"><a href="https://chang38044.softr.app" class="price-btn pb-outline">Empezar gratis</a><p class="price-note">Sin tarjeta de crédito</p></div>
+        <div class="price-cta-wrap"><a href="/lista-espera.html" class="price-btn pb-outline">Reservar plaza</a><p class="price-note">Lanzamiento julio 2026</p></div>
       </div>
       <div class="price-card featured">
         <div class="price-label">Profesional</div>
@@ -443,7 +443,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
         <div class="price-feat"><span class="pf-check">✓</span> Alertas por WhatsApp</div>
         <div class="price-feat"><span class="pf-check">✓</span> Hasta 3 usuarios</div>
         <div class="price-feat"><span class="pf-check">✓</span> Soporte prioritario</div>
-        <div class="price-cta-wrap"><a href="https://chang38044.softr.app" class="price-btn pb-solid">Empezar gratis</a><p class="price-note">El más elegido</p></div>
+        <div class="price-cta-wrap"><a href="/lista-espera.html" class="price-btn pb-solid">Reservar plaza</a><p class="price-note">El más elegido</p></div>
       </div>
       <div class="price-card">
         <div class="price-label">Empresa</div>
@@ -456,13 +456,11 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
         <div class="price-feat"><span class="pf-check">✓</span> Alertas personalizadas por sector</div>
         <div class="price-feat"><span class="pf-check">✓</span> Resumen PDF mensual automático</div>
         <div class="price-feat"><span class="pf-check">✓</span> Soporte prioritario &lt;4h</div>
-        <div class="price-cta-wrap"><a href="https://chang38044.softr.app" class="price-btn pb-outline">Empezar gratis</a><p class="price-note">Para equipos y gestorías</p></div>
+        <div class="price-cta-wrap"><a href="/lista-espera.html" class="price-btn pb-outline">Reservar plaza</a><p class="price-note">Para equipos y gestorías</p></div>
       </div>
     </div>
-
   </div>
 </section>
-
 
 <section class="faq" id="faq">
   <div class="faq-inner">
@@ -472,20 +470,17 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
     <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">¿Las plantillas de modelos están siempre actualizadas?<span class="faq-chevron">+</span></div><div class="faq-a">Sí. Monitorizamos la AEAT y el BOE para detectar cualquier actualización. Cuando hay un cambio, actualizamos las plantillas y te avisamos automáticamente.</div></div>
     <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">¿Puedo cancelar cuando quiera?<span class="faq-chevron">+</span></div><div class="faq-a">Sí, sin permanencia ni penalización. Cancelas desde tu panel en cualquier momento y el acceso continúa hasta el final del período pagado.</div></div>
     <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">¿NormaAlerta sustituye a mi gestor o asesor?<span class="faq-chevron">+</span></div><div class="faq-a">No. NormaAlerta te mantiene informado y preparado. Tu gestor sigue siendo necesario para trámites complejos. Lo que hacemos es que llegues a esas conversaciones ya informado, sin sorpresas.</div></div>
-    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">¿Qué pasa con los 14 días gratuitos?<span class="faq-chevron">+</span></div><div class="faq-a">Tienes acceso completo al plan elegido durante 14 días sin introducir tarjeta de crédito. Al finalizar puedes suscribirte o cancelar. No hay cargos automáticos.</div></div>
+    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">¿Cuándo abre NormaAlerta?<span class="faq-chevron">+</span></div><div class="faq-a">El lanzamiento está previsto para julio 2026. Apúntate a la lista de espera para conseguir acceso prioritario y precio especial de lanzamiento.</div></div>
   </div>
 </section>
 
 <section class="cta-final">
   <div class="cta-bg"></div>
   <div class="cta-inner">
-    <h2>Empieza hoy.<br><em>Gratis durante 14 días.</em></h2>
-    <p class="cta-sub">Sin tarjeta de crédito. En 3 minutos configuras tu empresa y empiezas a recibir alertas.</p>
-    <div class="cta-form">
-      <input type="email" class="cta-input" placeholder="tu@empresa.com">
-      <button class="cta-submit">Empezar gratis →</button>
-    </div>
-    <p class="cta-final-note">Sin tarjeta de crédito · Sin permanencia · Cancela cuando quieras</p>
+    <h2>Apúntate ahora.<br><em>Acceso prioritario en julio.</em></h2>
+    <p class="cta-sub">Los primeros en apuntarse consiguen acceso antes que nadie y precio especial de lanzamiento. Sin compromisos.</p>
+    <a href="/lista-espera.html" class="cta-btn-espera">Reservar mi plaza →</a>
+    <p class="cta-final-note">Sin tarjeta de crédito · Sin permanencia · Lanzamiento julio 2026</p>
   </div>
 </section>
 
@@ -495,7 +490,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
     <div class="footer-links">
       <a href="/privacidad.html">Privacidad y Cookies</a>
       <a href="mailto:hola@normaalerta.com">Contacto</a>
-      <a href="https://chang38044.softr.app" target="_blank">Acceder al portal</a>
+      <a href="/lista-espera.html">Lista de espera</a>
     </div>
     <span class="footer-copy">© 2026 NormaAlerta. Todos los derechos reservados.</span>
   </div>
@@ -512,14 +507,6 @@ function toggleFaq(el) {
   document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
   if (!isOpen) item.classList.add('open');
 }
-document.querySelector('.cta-submit').addEventListener('click', () => {
-  const email = document.querySelector('.cta-input').value;
-  if (email && email.includes('@')) {
-    document.querySelector('.cta-form').innerHTML = '<p style="color:rgba(255,255,255,0.8);font-size:15px;text-align:center;">✓ ¡Perfecto! Revisa tu email para continuar.</p>';
-  } else {
-    document.querySelector('.cta-input').style.borderColor = '#E24B4A';
-  }
-});
 </script>
 </body>
 </html>
