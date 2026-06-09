@@ -27,92 +27,37 @@
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--paper);
-  color: var(--ink);
-  font-size: 16px;
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 40px; height: 64px;
-  background: rgba(247,245,238,0.92);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-}
+body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 64px; background: rgba(247,245,238,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
 .nav-logo { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; color: var(--ink); text-decoration: none; letter-spacing: -0.3px; }
 .nav-links { display: flex; align-items: center; gap: 28px; }
 .nav-links a { font-size: 14px; color: var(--ink2); text-decoration: none; transition: color 0.15s; }
 .nav-links a:hover { color: var(--ink); }
-.nav-cta {
-  background: var(--ink); color: var(--paper) !important;
-  padding: 8px 20px; border-radius: 8px; font-size: 14px; font-weight: 500;
-  text-decoration: none; transition: background 0.15s;
-}
-.nav-cta:hover { background: var(--green) !important; }
-.hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 100px 40px 60px;
-  position: relative; overflow: hidden;
-}
+.nav-cta { background: var(--green) !important; color: var(--white) !important; padding: 8px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; text-decoration: none; transition: background 0.15s; }
+.nav-cta:hover { background: var(--green-mid) !important; }
+.hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 100px 40px 60px; position: relative; overflow: hidden; }
 .hero-bg { position: absolute; inset: 0; z-index: 0; background: var(--paper); }
-.hero-bg-circle {
-  position: absolute; width: 600px; height: 600px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(34,160,122,0.08) 0%, transparent 70%);
-  right: -100px; top: 50%; transform: translateY(-50%);
-}
+.hero-bg-circle { position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(34,160,122,0.08) 0%, transparent 70%); right: -100px; top: 50%; transform: translateY(-50%); }
 .hero-grid-line { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--border); }
 .hero-inner { max-width: 1100px; margin: 0 auto; width: 100%; position: relative; z-index: 1; }
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--green-light); border: 1px solid rgba(34,160,122,0.25);
-  padding: 6px 14px; border-radius: 20px;
-  font-size: 12px; font-weight: 500; color: var(--green);
-  margin-bottom: 28px; animation: fadeUp 0.6s ease both;
-}
-.hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-mid); }
-h1 {
-  font-family: 'Fraunces', serif;
-  font-size: clamp(2.8rem, 6vw, 5rem);
-  font-weight: 400; line-height: 1.06; letter-spacing: -2px;
-  color: var(--ink); max-width: 800px; margin-bottom: 24px;
-  animation: fadeUp 0.6s ease 0.1s both;
-}
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--green-light); border: 1px solid rgba(34,160,122,0.25); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; color: var(--green); margin-bottom: 28px; animation: fadeUp 0.6s ease both; }
+.hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green-mid); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+h1 { font-family: 'Fraunces', serif; font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 400; line-height: 1.06; letter-spacing: -2px; color: var(--ink); max-width: 800px; margin-bottom: 24px; animation: fadeUp 0.6s ease 0.1s both; }
 h1 em { font-style: italic; color: var(--green); font-weight: 300; }
-.hero-sub {
-  font-size: 18px; font-weight: 300; color: var(--ink2);
-  max-width: 520px; line-height: 1.65; margin-bottom: 40px;
-  animation: fadeUp 0.6s ease 0.2s both;
-}
-.hero-cta-row {
-  display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
-  margin-bottom: 20px; animation: fadeUp 0.6s ease 0.3s both;
-}
-.btn-primary {
-  background: var(--green); color: var(--white);
-  padding: 14px 28px; border-radius: 10px;
-  font-size: 15px; font-weight: 500; font-family: inherit;
-  border: none; cursor: pointer; text-decoration: none;
-  display: inline-flex; align-items: center; gap: 8px;
-  transition: background 0.15s, transform 0.1s;
-}
+.hero-sub { font-size: 18px; font-weight: 300; color: var(--ink2); max-width: 520px; line-height: 1.65; margin-bottom: 40px; animation: fadeUp 0.6s ease 0.2s both; }
+.hero-cta-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; animation: fadeUp 0.6s ease 0.3s both; }
+.btn-primary { background: var(--green); color: var(--white); padding: 14px 28px; border-radius: 10px; font-size: 15px; font-weight: 500; font-family: inherit; border: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: background 0.15s, transform 0.1s; }
 .btn-primary:hover { background: var(--green-mid); transform: translateY(-1px); }
-.btn-outline {
-  background: transparent; color: var(--ink);
-  padding: 14px 28px; border-radius: 10px;
-  font-size: 15px; font-weight: 400; font-family: inherit;
-  border: 1px solid var(--border2); cursor: pointer; text-decoration: none;
-  display: inline-flex; align-items: center; gap: 8px;
-  transition: background 0.15s, border-color 0.15s;
-}
+.btn-outline { background: transparent; color: var(--ink); padding: 14px 28px; border-radius: 10px; font-size: 15px; font-weight: 400; font-family: inherit; border: 1px solid var(--border2); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: background 0.15s, border-color 0.15s; }
 .btn-outline:hover { background: var(--paper2); border-color: var(--ink3); }
 .hero-note { font-size: 13px; color: var(--ink3); animation: fadeUp 0.6s ease 0.35s both; }
-.ticker-section { background: var(--ink); padding: 12px 0; overflow: hidden; position: relative; }
-.ticker-track { display: flex; gap: 0; animation: ticker 30s linear infinite; white-space: nowrap; }
+.founder-strip { background: var(--green); padding: 14px 40px; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+.founder-strip p { font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 400; }
+.founder-strip strong { color: #fff; font-weight: 600; }
+.founder-pill { background: rgba(255,255,255,0.15); color: #fff; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; white-space: nowrap; }
+.ticker-section { background: var(--ink); padding: 12px 0; overflow: hidden; }
+.ticker-track { display: flex; animation: ticker 30s linear infinite; white-space: nowrap; }
 .ticker-item { display: inline-flex; align-items: center; gap: 10px; padding: 0 32px; font-size: 13px; color: rgba(255,255,255,0.55); }
 .ticker-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
 .td-g { background: var(--green-mid); }
@@ -171,25 +116,24 @@ h2 em { font-style: italic; font-weight: 300; }
 .vap-b { background: var(--paper2); color: var(--ink3); }
 .vap-p { background: var(--green-light); color: var(--green); }
 .vap-e { background: #E6F1FB; color: #0C447C; }
-.btn-calc {
-  display: inline-flex; align-items: center; gap: 6px;
-  margin-top: 16px; padding: 10px 18px;
-  background: var(--green); color: white;
-  border-radius: 8px; font-size: 13px; font-weight: 500;
-  text-decoration: none; transition: background 0.15s;
-}
+.btn-calc { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; padding: 10px 18px; background: var(--green); color: white; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; transition: background 0.15s; }
 .btn-calc:hover { background: var(--green-mid); }
 .pricing { padding: 100px 40px; background: var(--white); }
-.pricing-header { text-align: center; max-width: 600px; margin: 0 auto 60px; }
+.pricing-header { text-align: center; max-width: 640px; margin: 0 auto 60px; }
 .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 900px; margin: 0 auto; }
-.price-card { background: var(--paper); border: 1px solid var(--border); border-radius: 16px; padding: 28px; display: flex; flex-direction: column; }
+.price-card { background: var(--paper); border: 1px solid var(--border); border-radius: 16px; padding: 28px; display: flex; flex-direction: column; position: relative; }
 .price-card.featured { background: var(--ink); border-color: var(--ink); transform: scale(1.02); }
+.founder-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--green); color: #fff; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; white-space: nowrap; }
 .price-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; color: var(--ink3); margin-bottom: 16px; }
 .price-card.featured .price-label { color: rgba(255,255,255,0.4); }
+.price-original { font-size: 13px; color: var(--ink3); text-decoration: line-through; margin-bottom: 2px; height: 20px; }
+.price-card.featured .price-original { color: rgba(255,255,255,0.3); }
 .price-val { font-family: 'Fraunces', serif; font-size: 48px; font-weight: 300; line-height: 1; margin-bottom: 4px; }
 .price-card.featured .price-val { color: var(--white); }
-.price-period { font-size: 13px; color: var(--ink3); margin-bottom: 24px; }
+.price-period { font-size: 13px; color: var(--ink3); margin-bottom: 12px; }
 .price-card.featured .price-period { color: rgba(255,255,255,0.4); }
+.founder-saving { display: inline-flex; align-items: center; gap: 6px; background: var(--green-light); color: var(--green); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 6px; margin-bottom: 20px; }
+.price-card.featured .founder-saving { background: rgba(34,160,122,0.2); color: #6ee2b8; }
 .price-divider { border: none; border-top: 1px solid var(--border); margin-bottom: 20px; }
 .price-card.featured .price-divider { border-color: rgba(255,255,255,0.12); }
 .price-feat { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 14px; color: var(--ink2); }
@@ -204,7 +148,9 @@ h2 em { font-style: italic; font-weight: 300; }
 .pb-solid:hover { background: var(--green-mid); }
 .price-note { font-size: 12px; color: var(--ink3); text-align: center; margin-top: 8px; }
 .price-card.featured .price-note { color: rgba(255,255,255,0.3); }
-.faq { padding: 100px 40px; background: var(--white); }
+.pricing-disclaimer { text-align: center; max-width: 500px; margin: 32px auto 0; font-size: 13px; color: var(--ink3); line-height: 1.6; }
+.pricing-disclaimer strong { color: var(--ink2); }
+.faq { padding: 100px 40px; background: var(--paper); }
 .faq-inner { max-width: 700px; margin: 0 auto; }
 .faq-header { margin-bottom: 48px; }
 .faq-item { border-bottom: 1px solid var(--border); }
@@ -219,15 +165,9 @@ h2 em { font-style: italic; font-weight: 300; }
 .cta-inner { max-width: 700px; margin: 0 auto; position: relative; z-index: 1; }
 .cta-final h2 { color: var(--white); font-family: 'Fraunces', serif; font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 400; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
 .cta-final h2 em { color: rgba(34,160,122,0.9); }
-.cta-sub { font-size: 17px; color: rgba(255,255,255,0.5); font-weight: 300; margin-bottom: 40px; line-height: 1.6; }
-.cta-btn-espera {
-  display: inline-flex; align-items: center; gap: 10px;
-  background: var(--green); color: var(--white);
-  padding: 16px 32px; border-radius: 10px;
-  font-size: 16px; font-weight: 500; font-family: inherit;
-  text-decoration: none; transition: background 0.15s, transform 0.1s;
-  margin-bottom: 16px;
-}
+.cta-sub { font-size: 17px; color: rgba(255,255,255,0.5); font-weight: 300; margin-bottom: 12px; line-height: 1.6; }
+.cta-founder-note { font-size: 14px; color: #6ee2b8; font-weight: 500; margin-bottom: 36px; }
+.cta-btn-espera { display: inline-flex; align-items: center; gap: 10px; background: var(--green); color: var(--white); padding: 16px 32px; border-radius: 10px; font-size: 16px; font-weight: 500; font-family: inherit; text-decoration: none; transition: background 0.15s, transform 0.1s; margin-bottom: 16px; }
 .cta-btn-espera:hover { background: var(--green-mid); transform: translateY(-1px); }
 .cta-final-note { font-size: 13px; color: rgba(255,255,255,0.3); }
 footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); padding: 40px; }
@@ -245,6 +185,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
   nav { padding: 0 20px; }
   .nav-links { display: none; }
   .hero { padding: 100px 20px 60px; }
+  .founder-strip { padding: 12px 20px; }
   .problem-grid, .features-grid, .va-grid, .pricing-grid { grid-template-columns: 1fr; }
   .pricing-grid .price-card.featured { transform: none; }
   .social-proof, .problem, .features, .value-added, .pricing, .faq, .cta-final { padding-left: 20px; padding-right: 20px; }
@@ -260,7 +201,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
     <a href="#valor-anadido">Qué incluye</a>
     <a href="#precios">Precios</a>
     <a href="#faq">FAQ</a>
-    <a href="/lista-espera.html" class="nav-cta">Únete a la lista de espera</a>
+    <a href="/lista-espera.html" class="nav-cta">Entrar gratis →</a>
   </div>
 </nav>
 
@@ -271,16 +212,22 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
     <div class="hero-grid-line" style="left:66%"></div>
   </div>
   <div class="hero-inner">
-    <div class="hero-badge"><span class="hero-badge-dot"></span>16 herramientas para autónomos y pymes — Lanzamiento julio 2026</div>
+    <div class="hero-badge"><span class="hero-badge-dot"></span>Precio fundador · 30% de descuento para siempre · Lanzamiento julio 2026</div>
     <h1>Nunca más una sorpresa <em>fiscal o legal</em> en tu empresa</h1>
-    <p class="hero-sub">Alertas del BOE filtradas, 7 calculadoras fiscales, auditoría IA personalizada, asistente fiscal 24/7, simuladores, verificador de gastos y mucho más — todo en un solo lugar, en lenguaje claro.</p>
+    <p class="hero-sub">Alertas del BOE filtradas, 16 herramientas fiscales, auditoría IA personalizada y asistente fiscal 24/7 — todo en lenguaje claro. Acceso completo gratis hasta julio.</p>
     <div class="hero-cta-row">
-      <a href="/lista-espera.html" class="btn-primary">Avísame cuando lancéis →</a>
+      <a href="/lista-espera.html" class="btn-primary">Entrar gratis con precio fundador →</a>
       <a href="/calculadora-modelo-303.html" class="btn-outline" target="_blank">Probar calculadora gratis</a>
     </div>
-    <p class="hero-note">Sin tarjeta de crédito · Acceso prioritario en julio · Configuración en 3 minutos</p>
+    <p class="hero-note">Sin tarjeta · Acceso completo hasta julio · El precio fundador desaparece el día del lanzamiento</p>
   </div>
 </section>
+
+<div class="founder-strip">
+  <span class="founder-pill">🎯 Precio fundador</span>
+  <p>Apúntate ahora y paga <strong>30% menos para siempre</strong> cuando lancemos en julio. Básico desde <strong>6,30€/mes</strong> · Pro desde <strong>16,80€/mes</strong></p>
+  <a href="/lista-espera.html" style="background:rgba(255,255,255,0.15);color:#fff;font-size:13px;font-weight:500;padding:7px 16px;border-radius:8px;text-decoration:none;white-space:nowrap;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">Quiero mi descuento →</a>
+</div>
 
 <div class="ticker-section">
   <div class="ticker-track">
@@ -302,10 +249,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
 <section class="social-proof">
   <div class="social-inner">
     <p class="sp-text">Alertas normativas para autónomos y pymes en España</p>
-    <div class="launch-badge">
-      <span class="launch-dot"></span>
-      Lanzamiento julio 2026
-    </div>
+    <div class="launch-badge"><span class="launch-dot"></span>Precio fundador activo hasta julio 2026</div>
   </div>
 </section>
 
@@ -341,7 +285,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
     <div class="features-grid reveal">
       <div class="feature-card"><div class="feat-icon-wrap fi-green">🔔</div><h3>Alertas del BOE filtradas</h3><p>Detectamos los cambios que afectan a autónomos y pymes. Sin leer 300 páginas. Clasificadas en Beneficio, Riesgo o Cambio.</p><span class="feature-badge fb-new">Tiempo real</span></div>
       <div class="feature-card"><div class="feat-icon-wrap fi-amber">🧮</div><h3>7 calculadoras fiscales</h3><p>303, 130, 111, 115, 200, sanciones y cuota de autónomo. Rellenas los datos, el resultado sale solo. Con exportación a PDF.</p><span class="feature-badge fb-hot">Gratis</span></div>
-      <div class="feature-card"><div class="feat-icon-wrap fi-green">🔍</div><h3>Auditoría Fiscal IA — Pro</h3><p>La IA analiza tu situación fiscal completa, detecta errores, identifica deducciones que no aplicas y calcula cuánto puedes ahorrar.</p><span class="feature-badge fb-new">Nuevo</span></div>
+      <div class="feature-card"><div class="feat-icon-wrap fi-green">🔍</div><h3>Auditoría Fiscal IA</h3><p>La IA analiza tu situación fiscal completa, detecta errores, identifica deducciones que no aplicas y calcula cuánto puedes ahorrar.</p><span class="feature-badge fb-new">Nuevo</span></div>
       <div class="feature-card"><div class="feat-icon-wrap fi-green">🤖</div><h3>Asistente IA fiscal 24/7</h3><p>Pregunta cualquier duda fiscal o normativa cuando quieras. Respuestas basadas en normativa española real. Sin esperar al lunes.</p><span class="feature-badge fb-new">IA</span></div>
       <div class="feature-card"><div class="feat-icon-wrap fi-ink">⚖️</div><h3>Comparador ED vs Módulos</h3><p>Descubre qué régimen fiscal te conviene más y cuánto ahorras al año. Puede que lleves años pagando de más sin saberlo.</p></div>
       <div class="feature-card"><div class="feat-icon-wrap fi-amber">🔎</div><h3>Verificador de gastos deducibles</h3><p>¿Me puedo deducir esto? 36 tipos de gastos con porcentaje exacto, condiciones y base legal. La herramienta más buscada.</p><span class="feature-badge fb-hot">Popular</span></div>
@@ -349,7 +293,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
       <div class="feature-card"><div class="feat-icon-wrap fi-amber">📬</div><h3>Traductor de cartas de Hacienda</h3><p>Pega el texto o sube una foto de cualquier carta de la AEAT. La IA explica qué significa y qué tienes que hacer.</p><span class="feature-badge fb-new">IA</span></div>
       <div class="feature-card"><div class="feat-icon-wrap fi-ink">💼</div><h3>Simulador de nómina</h3><p>Coste real de un empleado, neto que recibe y cotizaciones SS 2026 desglosadas. Para pymes que quieren contratar sin sorpresas.</p></div>
       <div class="feature-card"><div class="feat-icon-wrap fi-green">⚡</div><h3>Simulador de inspección</h3><p>10 preguntas basadas en criterios reales de la AEAT. Descubre tu nivel de riesgo y un plan de acción para reducirlo.</p></div>
-      <div class="feature-card"><div class="feat-icon-wrap fi-amber">📊</div><h3>¿Autónomo o asalariado?</h3><p>Compara el neto real en cada caso con tus números. Incluye impuestos, cotizaciones y tabla de intangibles más allá del dinero.</p></div>
+      <div class="feature-card"><div class="feat-icon-wrap fi-amber">📊</div><h3>¿Autónomo o asalariado?</h3><p>Compara el neto real en cada caso con tus números. Incluye impuestos, cotizaciones y tabla de intangibles.</p></div>
       <div class="feature-card"><div class="feat-icon-wrap fi-green">📅</div><h3>Calendario fiscal 2026</h3><p>Las 29 obligaciones del año ordenadas por fecha. Plazos exactos, qué modelo presentar y quién está obligado.</p></div>
     </div>
   </div>
@@ -357,27 +301,27 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
 
 <section class="value-added" id="valor-anadido">
   <div class="section-inner">
-    <p class="section-label reveal">Herramientas gratuitas</p>
-    <h2 class="reveal">Pruébalas ahora mismo.<br><em>Sin registro. Sin tarjeta.</em></h2>
+    <p class="section-label reveal">Pruébalas ahora — gratis</p>
+    <h2 class="reveal">Sin registro. Sin tarjeta.<br><em>Empieza en 30 segundos.</em></h2>
     <div class="va-grid reveal">
       <div class="va-card featured">
         <div class="va-num">01</div>
-        <div class="va-title">Auditoría Fiscal IA — Pro ✨</div>
-        <div class="va-desc">Introduce tus datos fiscales del año y la IA analiza tu situación completa. Detecta errores, deducciones que no aplicas y calcula cuánto podrías ahorrar. El servicio más potente de NormaAlerta.</div>
+        <div class="va-title">Auditoría Fiscal IA ✨</div>
+        <div class="va-desc">Introduce tus datos fiscales del año y la IA analiza tu situación completa. Detecta errores, deducciones que no aplicas y calcula cuánto podrías ahorrar.</div>
         <div class="va-plan"><span class="vap vap-p">Plan Profesional</span><span class="vap vap-e">Empresa</span></div>
         <a href="/auditoria-fiscal.html" class="btn-calc" target="_blank">Hacer mi auditoría →</a>
       </div>
       <div class="va-card">
         <div class="va-num">02</div>
         <div class="va-title">Asistente IA fiscal 24/7</div>
-        <div class="va-desc">Pregunta cualquier duda sobre modelos, plazos, retenciones o normativa. Respuestas basadas en la legislación española vigente. A la hora que necesites.</div>
+        <div class="va-desc">Pregunta cualquier duda sobre modelos, plazos, retenciones o normativa. Respuestas basadas en la legislación española vigente.</div>
         <div class="va-plan"><span class="vap vap-p">Plan Profesional</span><span class="vap vap-e">Empresa</span></div>
         <a href="/asistente-fiscal.html" class="btn-calc" target="_blank">Probar asistente →</a>
       </div>
       <div class="va-card">
         <div class="va-num">03</div>
         <div class="va-title">Traductor de cartas de Hacienda</div>
-        <div class="va-desc">Pega el texto o sube una foto de la carta. La IA te dice qué significa, si es urgente y exactamente qué tienes que hacer. En segundos.</div>
+        <div class="va-desc">Pega el texto o sube una foto de la carta. La IA te dice qué significa, si es urgente y exactamente qué tienes que hacer.</div>
         <div class="va-plan"><span class="vap vap-b">Gratuito para todos</span></div>
         <a href="/traductor-cartas-hacienda.html" class="btn-calc" target="_blank">Traducir carta →</a>
       </div>
@@ -391,7 +335,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
       <div class="va-card">
         <div class="va-num">05</div>
         <div class="va-title">Simulador de riesgo de inspección</div>
-        <div class="va-desc">10 preguntas basadas en criterios reales de la AEAT. Descubre tu nivel de riesgo y recibe un plan de acción personalizado para reducirlo.</div>
+        <div class="va-desc">10 preguntas basadas en criterios reales de la AEAT. Descubre tu nivel de riesgo y recibe un plan de acción personalizado.</div>
         <div class="va-plan"><span class="vap vap-b">Gratuito para todos</span></div>
         <a href="/simulador-inspeccion.html" class="btn-calc" target="_blank">Hacer el test →</a>
       </div>
@@ -409,15 +353,18 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
 <section class="pricing" id="precios">
   <div class="section-inner">
     <div class="pricing-header reveal">
-      <p class="section-label">Precios</p>
-      <h2>Sin letra pequeña.<br><em>Sin sorpresas.</em></h2>
-      <p style="font-size:15px;color:var(--ink2);margin-top:12px;">Acceso prioritario para los primeros en apuntarse. Lanzamiento julio 2026.</p>
+      <p class="section-label">Precio fundador · Activo hasta julio 2026</p>
+      <h2>Entra gratis ahora.<br><em>Guárdate el 30% para siempre.</em></h2>
+      <p style="font-size:15px;color:var(--ink2);margin-top:12px;">Acceso completo hasta el lanzamiento. Cuando abra, pagas el precio fundador — para siempre mientras no canceles.</p>
     </div>
     <div class="pricing-grid reveal">
+
       <div class="price-card">
         <div class="price-label">Básico</div>
-        <div class="price-val">9€</div>
-        <div class="price-period">al mes · IVA incl.</div>
+        <div class="price-original">9€/mes</div>
+        <div class="price-val">6,30€</div>
+        <div class="price-period">al mes · IVA incl. · precio fundador</div>
+        <div class="founder-saving">🎯 30% off para siempre</div>
         <hr class="price-divider">
         <div class="price-feat"><span class="pf-check">✓</span> 29 alertas normativas activas</div>
         <div class="price-feat"><span class="pf-check">✓</span> Calendario fiscal 2026</div>
@@ -427,14 +374,20 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
         <div class="price-feat"><span class="pf-check">✓</span> Comparador ED vs Módulos</div>
         <div class="price-feat"><span class="pf-check">✓</span> 3 guías PDF descargables</div>
         <div class="price-feat"><span class="pf-lock">–</span> Asistente IA fiscal</div>
-        <div class="price-feat"><span class="pf-lock">–</span> Plantillas Excel completas</div>
         <div class="price-feat"><span class="pf-lock">–</span> Alertas por WhatsApp</div>
-        <div class="price-cta-wrap"><a href="/lista-espera.html" class="price-btn pb-outline">Avísame en julio</a><p class="price-note">Lanzamiento julio 2026</p></div>
+        <div class="price-cta-wrap">
+          <a href="/lista-espera.html" class="price-btn pb-outline">Entrar gratis ahora</a>
+          <p class="price-note">Sin tarjeta hasta julio</p>
+        </div>
       </div>
+
       <div class="price-card featured">
+        <div class="founder-badge">⭐ Más elegido</div>
         <div class="price-label">Profesional</div>
-        <div class="price-val" style="color:#fff">24€</div>
-        <div class="price-period">al mes · IVA incl.</div>
+        <div class="price-original" style="color:rgba(255,255,255,0.3)">24€/mes</div>
+        <div class="price-val">16,80€</div>
+        <div class="price-period">al mes · IVA incl. · precio fundador</div>
+        <div class="founder-saving">🎯 30% off para siempre</div>
         <hr class="price-divider">
         <div class="price-feat"><span class="pf-check">✓</span> Todo lo del plan Básico</div>
         <div class="price-feat"><span class="pf-check">✓</span> Asistente IA fiscal 24/7</div>
@@ -443,44 +396,56 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
         <div class="price-feat"><span class="pf-check">✓</span> Alertas por WhatsApp</div>
         <div class="price-feat"><span class="pf-check">✓</span> Hasta 3 usuarios</div>
         <div class="price-feat"><span class="pf-check">✓</span> Soporte prioritario</div>
-        <div class="price-cta-wrap"><a href="/lista-espera.html" class="price-btn pb-solid">Avísame en julio</a><p class="price-note">El más elegido</p></div>
+        <div class="price-cta-wrap">
+          <a href="/lista-espera.html" class="price-btn pb-solid">Entrar gratis ahora</a>
+          <p class="price-note">Sin tarjeta hasta julio</p>
+        </div>
       </div>
+
       <div class="price-card">
         <div class="price-label">Empresa</div>
-        <div class="price-val">79€</div>
-        <div class="price-period">al mes · IVA incl.</div>
+        <div class="price-original">79€/mes</div>
+        <div class="price-val">55,30€</div>
+        <div class="price-period">al mes · IVA incl. · precio fundador</div>
+        <div class="founder-saving">🎯 30% off para siempre</div>
         <hr class="price-divider">
         <div class="price-feat"><span class="pf-check">✓</span> Todo lo del plan Profesional</div>
         <div class="price-feat"><span class="pf-check">✓</span> Usuarios ilimitados</div>
-        <div class="price-feat"><span class="pf-check">✓</span> Portal marca blanca (tu logo)</div>
+        <div class="price-feat"><span class="pf-check">✓</span> Portal marca blanca</div>
         <div class="price-feat"><span class="pf-check">✓</span> Alertas personalizadas por sector</div>
         <div class="price-feat"><span class="pf-check">✓</span> Resumen PDF mensual automático</div>
         <div class="price-feat"><span class="pf-check">✓</span> Soporte prioritario &lt;4h</div>
-        <div class="price-cta-wrap"><a href="/lista-espera.html" class="price-btn pb-outline">Avísame en julio</a><p class="price-note">Para equipos y gestorías</p></div>
+        <div class="price-cta-wrap">
+          <a href="/lista-espera.html" class="price-btn pb-outline">Entrar gratis ahora</a>
+          <p class="price-note">Sin tarjeta hasta julio</p>
+        </div>
       </div>
+
     </div>
+    <p class="pricing-disclaimer reveal">El precio fundador desaparece el día del lanzamiento en julio. <strong>Sin tarjeta de crédito hasta entonces.</strong> Cancela cuando quieras, sin permanencia.</p>
   </div>
 </section>
 
 <section class="faq" id="faq">
   <div class="faq-inner">
     <div class="faq-header reveal"><p class="section-label">FAQ</p><h2>Preguntas <em>frecuentes</em></h2></div>
-    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">¿Necesito conocimientos fiscales para usar NormaAlerta?<span class="faq-chevron">+</span></div><div class="faq-a">No. Todo está en lenguaje claro, sin jerga legal. Cada alerta incluye exactamente lo que tienes que hacer, paso a paso. No necesitas saber qué es un BOE ni cómo funciona la AEAT.</div></div>
-    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">¿Cómo sé que las alertas son relevantes para mi empresa?<span class="faq-chevron">+</span></div><div class="faq-a">Al registrarte configuras tu sector, número de empleados y tipo de empresa. A partir de ahí filtramos solo las normativas que te afectan directamente.</div></div>
-    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">¿Las plantillas de modelos están siempre actualizadas?<span class="faq-chevron">+</span></div><div class="faq-a">Sí. Monitorizamos la AEAT y el BOE para detectar cualquier actualización. Cuando hay un cambio, actualizamos las plantillas y te avisamos automáticamente.</div></div>
+    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">¿Qué es el precio fundador?<span class="faq-chevron">+</span></div><div class="faq-a">Es un descuento del 30% permanente para las personas que se apunten antes del lanzamiento oficial en julio 2026. Mientras mantengas tu suscripción, nunca pagarás el precio normal. Es nuestra forma de recompensar a quien confió en NormaAlerta desde el principio.</div></div>
+    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">¿Necesito dar mis datos de pago ahora?<span class="faq-chevron">+</span></div><div class="faq-a">No. Hasta el lanzamiento en julio el acceso es completamente gratuito y sin tarjeta de crédito. Solo te pedimos tu email para avisarte cuando lancemos y guardar tu precio fundador.</div></div>
+    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">¿Necesito conocimientos fiscales para usar NormaAlerta?<span class="faq-chevron">+</span></div><div class="faq-a">No. Todo está en lenguaje claro, sin jerga legal. Cada alerta incluye exactamente lo que tienes que hacer, paso a paso.</div></div>
+    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">¿NormaAlerta sustituye a mi gestor?<span class="faq-chevron">+</span></div><div class="faq-a">No. NormaAlerta te mantiene informado y preparado. Tu gestor sigue siendo necesario para trámites complejos. Lo que hacemos es que llegues a esas conversaciones ya informado, sin sorpresas ni gastos evitables.</div></div>
     <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">¿Puedo cancelar cuando quiera?<span class="faq-chevron">+</span></div><div class="faq-a">Sí, sin permanencia ni penalización. Cancelas desde tu panel en cualquier momento y el acceso continúa hasta el final del período pagado.</div></div>
-    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">¿NormaAlerta sustituye a mi gestor o asesor?<span class="faq-chevron">+</span></div><div class="faq-a">No. NormaAlerta te mantiene informado y preparado. Tu gestor sigue siendo necesario para trámites complejos. Lo que hacemos es que llegues a esas conversaciones ya informado, sin sorpresas.</div></div>
-    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">¿Cuándo abre NormaAlerta?<span class="faq-chevron">+</span></div><div class="faq-a">El lanzamiento está previsto para julio 2026. Apúntate a la lista de espera para conseguir acceso prioritario y precio especial de lanzamiento.</div></div>
+    <div class="faq-item reveal"><div class="faq-q" onclick="toggleFaq(this)">¿Las alertas son relevantes para mi sector?<span class="faq-chevron">+</span></div><div class="faq-a">Al registrarte configuras tu sector, número de empleados y tipo de empresa. A partir de ahí filtramos solo las normativas que te afectan directamente.</div></div>
   </div>
 </section>
 
 <section class="cta-final">
   <div class="cta-bg"></div>
   <div class="cta-inner">
-    <h2>Apúntate ahora.<br><em>Acceso prioritario en julio.</em></h2>
-    <p class="cta-sub">Los primeros en apuntarse consiguen acceso antes que nadie y precio especial de lanzamiento. Sin compromisos.</p>
-    <a href="/lista-espera.html" class="cta-btn-espera">Avísame cuando lancéis →</a>
-    <p class="cta-final-note">Sin tarjeta de crédito · Sin permanencia · Lanzamiento julio 2026</p>
+    <h2>Entra gratis ahora.<br><em>El descuento es para siempre.</em></h2>
+    <p class="cta-sub">Acceso completo a las 16 herramientas hasta julio. Sin tarjeta. Sin compromisos.</p>
+    <p class="cta-founder-note">🎯 Precio fundador: 30% de descuento permanente cuando lancemos</p>
+    <a href="/lista-espera.html" class="cta-btn-espera">Quiero mi precio fundador →</a>
+    <p class="cta-final-note">El precio fundador desaparece el día del lanzamiento · Sin permanencia · Cancela cuando quieras</p>
   </div>
 </section>
 
@@ -490,7 +455,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
     <div class="footer-links">
       <a href="/privacidad.html">Privacidad y Cookies</a>
       <a href="mailto:hola@normaalerta.com">Contacto</a>
-      <a href="/lista-espera.html">Lista de espera</a>
+      <a href="/lista-espera.html">Precio fundador</a>
     </div>
     <span class="footer-copy">© 2026 NormaAlerta. Todos los derechos reservados.</span>
   </div>
@@ -498,7 +463,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
 
 <script>
 const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 function toggleFaq(el) {
