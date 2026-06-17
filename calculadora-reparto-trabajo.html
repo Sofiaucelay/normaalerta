@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reparto de trabajo entre autónomos | NormaAlerta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;
+  --ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;
+  --paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;
+  --border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);
+  --amber-light:#fef3c7;--red:#dc2626;--blue-light:#eff6ff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.nav-actions{display:flex;gap:8px}
+.btn-nav{font-size:13px;padding:6px 14px;border-radius:7px;border:none;cursor:pointer;font-family:inherit;font-weight:500}
+.btn-nav-outline{background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8)}
+.btn-nav-primary{background:var(--green);color:var(--white)}
+.page{max-width:760px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-header{margin-bottom:2rem;text-align:center}
+.modelo-badge{display:inline-block;background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;font-family:'DM Mono',monospace;margin-bottom:.75rem}
+.page-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;letter-spacing:-.5px;margin-bottom:.5rem}
+.page-title em{font-style:italic;color:var(--green)}
+.page-subtitle{font-size:14px;color:var(--ink3);max-width:500px;margin:0 auto}
+
+.section{background:var(--white);border:1px solid var(--border);border-radius:14px;margin-bottom:1rem;overflow:hidden}
+.section-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--green-light)}
+.section-title{font-size:15px;font-weight:500;flex:1}
+.section-subtitle{font-size:12px;color:var(--ink3);margin-top:1px}
+.section-body{padding:1.25rem}
+
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.field:last-child{margin-bottom:0}
+.field label{font-size:12px;font-weight:500;color:var(--ink3)}
+.field-wrap{position:relative}
+.field-wrap input{padding:.6rem 2.5rem .6rem 1rem;border:1px solid var(--border2);border-radius:8px;font-size:16px;font-family:'DM Mono',monospace;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;width:100%;text-align:right}
+.field-wrap input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
+.field-wrap .suffix{position:absolute;right:.85rem;top:50%;transform:translateY(-50%);font-size:13px;color:var(--ink3);pointer-events:none}
+.input-note{font-size:11px;color:var(--ink3);font-style:italic;margin-top:3px}
+
+/* SLIDER */
+.slider-wrap{margin-top:6px}
+.slider-wrap input[type=range]{width:100%;accent-color:var(--green);cursor:pointer}
+.slider-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-top:2px}
+
+.info-box{border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12px;display:flex;gap:8px;align-items:flex-start}
+.info-box.amber{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);color:#92400e}
+.info-box.green{background:var(--green-light);border:1px solid rgba(26,122,74,.2);color:var(--green-dark)}
+.info-box.blue{background:var(--blue-light);border:1px solid rgba(37,99,235,.2);color:#1e40af}
+
+/* RESULTADO VISUAL */
+.reparto-visual{margin:1.25rem 0;border-radius:10px;overflow:hidden;height:48px;display:flex}
+.rv-yo{background:var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:white;transition:width .3s;min-width:0;overflow:hidden;white-space:nowrap;padding:0 8px}
+.rv-colab{background:var(--ink2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:white;transition:width .3s;min-width:0;overflow:hidden;white-space:nowrap;padding:0 8px}
+
+/* TARJETAS RESULTADO */
+.resultado-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:1.25rem}
+.rcard{border-radius:12px;padding:1.25rem;text-align:center}
+.rcard.yo{background:var(--ink);color:white}
+.rcard.colab{background:var(--paper2);color:var(--ink)}
+.rcard-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem;opacity:.6}
+.rcard-num{font-family:'DM Mono',monospace;font-size:32px;font-weight:500;line-height:1;margin-bottom:.25rem}
+.rcard.yo .rcard-num{color:#4ade80}
+.rcard.colab .rcard-num{color:var(--ink)}
+.rcard-sub{font-size:12px;opacity:.6}
+.rcard-detalle{margin-top:.875rem;text-align:left;font-size:12px;border-top:1px solid rgba(255,255,255,.1);padding-top:.75rem}
+.rcard.colab .rcard-detalle{border-top-color:var(--border)}
+.rcard-row{display:flex;justify-content:space-between;margin-bottom:3px}
+.rcard-row .rl{opacity:.6}
+.rcard-row .rv{font-family:'DM Mono',monospace;font-weight:500}
+
+/* DESGLOSE TOTAL */
+.desglose-total{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-top:1rem}
+.dt-row{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-bottom:1px solid var(--border);font-size:13px}
+.dt-row:last-child{border-bottom:none;font-weight:600;font-size:14px;padding-top:.75rem;margin-top:.25rem;border-top:2px solid var(--border2)}
+.dt-row .dl{color:var(--ink2)}
+.dt-row .dv{font-family:'DM Mono',monospace;font-weight:500}
+.dv.pos{color:var(--green)}
+.dv.neg{color:var(--red)}
+
+.export-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:1.25rem}
+.btn-export{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:none}
+.btn-pdf{background:var(--green);color:var(--white)}
+.btn-reset{background:var(--paper2);color:var(--ink);border:1px solid var(--border2)}
+
+/* RET SELECTOR */
+.ret-selector{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+.ret-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--border2);font-size:12px;font-weight:500;cursor:pointer;background:var(--white);color:var(--ink2);font-family:inherit;transition:all .15s}
+.ret-btn.active{background:var(--green);color:white;border-color:var(--green)}
+
+@media(max-width:500px){
+  .resultado-cards{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/></svg>
+    NormaAlerta <span class="nav-badge">Calculadora fiscal</span>
+  </a>
+  <div class="nav-actions">
+    <button class="btn-nav btn-nav-outline" onclick="window.print()">🖨 Imprimir</button>
+    <button class="btn-nav btn-nav-primary" onclick="exportPDF()">⬇ PDF</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="page-header">
+    <div class="modelo-badge">REPARTO DE TRABAJO</div>
+    <h1 class="page-title">¿Cuánto me queda<br>después de pagar al <em>colaborador</em>?</h1>
+    <p class="page-subtitle">Introduces lo que cobras al cliente, lo que le das al otro autónomo y ves exactamente qué te queda limpio a ti.</p>
+  </div>
+
+  <!-- INPUTS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">💶</div>
+      <div>
+        <div class="section-title">El servicio</div>
+        <div class="section-subtitle">Lo que cobras y lo que pagas</div>
+      </div>
+    </div>
+    <div class="section-body">
+
+      <div class="field">
+        <label>¿Cuánto cobras al cliente por el servicio? (sin IVA)</label>
+        <div class="field-wrap">
+          <input type="number" id="total_servicio" value="1000" min="0" step="10" oninput="calcular()">
+          <span class="suffix">€</span>
+        </div>
+        <span class="input-note">Lo que aparece en tu factura al cliente, sin IVA</span>
+      </div>
+
+      <div class="field">
+        <label>¿Cuánto le das al colaborador por su parte? (sin IVA)</label>
+        <div class="field-wrap">
+          <input type="number" id="parte_colab" value="400" min="0" step="10" oninput="sincronizarSlider(); calcular()">
+          <span class="suffix">€</span>
+        </div>
+        <div class="slider-wrap">
+          <input type="range" id="slider_colab" min="0" max="100" value="40" step="1" oninput="sliderCambio()">
+          <div class="slider-labels"><span>0%</span><span id="slider-pct-label">40% del servicio</span><span>100%</span></div>
+        </div>
+        <span class="input-note">Lo que le pagarás al colaborador — puedes moverlo con el deslizador</span>
+      </div>
+
+      <div class="field">
+        <label>Retención IRPF que debes aplicarle</label>
+        <div class="ret-selector">
+          <button class="ret-btn active" onclick="setRet(15, this)">15% — Profesional general</button>
+          <button class="ret-btn" onclick="setRet(7, this)">7% — Nuevo autónomo (&lt;2 años)</button>
+          <button class="ret-btn" onclick="setRet(0, this)">0% — Actividad no profesional</button>
+        </div>
+        <input type="hidden" id="retencion" value="15">
+        <span class="input-note" id="ret-nota">Profesionales (diseño, consultoría, programación, arquitectura...) — 15%. Aplicable si el colaborador ejerce actividad profesional.</span>
+      </div>
+
+      <div class="info-box blue">
+        ℹ️ <span>El colaborador te emite una <strong>factura con retención</strong>. Tú le pagas el importe menos la retención y declaras esa retención en el <strong>Modelo 111</strong> trimestral. La retención la ingresa Hacienda, no el colaborador.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RESULTADO VISUAL -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">📊</div>
+      <div>
+        <div class="section-title">Reparto del servicio</div>
+        <div class="section-subtitle">Cómo se distribuye el dinero del cliente</div>
+      </div>
+    </div>
+    <div class="section-body">
+
+      <div class="reparto-visual">
+        <div class="rv-yo" id="rv-yo" style="width:60%">Tú: —</div>
+        <div class="rv-colab" id="rv-colab" style="width:40%">Colaborador: —</div>
+      </div>
+
+      <div class="resultado-cards">
+        <div class="rcard yo">
+          <div class="rcard-label">Lo que te queda a ti</div>
+          <div class="rcard-num" id="rc-yo-neto">—</div>
+          <div class="rcard-sub" id="rc-yo-pct">— % del servicio</div>
+          <div class="rcard-detalle">
+            <div class="rcard-row"><span class="rl">Cobras al cliente</span><span class="rv" id="rc-yo-ingreso">—</span></div>
+            <div class="rcard-row"><span class="rl">Pagas al colaborador</span><span class="rv" id="rc-yo-pago">—</span></div>
+            <div class="rcard-row"><span class="rl">Retienes para M.111</span><span class="rv" id="rc-yo-ret111">—</span></div>
+            <div class="rcard-row" style="margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.1)">
+              <span class="rl" style="font-weight:600">Neto en tu bolsillo</span>
+              <span class="rv" style="color:#4ade80" id="rc-yo-neto2">—</span>
+            </div>
+          </div>
+        </div>
+        <div class="rcard colab">
+          <div class="rcard-label">Lo que cobra el colaborador</div>
+          <div class="rcard-num" id="rc-colab-neto">—</div>
+          <div class="rcard-sub" id="rc-colab-pct">— % del servicio</div>
+          <div class="rcard-detalle" style="color:var(--ink)">
+            <div class="rcard-row"><span class="rl">Factura bruta</span><span class="rv" id="rc-colab-bruto">—</span></div>
+            <div class="rcard-row"><span class="rl">Retención IRPF (−)</span><span class="rv" id="rc-colab-ret">—</span></div>
+            <div class="rcard-row" style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border)">
+              <span class="rl" style="font-weight:600">Lo que recibe</span>
+              <span class="rv" id="rc-colab-recibe">—</span>
+            </div>
+            <div style="font-size:10px;color:var(--ink3);margin-top:6px">La retención la recupera en su declaración de la renta anual</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESGLOSE TOTAL -->
+      <div class="desglose-total">
+        <div class="dt-row"><span class="dl">✅ Cobras al cliente</span><span class="dv pos" id="dt-ingreso">—</span></div>
+        <div class="dt-row"><span class="dl">➖ Pagas al colaborador (neto)</span><span class="dv neg" id="dt-pago">—</span></div>
+        <div class="dt-row"><span class="dl">🏦 Retienes para Modelo 111</span><span class="dv" style="color:var(--ink3)" id="dt-ret111">—</span></div>
+        <div class="dt-row"><span class="dl">= Te queda en tu cuenta</span><span class="dv pos" id="dt-neto">—</span></div>
+      </div>
+
+      <div class="info-box amber" style="margin-top:1rem">
+        ⚠️ <span>Este importe es <strong>antes de tus propios impuestos</strong> (IRPF en el 130 y cuota SS). De lo que te queda, aún tendrás que apartar aproximadamente un 25-35% para tus obligaciones fiscales según tu nivel de ingresos anual.</span>
+      </div>
+
+      <div class="export-row">
+        <button class="btn-export btn-pdf" onclick="exportPDF()">⬇ Descargar PDF</button>
+        <button class="btn-export btn-reset" onclick="resetForm()">↺ Limpiar</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+function fmt(n){
+  return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+}
+function fmtPct(n){
+  return (parseFloat(n)||0).toFixed(1)+'%';
+}
+function v(id){ return parseFloat(document.getElementById(id)?.value)||0; }
+function setText(id, txt){ const el=document.getElementById(id); if(el) el.textContent=txt; }
+
+let retActual = 15;
+
+function setRet(pct, btn){
+  retActual = pct;
+  document.getElementById('retencion').value = pct;
+  document.querySelectorAll('.ret-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const notas = {
+    15: 'Profesionales (diseño, consultoría, programación, arquitectura...) — 15%. El más habitual entre autónomos profesionales.',
+    7:  'Solo si el colaborador lleva menos de 2 años de alta como autónomo y así lo comunica. Válido durante el año de alta y los 2 siguientes.',
+    0:  'Actividades comerciales, industriales o agrícolas (fontanero, electricista, transportista...). No aplica retención profesional.'
+  };
+  setText('ret-nota', notas[pct]);
+  calcular();
+}
+
+function sliderCambio(){
+  const pct = v('slider_colab');
+  const total = v('total_servicio');
+  document.getElementById('parte_colab').value = (total * pct / 100).toFixed(2);
+  setText('slider-pct-label', pct.toFixed(0) + '% del servicio');
+  calcular();
+}
+
+function sincronizarSlider(){
+  const total = v('total_servicio');
+  const colab = v('parte_colab');
+  const pct = total > 0 ? Math.min(100, (colab/total*100)) : 0;
+  document.getElementById('slider_colab').value = pct;
+  setText('slider-pct-label', pct.toFixed(0) + '% del servicio');
+}
+
+function calcular(){
+  const total   = v('total_servicio');
+  const bruto   = v('parte_colab');
+  const ret_pct = retActual / 100;
+
+  const retencion = bruto * ret_pct;
+  const pago_neto = bruto - retencion;   // lo que realmente pagas al colaborador
+  const yo_neto   = total - pago_neto;   // lo que te queda en cuenta (incluye la retención que después pagas a Hacienda)
+  const yo_real   = total - bruto;       // tu parte real del servicio (sin contar la retención que es de Hacienda)
+
+  const pct_yo    = total > 0 ? (yo_real / total * 100) : 0;
+  const pct_colab = total > 0 ? (bruto / total * 100) : 0;
+
+  // Barra visual
+  const barYo    = document.getElementById('rv-yo');
+  const barColab = document.getElementById('rv-colab');
+  const pctYoBar = total > 0 ? Math.max(5, Math.min(95, pct_yo)) : 60;
+  barYo.style.width    = pctYoBar + '%';
+  barColab.style.width = (100 - pctYoBar) + '%';
+  barYo.textContent    = `Tú: ${fmt(yo_real)}`;
+  barColab.textContent = `Colaborador: ${fmt(bruto)}`;
+
+  // Tarjeta YO
+  setText('rc-yo-neto',    fmt(yo_real));
+  setText('rc-yo-neto2',   fmt(yo_real));
+  setText('rc-yo-pct',     fmtPct(pct_yo) + ' del servicio');
+  setText('rc-yo-ingreso', fmt(total));
+  setText('rc-yo-pago',    '− ' + fmt(pago_neto));
+  setText('rc-yo-ret111',  fmt(retencion));
+
+  // Tarjeta COLABORADOR
+  setText('rc-colab-neto',    fmt(pago_neto));
+  setText('rc-colab-pct',     fmtPct(pct_colab) + ' del servicio');
+  setText('rc-colab-bruto',   fmt(bruto));
+  setText('rc-colab-ret',     '− ' + fmt(retencion));
+  setText('rc-colab-recibe',  fmt(pago_neto));
+
+  // Desglose total
+  setText('dt-ingreso', fmt(total));
+  setText('dt-pago',    '− ' + fmt(pago_neto));
+  setText('dt-ret111',  fmt(retencion));
+  setText('dt-neto',    fmt(yo_neto));
+
+  // Sincronizar slider
+  sincronizarSlider();
+}
+
+function resetForm(){
+  document.getElementById('total_servicio').value = 1000;
+  document.getElementById('parte_colab').value    = 400;
+  document.getElementById('slider_colab').value   = 40;
+  setText('slider-pct-label', '40% del servicio');
+  calcular();
+}
+
+function exportPDF(){
+  const total     = v('total_servicio');
+  const bruto     = v('parte_colab');
+  const ret_pct   = retActual / 100;
+  const retencion = bruto * ret_pct;
+  const pago_neto = bruto - retencion;
+  const yo_real   = total - bruto;
+  const pct_yo    = total > 0 ? (yo_real/total*100) : 0;
+
+  const w = window.open('','_blank','width=800,height=700');
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Reparto trabajo NormaAlerta</title>
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Helvetica,Arial,sans-serif;font-size:13px;padding:40px;color:#1c1b18}
+  .hdr{display:flex;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #1a7a4a}
+  h1{font-size:18px;font-weight:600;color:#1a7a4a}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#f7f5ee;padding:14px;border-radius:8px;margin-bottom:16px}
+  .grid label{font-size:10px;text-transform:uppercase;color:#8c8b84;display:block;margin-bottom:2px}.grid span{font-size:14px;font-weight:500}
+  table{width:100%;border-collapse:collapse;margin-top:12px}td{padding:7px 10px;border-bottom:1px solid #edeae0;font-size:13px}
+  .r{text-align:right;font-family:monospace;font-weight:500}.pos{color:#1a7a4a}.neg{color:#dc2626}.gris{color:#8c8b84}
+  .total td{font-weight:700;border-top:2px solid #1c1b18;font-size:14px;padding-top:10px}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .card{padding:14px;border-radius:8px}.card-yo{background:#1c1b18;color:white}.card-co{background:#edeae0}
+  .cn{font-family:monospace;font-size:22px;font-weight:600;color:#4ade80;margin:4px 0}.cn2{color:#1a7a4a}
+  .cs{font-size:11px;opacity:.5}
+  .ftr{margin-top:20px;font-size:10px;color:#8c8b84;text-align:center;border-top:1px solid #edeae0;padding-top:10px}
+  @media print{body{padding:20px}}</style></head><body>
+  <div class="hdr"><div><h1>NormaAlerta — Reparto de trabajo entre autónomos</h1></div><div style="font-size:11px;color:#8c8b84">normaalerta.com</div></div>
+  <div class="grid">
+    <div><label>Total servicio al cliente</label><span>${fmt(total)}</span></div>
+    <div><label>Parte del colaborador</label><span>${fmt(bruto)} (${pct_yo > 0 ? (100-pct_yo).toFixed(1) : 0}%)</span></div>
+    <div><label>Retención IRPF aplicada</label><span>${retActual}%</span></div>
+    <div><label>Tu parte del servicio</label><span>${fmt(yo_real)} (${pct_yo.toFixed(1)}%)</span></div>
+  </div>
+  <table>
+    <tr><td>✅ Cobras al cliente</td><td class="r pos">${fmt(total)}</td></tr>
+    <tr><td>➖ Pagas al colaborador (neto, sin retención)</td><td class="r neg">− ${fmt(pago_neto)}</td></tr>
+    <tr><td class="gris">🏦 Retienes para Modelo 111 (${retActual}%)</td><td class="r gris">${fmt(retencion)}</td></tr>
+    <tr class="total"><td>= Te queda en cuenta (antes de tus impuestos)</td><td class="r pos">${fmt(total - pago_neto)}</td></tr>
+  </table>
+  <div class="cards">
+    <div class="card card-yo"><div class="cs">LO QUE TE QUEDA A TI (TU PARTE REAL)</div><div class="cn">${fmt(yo_real)}</div><div class="cs">${pct_yo.toFixed(1)}% del servicio</div></div>
+    <div class="card card-co"><div class="cs" style="color:#8c8b84">LO QUE RECIBE EL COLABORADOR</div><div class="cn cn2">${fmt(pago_neto)}</div><div class="cs" style="color:#8c8b84">+ recupera ${fmt(retencion)} en su renta anual</div></div>
+  </div>
+  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Cálculo orientativo antes de IRPF y SS propios. Consulta con tu gestor.</div>
+  <script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.close();
+}
+
+// Init
+calcular();
+</script>
+</body>
+</html>
