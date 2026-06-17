@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Cuánto tengo que facturar este mes? | NormaAlerta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;
+  --ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;
+  --paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;
+  --border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);
+  --amber:#f59e0b;--amber-light:#fef3c7;--red:#dc2626;--red-light:#fef2f2;--blue-light:#eff6ff;
+  --orange:#ea580c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-header{margin-bottom:2rem;text-align:center}
+.modelo-badge{display:inline-block;background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;font-family:'DM Mono',monospace;margin-bottom:.75rem}
+.page-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;letter-spacing:-.5px;margin-bottom:.5rem}
+.page-title em{font-style:italic;color:var(--green)}
+.page-subtitle{font-size:14px;color:var(--ink3);max-width:520px;margin:0 auto}
+
+.section{background:var(--white);border:1px solid var(--border);border-radius:14px;margin-bottom:1rem;overflow:hidden}
+.section-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--green-light)}
+.section-title{font-size:15px;font-weight:500;flex:1}
+.section-subtitle{font-size:12px;color:var(--ink3);margin-top:1px}
+.section-body{padding:1.25rem}
+
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.full{grid-column:1/-1}
+.field label{font-size:12px;font-weight:500;color:var(--ink3)}
+.field-wrap{position:relative}
+.field-wrap input{padding:.55rem 2.25rem .55rem .75rem;border:1px solid var(--border2);border-radius:8px;font-size:14px;font-family:'DM Mono',monospace;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;width:100%;text-align:right}
+.field-wrap input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
+.field-wrap .suffix{position:absolute;right:.75rem;top:50%;transform:translateY(-50%);font-size:12px;color:var(--ink3);pointer-events:none}
+.input-note{font-size:11px;color:var(--ink3);font-style:italic;margin-top:2px}
+
+.info-box{border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12px;display:flex;gap:8px;align-items:flex-start}
+.info-box.amber{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);color:#92400e}
+.info-box.green{background:var(--green-light);border:1px solid rgba(26,122,74,.2);color:var(--green-dark)}
+.info-box.blue{background:var(--blue-light);border:1px solid rgba(37,99,235,.2);color:#1e40af}
+.info-box.red{background:var(--red-light);border:1px solid rgba(220,38,38,.2);color:#991b1b}
+
+/* RESULTADO PRINCIPAL */
+.resultado-principal{background:var(--ink);border-radius:14px;padding:1.75rem;margin-top:1.5rem;position:relative;overflow:hidden}
+.resultado-principal::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;background:rgba(34,160,122,.06)}
+.rp-label{font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.375rem}
+.rp-num{font-family:'DM Mono',monospace;font-size:48px;font-weight:500;color:#4ade80;line-height:1;margin-bottom:.25rem}
+.rp-sub{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:1.5rem}
+.rp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+.rpc{background:rgba(255,255,255,.07);border-radius:8px;padding:.75rem}
+.rpc-label{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:3px}
+.rpc-val{font-size:14px;font-weight:500;font-family:'DM Mono',monospace;color:rgba(255,255,255,.9)}
+.rpc-val.verde{color:#4ade80}
+.rpc-val.rojo{color:#fca5a5}
+.export-row{display:flex;gap:8px;flex-wrap:wrap}
+.btn-export{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:none}
+.btn-pdf{background:var(--green);color:var(--white)}
+.btn-reset{background:rgba(255,255,255,.1);color:var(--white);border:1px solid rgba(255,255,255,.2)}
+
+/* DESGLOSE EURO */
+.euro-desglose{margin-top:1.25rem}
+.euro-label{font-size:12px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem}
+.euro-barra{height:40px;border-radius:8px;overflow:hidden;display:flex;margin-bottom:.75rem}
+.eb-sueldo{background:var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:white;transition:width .3s;min-width:0;overflow:hidden;white-space:nowrap;padding:0 6px}
+.eb-ss{background:#6366f1;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:white;transition:width .3s;min-width:0;overflow:hidden;white-space:nowrap;padding:0 6px}
+.eb-irpf{background:var(--amber);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:white;transition:width .3s;min-width:0;overflow:hidden;white-space:nowrap;padding:0 6px}
+.eb-gastos{background:var(--ink3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:white;transition:width .3s;min-width:0;overflow:hidden;white-space:nowrap;padding:0 6px}
+.euro-leyenda{display:flex;flex-wrap:wrap;gap:12px;font-size:12px}
+.el-item{display:flex;align-items:center;gap:5px}
+.el-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* DESGLOSE TABLA */
+.desglose-table{width:100%;border-collapse:collapse;font-size:13px}
+.desglose-table td{padding:.5rem .75rem;border-bottom:1px solid var(--border)}
+.desglose-table tr:last-child td{border-bottom:none}
+.dt-l{color:var(--ink2)}
+.dt-v{text-align:right;font-family:'DM Mono',monospace;font-weight:500}
+.dt-pos{color:var(--green)}
+.dt-neg{color:var(--red)}
+.dt-total td{font-weight:600;font-size:14px;border-top:2px solid var(--border2);padding-top:.75rem}
+.dt-sub td{font-size:11px;color:var(--ink3);background:var(--paper)}
+
+/* SEMÁFORO MENSUAL */
+.semaforo{border-radius:12px;padding:1.25rem;margin-top:0}
+.semaforo.verde{background:var(--green-light);border:1px solid rgba(26,122,74,.2)}
+.semaforo.ambar{background:var(--amber-light);border:1px solid rgba(245,158,11,.3)}
+.semaforo.rojo{background:var(--red-light);border:1px solid rgba(220,38,38,.2)}
+.semaforo.neutro{background:var(--paper2);border:1px solid var(--border2)}
+.sem-top{display:flex;align-items:center;gap:12px;margin-bottom:.75rem}
+.sem-emoji{font-size:28px;flex-shrink:0}
+.sem-titulo{font-size:15px;font-weight:500}
+.sem-sub{font-size:13px;opacity:.8;margin-top:2px}
+
+/* BARRA PROGRESO */
+.progreso-wrap{margin:.75rem 0}
+.progreso-bar{height:12px;background:var(--paper2);border-radius:6px;overflow:hidden;position:relative}
+.progreso-fill{height:100%;border-radius:6px;transition:width .4s;background:var(--green)}
+.progreso-fill.ambar{background:var(--amber)}
+.progreso-fill.rojo{background:var(--red)}
+.progreso-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-top:4px}
+.progreso-marker{position:absolute;top:0;bottom:0;width:2px;background:rgba(0,0,0,.2)}
+
+/* ESCENARIOS PRECIO */
+.escenarios-precio{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:1rem}
+.ep-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center}
+.ep-card.actual{border-color:var(--green);background:var(--green-light)}
+.ep-badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:.5rem}
+.ep-badge.actual{background:var(--green);color:white}
+.ep-badge.subida{background:var(--paper2);color:var(--ink3)}
+.ep-tarifa{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;margin-bottom:.25rem}
+.ep-serv{font-size:22px;font-weight:600;color:var(--ink);margin-bottom:.25rem}
+.ep-serv span{font-size:13px;font-weight:400;color:var(--ink3)}
+.ep-factura{font-size:12px;color:var(--ink3)}
+.ep-ahorro{font-size:12px;color:var(--green);font-weight:500;margin-top:4px}
+
+/* SEGUIMIENTO */
+.seguimiento-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.saldo-card{border-radius:10px;padding:1rem;text-align:center}
+.saldo-card.positivo{background:var(--green-light)}
+.saldo-card.negativo{background:var(--red-light)}
+.sc-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem;opacity:.7}
+.sc-num{font-family:'DM Mono',monospace;font-size:24px;font-weight:500}
+.sc-num.pos{color:var(--green)}
+.sc-num.neg{color:var(--red)}
+.sc-sub{font-size:11px;opacity:.6;margin-top:2px}
+
+@media(max-width:640px){
+  .input-grid{grid-template-columns:1fr}
+  .rp-grid{grid-template-columns:1fr 1fr}
+  .escenarios-precio{grid-template-columns:1fr}
+  .seguimiento-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/></svg>
+    NormaAlerta <span class="nav-badge">Calculadora fiscal</span>
+  </a>
+</nav>
+
+<div class="page">
+
+  <div class="page-header">
+    <div class="modelo-badge">OBJETIVO MENSUAL</div>
+    <h1 class="page-title">¿Cuánto tengo que facturar<br>para ganar <em>lo que quiero</em>?</h1>
+    <p class="page-subtitle">Introduce tu sueldo objetivo y tus costes. Calcula cuánto debes facturar, cuántos servicios necesitas cerrar y si vas bien este mes.</p>
+  </div>
+
+  <!-- OBJETIVO -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🎯</div>
+      <div>
+        <div class="section-title">Tu objetivo y costes mensuales</div>
+        <div class="section-subtitle">Lo que quieres ganar y lo que tienes que pagar</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="input-grid">
+        <div class="field">
+          <label>Sueldo neto mensual que quieres llevarte a casa</label>
+          <div class="field-wrap">
+            <input type="number" id="sueldo_obj" value="2000" min="0" step="100" oninput="calcular()">
+            <span class="suffix">€</span>
+          </div>
+          <span class="input-note">Lo que quieres ingresar en tu cuenta personal cada mes</span>
+        </div>
+        <div class="field">
+          <label>Cuota autónomo mensual</label>
+          <div class="field-wrap">
+            <input type="number" id="cuota_ss" value="294" min="0" step="1" oninput="calcular()">
+            <span class="suffix">€</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Gastos fijos mensuales del negocio</label>
+          <div class="field-wrap">
+            <input type="number" id="gastos_fijos" value="400" min="0" step="50" oninput="calcular()">
+            <span class="suffix">€</span>
+          </div>
+          <span class="input-note">Gestoría, alquiler, software, teléfono, material...</span>
+        </div>
+        <div class="field">
+          <label>IRPF estimado que pagas (% sobre beneficio)</label>
+          <div class="field-wrap">
+            <input type="number" id="irpf_pct" value="20" min="0" max="45" step="1" oninput="calcular()">
+            <span class="suffix">%</span>
+          </div>
+          <span class="input-note">Estimación de tu tipo efectivo anual — entre 15% y 30% para la mayoría</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TU SERVICIO -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">💼</div>
+      <div>
+        <div class="section-title">Tu servicio o encargo tipo</div>
+        <div class="section-subtitle">Para calcular cuántos necesitas cerrar al mes</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="input-grid">
+        <div class="field">
+          <label>Precio medio de tu servicio / encargo (sin IVA)</label>
+          <div class="field-wrap">
+            <input type="number" id="precio_servicio" value="500" min="1" step="50" oninput="calcular()">
+            <span class="suffix">€</span>
+          </div>
+          <span class="input-note">Precio medio que cobras por un encargo o proyecto</span>
+        </div>
+        <div class="field">
+          <label>Nombre de tu servicio (opcional)</label>
+          <div class="field-wrap">
+            <input type="text" id="nombre_servicio" placeholder="Ej: diseño web, asesoría, clase..." style="text-align:left;padding-right:.75rem;font-family:'DM Sans',sans-serif">
+          </div>
+          <span class="input-note">Para que el resultado sea más claro</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTADO PRINCIPAL -->
+  <div class="resultado-principal" id="resultado-box">
+    <div class="rp-label">Facturación mensual que necesitas</div>
+    <div class="rp-num" id="rp-facturacion">—</div>
+    <div class="rp-sub" id="rp-sub">Introduce tus datos para ver el resultado</div>
+    <div class="rp-grid">
+      <div class="rpc"><div class="rpc-label">Servicios al mes</div><div class="rpc-val verde" id="rpc-servicios">—</div></div>
+      <div class="rpc"><div class="rpc-label">Mínimo sin sueldo</div><div class="rpc-val" id="rpc-minimo">—</div></div>
+      <div class="rpc"><div class="rpc-label">Por servicio te quedan</div><div class="rpc-val" id="rpc-neto-servicio">—</div></div>
+      <div class="rpc"><div class="rpc-label">Margen neto</div><div class="rpc-val" id="rpc-margen">—</div></div>
+    </div>
+    <div class="export-row">
+      <button class="btn-export btn-pdf" onclick="exportPDF()">⬇ Descargar PDF</button>
+      <button class="btn-export btn-reset" onclick="resetForm()">↺ Limpiar</button>
+    </div>
+  </div>
+
+  <!-- DESGLOSE DE CADA EURO -->
+  <div class="section" style="margin-top:1rem">
+    <div class="section-header">
+      <div class="section-icon">💶</div>
+      <div>
+        <div class="section-title">Desglose — de cada euro que facturas</div>
+        <div class="section-subtitle">A dónde va cada parte de lo que cobras</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="euro-desglose">
+        <div class="euro-label">Por cada 100€ facturados</div>
+        <div class="euro-barra">
+          <div class="eb-sueldo" id="eb-sueldo">Sueldo</div>
+          <div class="eb-irpf" id="eb-irpf">IRPF</div>
+          <div class="eb-ss" id="eb-ss">SS</div>
+          <div class="eb-gastos" id="eb-gastos">Gastos</div>
+        </div>
+        <div class="euro-leyenda">
+          <div class="el-item"><div class="el-dot" style="background:var(--green)"></div><span id="leg-sueldo">Sueldo neto —</span></div>
+          <div class="el-item"><div class="el-dot" style="background:var(--amber)"></div><span id="leg-irpf">IRPF —</span></div>
+          <div class="el-item"><div class="el-dot" style="background:#6366f1"></div><span id="leg-ss">SS —</span></div>
+          <div class="el-item"><div class="el-dot" style="background:var(--ink3)"></div><span id="leg-gastos">Gastos —</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top:1.25rem">
+        <table class="desglose-table">
+          <tbody>
+            <tr><td class="dt-l">✅ Facturación necesaria</td><td class="dt-v dt-pos" id="dt-facturacion">—</td></tr>
+            <tr class="dt-sub"><td colspan="2" style="padding-left:1.25rem">Ingresos brutos mensuales que debes generar</td></tr>
+            <tr><td class="dt-l">➖ Gastos fijos del negocio</td><td class="dt-v dt-neg" id="dt-gastos">—</td></tr>
+            <tr><td class="dt-l">➖ Cuota Seguridad Social</td><td class="dt-v dt-neg" id="dt-ss">—</td></tr>
+            <tr><td class="dt-l">➖ IRPF estimado (<span id="dt-irpf-pct">—</span>%)</td><td class="dt-v dt-neg" id="dt-irpf">—</td></tr>
+            <tr class="dt-total"><td class="dt-l">= Sueldo neto en tu cuenta</td><td class="dt-v dt-pos" id="dt-neto">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:1rem;padding:1rem;background:var(--paper);border-radius:10px;border:1px solid var(--border)">
+        <div style="font-size:12px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Facturación mínima de supervivencia</div>
+        <div style="font-family:'DM Mono',monospace;font-size:22px;font-weight:500;color:var(--orange)" id="dt-minimo">—</div>
+        <div style="font-size:11px;color:var(--ink3);margin-top:.25rem">Por debajo de esta cifra pierdes dinero — no cubres ni la SS ni los gastos fijos. Sin sueldo.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEGUIMIENTO MENSUAL -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">📅</div>
+      <div>
+        <div class="section-title">¿Cómo vas este mes?</div>
+        <div class="section-subtitle">Introduce lo que llevas facturado para ver si vas bien o mal</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="input-grid">
+        <div class="field">
+          <label>¿Qué día del mes es hoy?</label>
+          <div class="field-wrap">
+            <input type="number" id="dia_mes" value="17" min="1" max="31" step="1" oninput="actualizarSeguimiento()">
+            <span class="suffix">día</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>¿Cuánto llevas facturado este mes? (sin IVA)</label>
+          <div class="field-wrap">
+            <input type="number" id="facturado_mes" value="0" min="0" step="50" oninput="actualizarSeguimiento()">
+            <span class="suffix">€</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:1rem" id="semaforo-wrap">
+        <div class="semaforo neutro" id="semaforo-box">
+          <div class="sem-top">
+            <div class="sem-emoji" id="sem-emoji">📊</div>
+            <div>
+              <div class="sem-titulo" id="sem-titulo">Introduce lo que llevas facturado</div>
+              <div class="sem-sub" id="sem-sub">para ver tu estado actual</div>
+            </div>
+          </div>
+
+          <div class="progreso-wrap">
+            <div class="progreso-bar">
+              <div class="progreso-fill" id="progreso-fill" style="width:0%"></div>
+              <div class="progreso-marker" id="progreso-marker" style="left:55%"></div>
+            </div>
+            <div class="progreso-labels">
+              <span>0 €</span>
+              <span id="prog-objetivo-label">Objetivo</span>
+            </div>
+          </div>
+
+          <div class="seguimiento-grid" style="margin-top:1rem">
+            <div class="saldo-card" id="saldo-card">
+              <div class="sc-label">Te falta / Te sobra</div>
+              <div class="sc-num" id="sc-num">—</div>
+              <div class="sc-sub" id="sc-sub">—</div>
+            </div>
+            <div class="saldo-card" style="background:var(--paper2)">
+              <div class="sc-label">Ritmo esperado para hoy</div>
+              <div class="sc-num" id="sc-ritmo" style="color:var(--ink)">—</div>
+              <div class="sc-sub" id="sc-ritmo-sub">basado en días del mes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESCENARIOS DE PRECIO -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">📈</div>
+      <div>
+        <div class="section-title">¿Qué pasa si subo mis tarifas?</div>
+        <div class="section-subtitle">Cuántos servicios menos necesitarías cerrar cada mes</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="escenarios-precio" id="escenarios-precio">
+        <!-- generado por JS -->
+      </div>
+      <div class="info-box amber" style="margin-top:1rem">
+        ⚠️ <span>Subir un 20% la tarifa y cerrar un 17% menos de encargos genera el mismo ingreso con <strong>menos carga de trabajo</strong>. Muchos autónomos infravaloran su trabajo por miedo a perder clientes — esta tabla te ayuda a ver el impacto real.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function fmt(n){ return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €'; }
+function fmtN(n){ return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function v(id){ return parseFloat(document.getElementById(id)?.value)||0; }
+function setText(id, txt){ const el=document.getElementById(id); if(el) el.textContent=txt; }
+function setW(id, pct){ const el=document.getElementById(id); if(el) el.style.width=pct+'%'; }
+
+let facturacionNecesaria = 0;
+
+function calcular(){
+  const sueldo   = v('sueldo_obj');
+  const ss       = v('cuota_ss');
+  const gastos   = v('gastos_fijos');
+  const irpf_pct = v('irpf_pct') / 100;
+  const precio   = v('precio_servicio');
+  const nombre   = document.getElementById('nombre_servicio').value || 'servicio';
+
+  // Facturación necesaria: sueldo + gastos + ss + irpf
+  // sueldo = facturacion - gastos - ss - irpf*facturacion*(1-gastos/facturacion)
+  // Aproximación directa: facturacion = (sueldo + gastos + ss) / (1 - irpf_pct)
+  // Pero irpf solo sobre beneficio (facturacion - gastos), no sobre SS (gasto deducible)
+  // Beneficio = facturacion - gastos - ss
+  // IRPF = (facturacion - gastos - ss) * irpf_pct... pero en realidad es neto lo que sobra
+  // Neto = (facturacion - gastos - ss) * (1 - irpf_pct)
+  // sueldo = (facturacion - gastos - ss) * (1 - irpf_pct)
+  // facturacion = sueldo / (1 - irpf_pct) + gastos + ss
+
+  const facturacion = irpf_pct < 1
+    ? sueldo / (1 - irpf_pct) + gastos + ss
+    : sueldo + gastos + ss;
+
+  facturacionNecesaria = facturacion;
+
+  const beneficio = facturacion - gastos - ss;
+  const irpf_euro = beneficio * irpf_pct;
+  const neto_real = beneficio - irpf_euro;
+  const minimo    = gastos + ss; // para no perder dinero
+  const margen    = facturacion > 0 ? (neto_real / facturacion * 100) : 0;
+
+  // Servicios necesarios
+  const servicios_exactos = precio > 0 ? facturacion / precio : 0;
+  const servicios_ceil    = Math.ceil(servicios_exactos);
+  const neto_por_servicio = precio > 0
+    ? (precio - gastos/servicios_ceil - ss/servicios_ceil) * (1 - irpf_pct)
+    : 0;
+
+  // ── RESULTADO PRINCIPAL ──
+  setText('rp-facturacion', fmt(facturacion));
+  setText('rp-sub', `Necesitas facturar ${fmt(facturacion)} al mes para llevarte ${fmt(sueldo)} netos a casa`);
+  setText('rpc-servicios', servicios_ceil + ' ' + nombre + (servicios_ceil !== 1 ? 's' : ''));
+  setText('rpc-minimo', fmt(minimo));
+  setText('rpc-neto-servicio', fmt(neto_por_servicio));
+  setText('rpc-margen', margen.toFixed(1) + '%');
+
+  // ── BARRA EURO ──
+  const pct_sueldo = facturacion > 0 ? (sueldo / facturacion * 100) : 0;
+  const pct_irpf   = facturacion > 0 ? (irpf_euro / facturacion * 100) : 0;
+  const pct_ss     = facturacion > 0 ? (ss / facturacion * 100) : 0;
+  const pct_gastos = facturacion > 0 ? (gastos / facturacion * 100) : 0;
+
+  setW('eb-sueldo', pct_sueldo);
+  setW('eb-irpf',   pct_irpf);
+  setW('eb-ss',     pct_ss);
+  setW('eb-gastos', pct_gastos);
+
+  document.getElementById('eb-sueldo').textContent = pct_sueldo > 8 ? `Sueldo ${pct_sueldo.toFixed(0)}%` : '';
+  document.getElementById('eb-irpf').textContent   = pct_irpf > 8   ? `IRPF ${pct_irpf.toFixed(0)}%`   : '';
+  document.getElementById('eb-ss').textContent     = pct_ss > 8     ? `SS ${pct_ss.toFixed(0)}%`       : '';
+  document.getElementById('eb-gastos').textContent = pct_gastos > 8 ? `Gastos ${pct_gastos.toFixed(0)}%` : '';
+
+  setText('leg-sueldo', `Sueldo neto ${pct_sueldo.toFixed(1)}%`);
+  setText('leg-irpf',   `IRPF ${pct_irpf.toFixed(1)}%`);
+  setText('leg-ss',     `SS ${pct_ss.toFixed(1)}%`);
+  setText('leg-gastos', `Gastos ${pct_gastos.toFixed(1)}%`);
+
+  // ── DESGLOSE ──
+  setText('dt-facturacion', fmt(facturacion));
+  setText('dt-gastos', '− ' + fmt(gastos));
+  setText('dt-ss', '− ' + fmt(ss));
+  setText('dt-irpf-pct', (irpf_pct*100).toFixed(0));
+  setText('dt-irpf', '− ' + fmt(irpf_euro));
+  setText('dt-neto', fmt(neto_real));
+  setText('dt-minimo', fmt(minimo));
+
+  // ── ESCENARIOS PRECIO ──
+  const escenarios = [
+    { label:'Tarifa actual', subida:0, badge:'actual' },
+    { label:'+10% tarifa',   subida:0.10, badge:'subida' },
+    { label:'+20% tarifa',   subida:0.20, badge:'subida' },
+    { label:'+30% tarifa',   subida:0.30, badge:'subida' },
+  ];
+  const cont = document.getElementById('escenarios-precio');
+  cont.innerHTML = '';
+  escenarios.forEach(esc => {
+    const tarifa_esc = precio * (1 + esc.subida);
+    const serv_esc   = tarifa_esc > 0 ? Math.ceil(facturacion / tarifa_esc) : 0;
+    const ahorro     = esc.subida > 0 ? servicios_ceil - serv_esc : 0;
+    const div = document.createElement('div');
+    div.className = 'ep-card' + (esc.badge==='actual' ? ' actual' : '');
+    div.innerHTML = `
+      <div class="ep-badge ${esc.badge}">${esc.label}</div>
+      <div class="ep-tarifa">${fmt(tarifa_esc)}/${nombre}</div>
+      <div class="ep-serv">${serv_esc} <span>${nombre}s/mes</span></div>
+      <div class="ep-factura">Facturación: ${fmt(tarifa_esc * serv_esc)}</div>
+      ${ahorro > 0 ? `<div class="ep-ahorro">↓ ${ahorro} encargo${ahorro!==1?'s':''} menos al mes</div>` : ''}
+    `;
+    cont.appendChild(div);
+  });
+
+  // Actualizar seguimiento
+  actualizarSeguimiento();
+}
+
+function actualizarSeguimiento(){
+  const dia       = Math.min(31, Math.max(1, v('dia_mes')));
+  const facturado = v('facturado_mes');
+  const objetivo  = facturacionNecesaria;
+  if(objetivo <= 0) return;
+
+  // Ritmo esperado para hoy (lineal sobre 30 días)
+  const ritmo_esperado = objetivo * (dia / 30);
+  const diferencia     = facturado - ritmo_esperado;
+  const pct_avance     = Math.min(120, (facturado / objetivo * 100));
+  const pct_marker     = Math.min(100, (dia / 30 * 100));
+
+  // Semáforo
+  const ratio = facturado / ritmo_esperado;
+  let color, emoji, titulo, sub;
+
+  if(facturado === 0){
+    color='neutro'; emoji='📊'; titulo='Introduce lo que llevas facturado'; sub='para ver tu estado actual';
+  } else if(pct_avance >= 100){
+    color='verde'; emoji='🎉'; titulo='¡Objetivo conseguido!';
+    sub=`Llevas ${fmt(facturado)} — ${fmt(facturado - objetivo)} por encima del objetivo mensual`;
+  } else if(ratio >= 1.1){
+    color='verde'; emoji='✅'; titulo='Vas por delante del ritmo';
+    sub=`Llevas ${fmt(facturado)} — ${fmt(diferencia)} más de lo esperado para el día ${dia}`;
+  } else if(ratio >= 0.8){
+    color='ambar'; emoji='⚠️'; titulo='Vas ligeramente por detrás';
+    sub=`Llevas ${fmt(facturado)} — te faltan ${fmt(Math.abs(diferencia))} para ir al ritmo previsto`;
+  } else {
+    color='rojo'; emoji='🔴'; titulo='Estás por detrás del ritmo';
+    sub=`Llevas ${fmt(facturado)} — necesitas acelerar para llegar a ${fmt(objetivo)} a fin de mes`;
+  }
+
+  const box = document.getElementById('semaforo-box');
+  box.className = 'semaforo ' + color;
+  setText('sem-emoji', emoji);
+  setText('sem-titulo', titulo);
+  setText('sem-sub', sub);
+
+  // Barra progreso
+  const fill = document.getElementById('progreso-fill');
+  fill.style.width = pct_avance + '%';
+  fill.className = 'progreso-fill ' + (pct_avance >= 100 ? '' : ratio < 0.8 ? 'rojo' : ratio < 1 ? 'ambar' : '');
+  document.getElementById('progreso-marker').style.left = pct_marker + '%';
+  setText('prog-objetivo-label', fmt(objetivo));
+
+  // Cards
+  const falta = objetivo - facturado;
+  const scCard = document.getElementById('saldo-card');
+  scCard.className = 'saldo-card ' + (falta <= 0 ? 'positivo' : 'negativo');
+  const scNum = document.getElementById('sc-num');
+  scNum.textContent = fmt(Math.abs(falta));
+  scNum.className = 'sc-num ' + (falta <= 0 ? 'pos' : 'neg');
+  setText('sc-sub', falta <= 0 ? 'ya superaste el objetivo ✅' : 'aún te falta para el objetivo');
+
+  setText('sc-ritmo', fmt(ritmo_esperado));
+  setText('sc-ritmo-sub', `esperado para el día ${dia} de 30`);
+}
+
+function resetForm(){
+  document.getElementById('sueldo_obj').value      = 2000;
+  document.getElementById('cuota_ss').value         = 294;
+  document.getElementById('gastos_fijos').value     = 400;
+  document.getElementById('irpf_pct').value         = 20;
+  document.getElementById('precio_servicio').value  = 500;
+  document.getElementById('nombre_servicio').value  = '';
+  document.getElementById('dia_mes').value          = 17;
+  document.getElementById('facturado_mes').value    = 0;
+  calcular();
+}
+
+function exportPDF(){
+  const sueldo   = v('sueldo_obj');
+  const ss       = v('cuota_ss');
+  const gastos   = v('gastos_fijos');
+  const irpf_pct = v('irpf_pct');
+  const precio   = v('precio_servicio');
+  const nombre   = document.getElementById('nombre_servicio').value || 'servicio';
+  const fact     = facturacionNecesaria;
+  const beneficio= fact - gastos - ss;
+  const irpf_e   = beneficio * irpf_pct/100;
+  const neto     = beneficio - irpf_e;
+  const servicios= precio > 0 ? Math.ceil(fact/precio) : 0;
+  const minimo   = gastos + ss;
+
+  const w = window.open('','_blank','width=800,height=900');
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Objetivo facturación NormaAlerta</title>
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Helvetica,Arial,sans-serif;font-size:13px;padding:40px;color:#1c1b18}
+  .hdr{display:flex;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #1a7a4a}
+  h1{font-size:18px;font-weight:600;color:#1a7a4a}h2{font-size:12px;font-weight:600;background:#3d3d3d;color:white;padding:5px 10px;border-radius:4px;margin:14px 0 7px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#f7f5ee;padding:14px;border-radius:8px;margin-bottom:14px}
+  .grid label{font-size:10px;text-transform:uppercase;color:#8c8b84;display:block;margin-bottom:2px}.grid span{font-size:14px;font-weight:500}
+  table{width:100%;border-collapse:collapse}td{padding:6px 8px;border-bottom:1px solid #edeae0;font-size:12px}
+  .r{text-align:right;font-family:monospace;font-weight:500}.pos{color:#1a7a4a}.neg{color:#dc2626}.ora{color:#ea580c}
+  .total td{font-weight:700;border-top:2px solid #1c1b18;font-size:13px;padding-top:8px}
+  .res{background:#1c1b18;color:white;padding:16px;border-radius:10px;margin-top:14px;display:flex;justify-content:space-between;align-items:center}
+  .res-n{font-size:28px;font-weight:600;font-family:monospace;color:#4ade80}
+  .ftr{margin-top:18px;font-size:10px;color:#8c8b84;text-align:center;border-top:1px solid #edeae0;padding-top:10px}
+  @media print{body{padding:20px}}</style></head><body>
+  <div class="hdr"><div><h1>NormaAlerta — ¿Cuánto tengo que facturar?</h1></div><div style="font-size:11px;color:#8c8b84">normaalerta.com</div></div>
+  <div class="grid">
+    <div><label>Sueldo neto objetivo</label><span>${fmt(sueldo)}/mes</span></div>
+    <div><label>Cuota SS</label><span>${fmt(ss)}/mes</span></div>
+    <div><label>Gastos fijos</label><span>${fmt(gastos)}/mes</span></div>
+    <div><label>IRPF estimado</label><span>${irpf_pct}%</span></div>
+    <div><label>Precio por ${nombre}</label><span>${fmt(precio)}</span></div>
+    <div><label>Mínimo supervivencia</label><span>${fmt(minimo)}/mes</span></div>
+  </div>
+  <h2>Desglose mensual</h2>
+  <table>
+    <tr><td>✅ Facturación necesaria</td><td class="r pos">${fmt(fact)}</td></tr>
+    <tr><td>➖ Gastos fijos</td><td class="r neg">− ${fmt(gastos)}</td></tr>
+    <tr><td>➖ Cuota SS</td><td class="r neg">− ${fmt(ss)}</td></tr>
+    <tr><td>➖ IRPF estimado (${irpf_pct}%)</td><td class="r neg">− ${fmt(irpf_e)}</td></tr>
+    <tr class="total"><td>= Sueldo neto en cuenta</td><td class="r pos">${fmt(neto)}</td></tr>
+  </table>
+  <div class="res">
+    <div><div style="font-size:10px;opacity:.4;text-transform:uppercase;margin-bottom:4px">Facturación mensual necesaria</div>
+    <div class="res-n">${fmt(fact)}</div>
+    <div style="font-size:12px;opacity:.5;margin-top:4px">${servicios} ${nombre}${servicios!==1?'s':''} al mes de ${fmt(precio)} cada uno</div></div>
+    <div style="text-align:right"><div style="font-size:10px;opacity:.4;margin-bottom:3px">Mínimo sin sueldo</div>
+    <div style="font-family:monospace;font-size:16px;color:#fb923c">${fmt(minimo)}</div></div>
+  </div>
+  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Cálculo orientativo. IRPF real depende de situación anual. Consulta con tu gestor.</div>
+  <script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.close();
+}
+
+// Init
+calcular();
+</script>
+</body>
+</html>
