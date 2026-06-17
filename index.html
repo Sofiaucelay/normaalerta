@@ -152,6 +152,15 @@ h2 em { font-style: italic; font-weight: 300; }
 .pricing-disclaimer strong { color: var(--ink2); }
 .faq { padding: 100px 40px; background: var(--paper); }
 .faq-inner { max-width: 700px; margin: 0 auto; }
+.all-tools { padding: 100px 40px; background: var(--paper); }
+.tools-grid { display: flex; flex-direction: column; gap: 24px; max-width: 900px; margin: 0 auto; }
+.tool-row { background: var(--white); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.tool-category { background: var(--ink); color: var(--white); padding: 12px 24px; font-size: 14px; font-weight: 500; }
+.tool-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0; }
+.tool-link { display: flex; align-items: center; gap: 8px; padding: 14px 24px; font-size: 14px; color: var(--ink2); text-decoration: none; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); transition: background 0.15s, color 0.15s; }
+.tool-link:hover { background: var(--green-light); color: var(--green); }
+.tool-badge { font-size: 11px; font-weight: 600; background: var(--green-light); color: var(--green); padding: 2px 7px; border-radius: 4px; margin-left: auto; flex-shrink: 0; }
+@media (max-width: 768px) { .all-tools { padding-left: 20px; padding-right: 20px; } .tool-items { grid-template-columns: 1fr; } }
 .faq-header { margin-bottom: 48px; }
 .faq-item { border-bottom: 1px solid var(--border); }
 .faq-q { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; cursor: pointer; font-size: 15px; font-weight: 500; transition: color 0.15s; }
@@ -199,6 +208,7 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
   <div class="nav-links">
     <a href="#como-funciona">Cómo funciona</a>
     <a href="#valor-anadido">Qué incluye</a>
+    <a href="#herramientas">Herramientas</a>
     <a href="#precios">Precios</a>
     <a href="#faq">FAQ</a>
     <a href="/lista-espera.html" class="nav-cta">Entrar gratis →</a>
@@ -346,6 +356,58 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
         <div class="va-plan"><span class="vap vap-b">Gratuitas para todos</span></div>
         <a href="/calculadora-modelo-303.html" class="btn-calc" target="_blank">Probar calculadora →</a>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="all-tools" id="herramientas">
+  <div class="section-inner">
+    <div style="text-align:center;max-width:600px;margin:0 auto 48px;" class="reveal">
+      <p class="section-label">Directorio completo</p>
+      <h2>Las 16 herramientas.<br><em>Todas gratuitas hasta julio.</em></h2>
+    </div>
+    <div class="tools-grid reveal">
+
+      <div class="tool-row">
+        <div class="tool-category">🧮 Calculadoras fiscales</div>
+        <div class="tool-items">
+          <a href="/calculadora-modelo-303.html" target="_blank" class="tool-link">Modelo 303 — IVA trimestral</a>
+          <a href="/calculadora-modelo-130.html" target="_blank" class="tool-link">Modelo 130 — IRPF trimestral</a>
+          <a href="/calculadora-modelo-111.html" target="_blank" class="tool-link">Modelo 111 — Retenciones trabajadores</a>
+          <a href="/calculadora-modelo-115.html" target="_blank" class="tool-link">Modelo 115 — Retenciones alquiler</a>
+          <a href="/calculadora-modelo-200.html" target="_blank" class="tool-link">Modelo 200 — Impuesto de Sociedades</a>
+          <a href="/calculadora-sanciones.html" target="_blank" class="tool-link">Calculadora de sanciones AEAT</a>
+          <a href="/calculadora-cuota-autonomo.html" target="_blank" class="tool-link">Cuota autónomo 2026 — 12 tramos RETA</a>
+        </div>
+      </div>
+
+      <div class="tool-row">
+        <div class="tool-category">🤖 Herramientas con IA</div>
+        <div class="tool-items">
+          <a href="/auditoria-fiscal.html" target="_blank" class="tool-link">Auditoría fiscal IA — análisis completo <span class="tool-badge">Pro</span></a>
+          <a href="/asistente-fiscal.html" target="_blank" class="tool-link">Asistente fiscal IA 24/7 <span class="tool-badge">Pro</span></a>
+          <a href="/traductor-cartas-hacienda.html" target="_blank" class="tool-link">Traductor de cartas de Hacienda</a>
+        </div>
+      </div>
+
+      <div class="tool-row">
+        <div class="tool-category">📊 Simuladores y comparadores</div>
+        <div class="tool-items">
+          <a href="/simulador-inspeccion.html" target="_blank" class="tool-link">Simulador de riesgo de inspección</a>
+          <a href="/simulador-nomina.html" target="_blank" class="tool-link">Simulador de nómina y coste laboral</a>
+          <a href="/calculadora-autonomo-vs-asalariado.html" target="_blank" class="tool-link">¿Autónomo o asalariado? Comparador</a>
+          <a href="/comparador-ed-modulos.html" target="_blank" class="tool-link">Comparador Estimación Directa vs Módulos</a>
+        </div>
+      </div>
+
+      <div class="tool-row">
+        <div class="tool-category">📋 Guías y verificadores</div>
+        <div class="tool-items">
+          <a href="/verificador-gastos-deducibles.html" target="_blank" class="tool-link">Verificador de gastos deducibles — 36 tipos</a>
+          <a href="/guia-nuevos-autonomos.html" target="_blank" class="tool-link">Guía primeros 90 días — 45 tareas</a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
