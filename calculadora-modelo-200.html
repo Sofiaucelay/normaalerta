@@ -152,20 +152,25 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
     </div>
     <div class="section-body">
       <div class="tipo-grid">
+        <div class="tipo-card selected" onclick="selectTipo(0.19,'micropyme',this)">
+          <div class="tipo-name">Micropyme (hasta 50K€ BI)</div>
+          <div class="tipo-pct">19%</div>
+          <div class="tipo-desc">Facturación &lt; 1M€ — Ley 7/2024</div>
+        </div>
+        <div class="tipo-card" onclick="selectTipo(0.21,'micropyme2',this)">
+          <div class="tipo-name">Micropyme (resto BI)</div>
+          <div class="tipo-pct">21%</div>
+          <div class="tipo-desc">Facturación &lt; 1M€ sobre 50.000€</div>
+        </div>
+        <div class="tipo-card" onclick="selectTipo(0.23,'pyme',this)">
+          <div class="tipo-name">Pyme / ERD</div>
+          <div class="tipo-pct">23%</div>
+          <div class="tipo-desc">Facturación 1M€ – 10M€</div>
+        </div>
         <div class="tipo-card" onclick="selectTipo(0.25,'general',this)">
           <div class="tipo-name">General</div>
           <div class="tipo-pct">25%</div>
-          <div class="tipo-desc">Facturación ≥ 1M€</div>
-        </div>
-        <div class="tipo-card selected" onclick="selectTipo(0.21,'micropyme',this)">
-          <div class="tipo-name">Micropyme (hasta 50K€ BI)</div>
-          <div class="tipo-pct">21%</div>
-          <div class="tipo-desc">Facturación &lt; 1M€ — Ley 7/2024</div>
-        </div>
-        <div class="tipo-card" onclick="selectTipo(0.22,'micropyme2',this)">
-          <div class="tipo-name">Micropyme (resto BI)</div>
-          <div class="tipo-pct">22%</div>
-          <div class="tipo-desc">Facturación &lt; 1M€ sobre resto BI</div>
+          <div class="tipo-desc">Facturación ≥ 10M€</div>
         </div>
         <div class="tipo-card" onclick="selectTipo(0.15,'nueva',this)">
           <div class="tipo-name">Nueva creación</div>
@@ -173,12 +178,12 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
           <div class="tipo-desc">Primeros 2 ejercicios con BI positiva</div>
         </div>
       </div>
-      <div class="info-box blue">ℹ️ <span><strong>Micropymes (Ley 7/2024):</strong> Si la facturación es menor de 1M€, aplica 21% a los primeros 50.000€ de base imponible y 22% al resto. Si usas la tarjeta "Micropyme (hasta 50K€ BI)", el 21% se aplicará hasta 50.000€ y el sistema calculará el resto al 22% automáticamente.</span></div>
+      <div class="info-box blue">ℹ️ <span><strong>Tipos IS 2026 (Ley 7/2024):</strong> Micropymes (&lt;1M€): 19% hasta 50.000€ de BI y 21% sobre el resto. Pymes/ERD (1M€–10M€): 23%. General (≥10M€): 25%. Nueva creación: 15% primeros 2 ejercicios. Fuente: Art. 29.1 LIS y Disposición Transitoria 44ª LIS.</span></div>
       <div style="margin-top:.75rem">
         <label style="font-size:12px;font-weight:500;color:var(--ink3);display:block;margin-bottom:4px">O introduce un tipo personalizado</label>
         <div class="input-wrap" style="justify-content:flex-start;gap:8px">
           <div style="position:relative">
-            <input type="number" class="pct" id="tipo-custom" value="21" min="0" max="40" step="0.01" oninput="calc()">
+            <input type="number" class="pct" id="tipo-custom" value="19" min="0" max="40" step="0.01" oninput="calc()">
             <span class="input-pct">%</span>
           </div>
           <span style="font-size:13px;color:var(--ink3)">Cooperativas: 20% | Asociaciones sin ánimo de lucro: 25%</span>
@@ -302,8 +307,8 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 </div>
 
 <script>
-let tipoSeleccionado=0.21;
-let tipoNombre='Micropyme 21%';
+let tipoSeleccionado=0.19;
+let tipoNombre='micropyme';
 function fmt(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
 function v(id){return parseFloat(document.getElementById(id)?.value)||0;}
 function set(id,val){const el=document.getElementById(id);if(el)el.textContent=fmt(val);}
@@ -342,10 +347,10 @@ function calc(){
 
   // Cuota íntegra — micropyme tiene tramo
   let cuota_integra=0;
-  if(tipoNombre==='micropyme'||v('tipo-custom')===21){
+  if(tipoNombre==='micropyme'||tipoNombre==='micropyme2'){
     const tramo1=Math.min(bl,50000);
     const tramo2=Math.max(0,bl-50000);
-    cuota_integra=tramo1*0.21+tramo2*0.22;
+    cuota_integra=tramo1*0.19+tramo2*0.21;
   } else {
     cuota_integra=bl*tipoSeleccionado;
   }
@@ -377,7 +382,7 @@ function toggleSection(h){
 
 function resetForm(){
   if(!confirm('¿Limpiar todos los datos?')) return;
-  document.querySelectorAll('input[type=number]').forEach(i=>{if(i.id==='tipo-custom')i.value=21;else i.value=0;});
+  document.querySelectorAll('input[type=number]').forEach(i=>{if(i.id==='tipo-custom')i.value=19;else i.value=0;});
   calc();
 }
 
