@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Me compensa subcontratar? | NormaAlerta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;
+  --ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;
+  --paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;
+  --border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);
+  --amber-light:#fef3c7;--red:#dc2626;--red-light:#fef2f2;--blue-light:#eff6ff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.nav-actions{display:flex;gap:8px}
+.btn-nav{font-size:13px;padding:6px 14px;border-radius:7px;border:none;cursor:pointer;font-family:inherit;font-weight:500}
+.btn-nav-outline{background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8)}
+.btn-nav-primary{background:var(--green);color:var(--white)}
+.page{max-width:920px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-header{margin-bottom:2rem;text-align:center}
+.modelo-badge{display:inline-block;background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;font-family:'DM Mono',monospace;margin-bottom:.75rem}
+.page-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;letter-spacing:-.5px;margin-bottom:.5rem}
+.page-title em{font-style:italic;color:var(--green)}
+.page-subtitle{font-size:14px;color:var(--ink3);max-width:540px;margin:0 auto}
+
+.section{background:var(--white);border:1px solid var(--border);border-radius:14px;margin-bottom:1rem;overflow:hidden}
+.section-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--green-light)}
+.section-title{font-size:15px;font-weight:500;flex:1}
+.section-subtitle{font-size:12px;color:var(--ink3);margin-top:1px}
+.section-body{padding:1.25rem}
+
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.full{grid-column:1/-1}
+.field label{font-size:12px;font-weight:500;color:var(--ink3)}
+.field-wrap{position:relative}
+.field-wrap input{padding:.5rem 2rem .5rem .75rem;border:1px solid var(--border2);border-radius:8px;font-size:14px;font-family:'DM Mono',monospace;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;width:100%;text-align:right}
+.field-wrap input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
+.field-wrap .suffix{position:absolute;right:.75rem;top:50%;transform:translateY(-50%);font-size:12px;color:var(--ink3);pointer-events:none}
+.input-note{font-size:11px;color:var(--ink3);font-style:italic;margin-top:2px}
+
+.info-box{border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12px;display:flex;gap:8px;align-items:flex-start}
+.info-box.amber{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);color:#92400e}
+.info-box.green{background:var(--green-light);border:1px solid rgba(26,122,74,.2);color:var(--green-dark)}
+.info-box.blue{background:var(--blue-light);border:1px solid rgba(37,99,235,.2);color:#1e40af}
+
+/* COLABORADORES */
+.colabs-table{width:100%;border-collapse:collapse;margin-top:.75rem;font-size:13px}
+.colabs-table th{font-size:11px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;padding:.5rem .75rem;background:var(--paper);border-bottom:1px solid var(--border);text-align:left}
+.colabs-table th:not(:first-child){text-align:right}
+.colabs-table td{padding:.4rem .75rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.colabs-table input{width:120px;text-align:right;padding:.3rem .5rem;border:1px solid var(--border2);border-radius:6px;font-size:13px;font-family:'DM Mono',monospace;outline:none}
+.colabs-table input:focus{border-color:var(--green)}
+.colabs-table .ret-display{font-family:'DM Mono',monospace;font-size:13px;color:var(--ink3)}
+.btn-add{display:inline-flex;align-items:center;gap:6px;margin-top:.75rem;padding:.5rem 1rem;background:var(--green-light);color:var(--green-dark);border:1px solid rgba(26,122,74,.2);border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:background .15s}
+.btn-add:hover{background:#c8e8d8}
+.btn-del{background:none;border:none;cursor:pointer;color:var(--ink3);font-size:16px;padding:0 4px;line-height:1}
+.btn-del:hover{color:var(--red)}
+
+/* RESULTADO */
+.resultado{border-radius:14px;padding:1.75rem;margin-top:1.5rem;position:relative;overflow:hidden}
+.resultado.positivo{background:var(--ink)}
+.resultado.negativo{background:#7f1d1d}
+.resultado.neutro{background:#374151}
+.resultado::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.04)}
+.res-top{display:flex;align-items:flex-start;gap:16px;margin-bottom:1.25rem}
+.res-emoji{font-size:36px;line-height:1;flex-shrink:0}
+.res-texto{}
+.resultado-label{font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.resultado-titulo{font-family:'Fraunces',serif;font-size:20px;font-weight:300;color:var(--white);margin-bottom:4px}
+.resultado-sub{font-size:13px;color:rgba(255,255,255,.55);line-height:1.5}
+.resultado-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem}
+.rc{background:rgba(255,255,255,.07);border-radius:8px;padding:.75rem}
+.rc-label{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:3px}
+.rc-val{font-size:14px;font-weight:500;font-family:'DM Mono',monospace;color:rgba(255,255,255,.9)}
+.rc-val.pos{color:#4ade80}
+.rc-val.neg{color:#fca5a5}
+.export-row{display:flex;gap:8px;flex-wrap:wrap}
+.btn-export{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:none}
+.btn-pdf{background:var(--green);color:var(--white)}
+.btn-reset{background:rgba(255,255,255,.1);color:var(--white);border:1px solid rgba(255,255,255,.2)}
+
+/* CONSEJO */
+.consejo-box{background:var(--green);border-radius:12px;padding:1.25rem;margin-top:1rem;display:none}
+.consejo-box.visible{display:block}
+.consejo-titulo{font-size:13px;font-weight:600;color:var(--white);margin-bottom:.375rem}
+.consejo-texto{font-size:13px;color:rgba(255,255,255,.8);line-height:1.6}
+.consejo-num{font-family:'DM Mono',monospace;font-weight:600;color:#4ade80}
+
+/* DESGLOSE */
+.desglose-table{width:100%;border-collapse:collapse}
+.desglose-table td{padding:.5rem .75rem;font-size:13px;border-bottom:1px solid var(--border)}
+.desglose-table tr:last-child td{border-bottom:none}
+.dt-label{color:var(--ink2)}
+.dt-val{text-align:right;font-family:'DM Mono',monospace;font-weight:500}
+.dt-neg{color:var(--red)}
+.dt-pos{color:var(--green)}
+.dt-total td{font-weight:600;font-size:14px;border-top:2px solid var(--border2);border-bottom:none;padding-top:.75rem}
+.dt-sub td{background:var(--paper);font-size:11px;color:var(--ink3)}
+.dt-mes td{background:var(--green-light);font-size:12px;color:var(--green-dark);font-weight:500}
+
+/* ESCENARIOS */
+.escenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:1rem}
+.escenario{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1rem}
+.esc-titulo{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:.5rem}
+.esc-resultado{font-family:'DM Mono',monospace;font-size:19px;font-weight:500;margin-bottom:.375rem}
+.esc-desc{font-size:11px;color:var(--ink3);line-height:1.5}
+.esc-verde{color:var(--green)}
+.esc-rojo{color:var(--red)}
+.esc-gris{color:var(--ink3)}
+.esc-winner{border-color:var(--green);background:var(--green-light)}
+
+/* EQUILIBRIO */
+.eq-box{padding:1rem;background:var(--paper);border-radius:10px;border:1px solid var(--border);margin-top:1.25rem}
+.eq-label{font-size:12px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem}
+.eq-val{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;color:var(--green);margin-bottom:.25rem}
+.eq-desc{font-size:11px;color:var(--ink3)}
+
+@media(max-width:640px){
+  .input-grid{grid-template-columns:1fr}
+  .resultado-grid{grid-template-columns:1fr 1fr}
+  .escenarios{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/></svg>
+    NormaAlerta <span class="nav-badge">Calculadora fiscal</span>
+  </a>
+  <div class="nav-actions">
+    <button class="btn-nav btn-nav-outline" onclick="window.print()">🖨 Imprimir</button>
+    <button class="btn-nav btn-nav-primary" onclick="exportPDF()">⬇ PDF</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="page-header">
+    <div class="modelo-badge">SUBCONTRATACIÓN</div>
+    <h1 class="page-title">¿Me compensa dar trabajo<br>a otro <em>autónomo</em>?</h1>
+    <p class="page-subtitle">Introduce los números del encargo y calcula si te sale rentable subcontratar, cuánto ganas, qué precio mínimo necesitas cobrar y cuánto vale tu tiempo.</p>
+  </div>
+
+  <!-- ENCARGO -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">📋</div>
+      <div>
+        <div class="section-title">El encargo</div>
+        <div class="section-subtitle">Lo que cobras al cliente por este trabajo</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="input-grid">
+        <div class="field">
+          <label>Lo que cobras al cliente (sin IVA)</label>
+          <div class="field-wrap">
+            <input type="number" id="precio_cliente" value="2000" min="0" step="10" oninput="calcular()">
+            <span class="suffix">€</span>
+          </div>
+          <span class="input-note">Importe total que facturarás al cliente</span>
+        </div>
+        <div class="field">
+          <label>Duración del encargo (meses)</label>
+          <div class="field-wrap">
+            <input type="number" id="duracion" value="1" min="0.25" max="24" step="0.25" oninput="calcular()">
+            <span class="suffix">m</span>
+          </div>
+          <span class="input-note">Cuántos meses durará este proyecto</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLABORADORES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🤝</div>
+      <div>
+        <div class="section-title">Colaboradores autónomos</div>
+        <div class="section-subtitle">Añade uno o varios — cada uno con su retención IRPF</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="info-box green">
+        ✅ <span>Las facturas de autónomos colaboradores son <strong>gasto deducible al 100%</strong> en tu IRPF. Si son profesionales, aplica retención del <strong>15%</strong> (o 7% si llevan menos de 2 años). Tú retienes y lo ingresas en el Modelo 111.</span>
+      </div>
+      <table class="colabs-table">
+        <thead>
+          <tr>
+            <th style="width:35%">Nombre / Descripción</th>
+            <th style="width:20%">Importe (€)</th>
+            <th style="width:18%">Retención IRPF</th>
+            <th style="width:18%">Lo que pagas</th>
+            <th style="width:9%"></th>
+          </tr>
+        </thead>
+        <tbody id="colabs-body"></tbody>
+      </table>
+      <button class="btn-add" onclick="addColab()">+ Añadir colaborador</button>
+    </div>
+  </div>
+
+  <!-- TU TIEMPO -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">⏱️</div>
+      <div>
+        <div class="section-title">Tu tiempo en este encargo</div>
+        <div class="section-subtitle">Para calcular el coste real de lo que haces tú</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="input-grid">
+        <div class="field">
+          <label>Tu tarifa hora (lo que cobrarías a un cliente por tu tiempo)</label>
+          <div class="field-wrap">
+            <input type="number" id="tarifa_hora" value="50" min="0" step="5" oninput="calcular()">
+            <span class="suffix">€/h</span>
+          </div>
+          <span class="input-note">Tarifa que usas normalmente para cotizar tu trabajo</span>
+        </div>
+        <div class="field">
+          <label>Horas que dedicas tú a este encargo (gestión + trabajo directo)</label>
+          <div class="field-wrap">
+            <input type="number" id="horas_tuyas" value="10" min="0" step="1" oninput="calcular()">
+            <span class="suffix">h</span>
+          </div>
+          <span class="input-note">Incluye coordinación, revisión, reuniones...</span>
+        </div>
+      </div>
+      <div class="info-box blue">
+        ℹ️ <span>Tu tiempo tiene un <strong>coste de oportunidad</strong>: las horas que dedicas a gestionar este encargo son horas que no puedes vender a otro cliente. Esto no aparece en la contabilidad pero sí en tu rentabilidad real.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- COSTES FIJOS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">💰</div>
+      <div>
+        <div class="section-title">Tus costes fijos mensuales</div>
+        <div class="section-subtitle">Para calcular qué parte del encargo los cubre</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="input-grid">
+        <div class="field">
+          <label>Cuota autónomo mensual</label>
+          <div class="field-wrap">
+            <input type="number" id="cuota_ss" value="294" min="0" step="1" oninput="calcular()">
+            <span class="suffix">€</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Otros gastos fijos mensuales</label>
+          <div class="field-wrap">
+            <input type="number" id="gastos_fijos" value="500" min="0" step="10" oninput="calcular()">
+            <span class="suffix">€</span>
+          </div>
+          <span class="input-note">Gestoría, alquiler, software, teléfono...</span>
+        </div>
+        <div class="field">
+          <label>Gastos variables del encargo</label>
+          <div class="field-wrap">
+            <input type="number" id="gastos_variables" value="0" min="0" step="10" oninput="calcular()">
+            <span class="suffix">€</span>
+          </div>
+          <span class="input-note">Materiales, desplazamientos, licencias específicas...</span>
+        </div>
+        <div class="field">
+          <label>Margen mínimo que quieres ganar</label>
+          <div class="field-wrap">
+            <input type="number" id="margen_minimo" value="20" min="0" max="100" step="1" oninput="calcular()">
+            <span class="suffix">%</span>
+          </div>
+          <span class="input-note">Para calcular el precio mínimo al cliente</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado positivo" id="resultado-box">
+    <div class="res-top">
+      <div class="res-emoji" id="res-emoji">💼</div>
+      <div class="res-texto">
+        <div class="resultado-label">Resultado si subcontratas</div>
+        <div class="resultado-titulo" id="res-titulo">Introduce los datos</div>
+        <div class="resultado-sub" id="res-sub">—</div>
+      </div>
+    </div>
+    <div class="resultado-grid">
+      <div class="rc"><div class="rc-label">Ingreso total</div><div class="rc-val" id="rc-ingreso">—</div></div>
+      <div class="rc"><div class="rc-label">Coste colaboradores</div><div class="rc-val neg" id="rc-colabs">—</div></div>
+      <div class="rc"><div class="rc-label">Otros costes</div><div class="rc-val neg" id="rc-otros">—</div></div>
+      <div class="rc"><div class="rc-label">Beneficio neto</div><div class="rc-val pos" id="rc-beneficio">—</div></div>
+    </div>
+    <div class="export-row">
+      <button class="btn-export btn-pdf" onclick="exportPDF()">⬇ Descargar PDF</button>
+      <button class="btn-export btn-reset" onclick="resetForm()">↺ Limpiar</button>
+    </div>
+  </div>
+
+  <!-- CONSEJO -->
+  <div class="consejo-box" id="consejo-box">
+    <div class="consejo-titulo" id="consejo-titulo">💡 Qué puedes hacer</div>
+    <div class="consejo-texto" id="consejo-texto">—</div>
+  </div>
+
+  <!-- DESGLOSE -->
+  <div class="section" style="margin-top:1rem">
+    <div class="section-header">
+      <div class="section-icon">📊</div>
+      <div>
+        <div class="section-title">Desglose completo</div>
+        <div class="section-subtitle">Todos los costes e ingresos del encargo</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <table class="desglose-table">
+        <tbody id="desglose-body"></tbody>
+      </table>
+
+      <div class="eq-box">
+        <div class="eq-label">Precio mínimo al cliente para tu margen objetivo</div>
+        <div class="eq-val" id="d-precio-minimo">—</div>
+        <div class="eq-desc" id="d-precio-desc">—</div>
+      </div>
+
+      <div class="eq-box" style="margin-top:.75rem">
+        <div class="eq-label">Punto de equilibrio — máximo que pueden cobrar los colaboradores</div>
+        <div class="eq-val" id="d-equilibrio">—</div>
+        <div class="eq-desc" id="d-equilibrio-desc">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESCENARIOS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🔄</div>
+      <div>
+        <div class="section-title">Comparativa de escenarios</div>
+        <div class="section-subtitle">Subcontratar vs hacerlo tú solo vs rechazar</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="escenarios">
+        <div class="escenario" id="esc-box-sub">
+          <div class="esc-titulo">💼 Subcontratas</div>
+          <div class="esc-resultado" id="esc-sub">—</div>
+          <div style="font-size:11px;color:var(--ink3);margin-bottom:4px" id="esc-sub-mes">—</div>
+          <div class="esc-desc">Delegas el trabajo. Menor beneficio por encargo pero liberas tiempo para otros clientes.</div>
+        </div>
+        <div class="escenario" id="esc-box-solo">
+          <div class="esc-titulo">⚡ Lo haces tú solo</div>
+          <div class="esc-resultado" id="esc-solo">—</div>
+          <div style="font-size:11px;color:var(--ink3);margin-bottom:4px" id="esc-solo-hora">—</div>
+          <div class="esc-desc">Sin coste de colaborador pero con tu tiempo comprometido. Calcula si sale a cuenta hora.</div>
+        </div>
+        <div class="escenario" id="esc-box-rec">
+          <div class="esc-titulo">❌ Rechazas</div>
+          <div class="esc-resultado" id="esc-rechazo">—</div>
+          <div style="font-size:11px;color:var(--ink3);margin-bottom:4px" id="esc-rec-desc">—</div>
+          <div class="esc-desc">No aceptas el encargo. Los gastos fijos siguen corriendo. Liberas tiempo para otros proyectos.</div>
+        </div>
+      </div>
+      <div class="info-box amber" style="margin-top:1rem">
+        ⚠️ <span>Cálculo <strong>orientativo</strong> antes de IRPF final anual. La factura del colaborador reduce tu base imponible del 130. Consulta con tu gestor para una planificación completa.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let numColabs = 0;
+
+function fmt(n){
+  const v = parseFloat(n) || 0;
+  return v.toLocaleString('es-ES', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' €';
+}
+function fmtN(n){
+  return (parseFloat(n)||0).toLocaleString('es-ES', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function v(id){ return parseFloat(document.getElementById(id)?.value) || 0; }
+function setText(id, txt){ const el=document.getElementById(id); if(el) el.textContent=txt; }
+
+function addColab(){
+  numColabs++;
+  const n = numColabs;
+  const tbody = document.getElementById('colabs-body');
+  const tr = document.createElement('tr');
+  tr.id = `colab-row-${n}`;
+  tr.innerHTML = `
+    <td><input type="text" id="colab-nom-${n}" placeholder="Ej: Diseñador, Maquetador..." style="width:100%;padding:.3rem .5rem;border:1px solid var(--border2);border-radius:6px;font-size:13px;font-family:inherit"></td>
+    <td style="text-align:right">
+      <div style="position:relative;display:inline-block">
+        <input type="number" id="colab-imp-${n}" value="0" min="0" step="10" style="width:120px;padding-right:1.5rem" oninput="calcular()">
+        <span style="position:absolute;right:.5rem;top:50%;transform:translateY(-50%);font-size:12px;color:var(--ink3);pointer-events:none">€</span>
+      </div>
+    </td>
+    <td style="text-align:right">
+      <div style="position:relative;display:inline-block">
+        <input type="number" id="colab-ret-${n}" value="15" min="0" max="47" step="1" style="width:80px;padding-right:1.5rem" oninput="calcular()">
+        <span style="position:absolute;right:.5rem;top:50%;transform:translateY(-50%);font-size:12px;color:var(--ink3);pointer-events:none">%</span>
+      </div>
+    </td>
+    <td class="ret-display" style="text-align:right" id="colab-paga-${n}">0,00 €</td>
+    <td><button class="btn-del" onclick="removeColab(${n})" title="Eliminar">×</button></td>
+  `;
+  tbody.appendChild(tr);
+  calcular();
+}
+
+function removeColab(n){
+  const row = document.getElementById(`colab-row-${n}`);
+  if(row) row.remove();
+  calcular();
+}
+
+function calcular(){
+  const ingreso      = v('precio_cliente');
+  const duracion     = v('duracion') || 1;
+  const cuota_mes    = v('cuota_ss');
+  const fijos_mes    = v('gastos_fijos');
+  const variables    = v('gastos_variables');
+  const tarifa_hora  = v('tarifa_hora');
+  const horas_tuyas  = v('horas_tuyas');
+  const margen_obj   = v('margen_minimo') / 100;
+
+  // Costes fijos del período
+  const ss_periodo   = cuota_mes * duracion;
+  const fijos_periodo= fijos_mes * duracion;
+
+  // Colaboradores
+  let total_colabs = 0;
+  let total_paga   = 0;
+  for(let i = 1; i <= numColabs + 50; i++){
+    const row = document.getElementById(`colab-row-${i}`);
+    if(!row) continue;
+    const imp = parseFloat(document.getElementById(`colab-imp-${i}`)?.value) || 0;
+    const ret = parseFloat(document.getElementById(`colab-ret-${i}`)?.value) || 0;
+    const paga = imp * (1 - ret/100);
+    total_colabs += imp;
+    total_paga   += paga;
+    const el = document.getElementById(`colab-paga-${i}`);
+    if(el) el.textContent = fmt(paga);
+  }
+
+  // Coste de tu tiempo (oportunidad)
+  const coste_tiempo = tarifa_hora * horas_tuyas;
+
+  // Costes totales
+  const coste_total_sub  = total_colabs + ss_periodo + fijos_periodo + variables;
+  const coste_total_solo = ss_periodo + fijos_periodo + variables; // sin colabs
+  const perdida_rechazo  = -(ss_periodo + fijos_periodo);
+
+  // Beneficios
+  const beneficio_sub    = ingreso - coste_total_sub;
+  const beneficio_solo   = ingreso - coste_total_solo;
+  const beneficio_sub_mes= beneficio_sub / duracion;
+  const margen_sub       = ingreso > 0 ? (beneficio_sub / ingreso * 100) : 0;
+
+  // Beneficio_solo real (descontando coste oportunidad de tu tiempo)
+  const beneficio_solo_real = beneficio_solo - coste_tiempo;
+  const tarifa_hora_efectiva = horas_tuyas > 0 ? (beneficio_solo / horas_tuyas) : 0;
+
+  // Precio mínimo al cliente para el margen objetivo
+  const costes_base = total_colabs + ss_periodo + fijos_periodo + variables;
+  const precio_minimo = margen_obj < 1 ? costes_base / (1 - margen_obj) : costes_base;
+
+  // Punto de equilibrio colaboradores
+  const max_colabs = ingreso - ss_periodo - fijos_periodo - variables;
+  const max_colabs_pct = ingreso > 0 ? (max_colabs / ingreso * 100) : 0;
+
+  // ── RESULTADO ──
+  const box = document.getElementById('resultado-box');
+  if(beneficio_sub > 0.005){
+    box.className = 'resultado positivo';
+    setText('res-emoji', '✅');
+    setText('res-titulo', 'El encargo te sale rentable');
+    setText('res-sub', `Ganas ${fmt(beneficio_sub)} netos (${margen_sub.toFixed(1)}% de margen). ${duracion > 1 ? fmt(beneficio_sub_mes) + '/mes.' : ''}`);
+  } else if(Math.abs(beneficio_sub) < 0.005){
+    box.className = 'resultado neutro';
+    setText('res-emoji', '⚖️');
+    setText('res-titulo', 'Punto de equilibrio exacto');
+    setText('res-sub', 'No ganas ni pierdes. Valora si el encargo merece tu tiempo de gestión y el riesgo.');
+  } else {
+    box.className = 'resultado negativo';
+    setText('res-emoji', '❌');
+    setText('res-titulo', 'El encargo no te sale rentable');
+    setText('res-sub', `Pierdes ${fmt(Math.abs(beneficio_sub))}. O el colaborador cobra demasiado o el precio al cliente es insuficiente.`);
+  }
+
+  setText('rc-ingreso', fmt(ingreso));
+  setText('rc-colabs', '− ' + fmt(total_colabs));
+  setText('rc-otros', '− ' + fmt(ss_periodo + fijos_periodo + variables));
+  const rcB = document.getElementById('rc-beneficio');
+  rcB.textContent = fmt(beneficio_sub);
+  rcB.className = 'rc-val ' + (beneficio_sub >= 0 ? 'pos' : 'neg');
+
+  // ── CONSEJO ──
+  const cBox = document.getElementById('consejo-box');
+  cBox.className = 'consejo-box visible';
+  if(beneficio_sub > 0 && beneficio_sub < ingreso * 0.10){
+    setText('consejo-titulo', '⚠️ Margen muy ajustado');
+    setText('consejo-texto', `Ganas dinero pero con solo un ${margen_sub.toFixed(1)}% de margen. Cualquier imprevisto (retraso del colaborador, horas extra tuyas) puede dejarte en pérdidas. Considera subir el precio al cliente a mínimo ${fmt(precio_minimo)} para tener un colchón del ${(margen_obj*100).toFixed(0)}%.`);
+  } else if(beneficio_sub < 0){
+    setText('consejo-titulo', '💡 Para que salga rentable necesitas...');
+    if(ingreso < precio_minimo){
+      setText('consejo-texto', `Con estos costes, necesitas cobrar al cliente al menos ${fmt(precio_minimo)} para conseguir un ${(margen_obj*100).toFixed(0)}% de margen. Actualmente cobras ${fmt(ingreso)} — ${fmt(precio_minimo - ingreso)} por debajo del mínimo. Alternativa: negocia con el colaborador que te cobre menos de ${fmt(Math.max(0, max_colabs))}.`);
+    } else {
+      setText('consejo-texto', `Los colaboradores te cobran demasiado. Para que salga rentable no pueden cobrarte más de ${fmt(Math.max(0, max_colabs))} en total. Actualmente te cobran ${fmt(total_colabs)} — ${fmt(total_colabs - Math.max(0, max_colabs))} de más.`);
+    }
+  } else if(beneficio_sub > 0 && coste_tiempo > 0){
+    const ratio = beneficio_sub / coste_tiempo;
+    if(ratio < 1){
+      setText('consejo-titulo', '⏱️ Ojo con tu tiempo de gestión');
+      setText('consejo-texto', `El beneficio del encargo (${fmt(beneficio_sub)}) es menor que el valor de tus horas de gestión (${fmt(coste_tiempo)}). Si esas horas las pudieras vender a otro cliente, te saldría mejor rechazar este encargo. Reduce las horas de gestión o sube el precio al cliente.`);
+    } else {
+      setText('consejo-titulo', '✅ Encargo rentable y bien dimensionado');
+      setText('consejo-texto', `Ganas ${fmt(beneficio_sub)} netos y cada hora de gestión te rinde ${fmt(beneficio_sub / (horas_tuyas||1))} — ${ratio.toFixed(1)}x tu tarifa hora. Buen encargo para subcontratar.`);
+    }
+  } else {
+    cBox.className = 'consejo-box';
+  }
+
+  // ── DESGLOSE ──
+  const tbody = document.getElementById('desglose-body');
+  let html = `
+    <tr><td class="dt-label">✅ Ingreso del cliente</td><td class="dt-val dt-pos">${fmt(ingreso)}</td></tr>
+    <tr class="dt-sub"><td colspan="2" style="padding-left:1.25rem">Importe total que facturarás (sin IVA)</td></tr>
+  `;
+  if(total_colabs > 0){
+    html += `<tr><td class="dt-label">➖ Total colaboradores (factura bruta)</td><td class="dt-val dt-neg">− ${fmt(total_colabs)}</td></tr>
+    <tr class="dt-sub"><td colspan="2" style="padding-left:1.25rem">Gasto deducible al 100% en tu IRPF · Retienes ${fmt(total_colabs - total_paga)} para el Modelo 111</td></tr>`;
+  }
+  html += `
+    <tr><td class="dt-label">➖ Cuota SS del período</td><td class="dt-val dt-neg">− ${fmt(ss_periodo)}</td></tr>
+    <tr class="dt-sub"><td colspan="2" style="padding-left:1.25rem">${fmt(cuota_mes)}/mes × ${duracion} mes(es)</td></tr>
+    <tr><td class="dt-label">➖ Gastos fijos del período</td><td class="dt-val dt-neg">− ${fmt(fijos_periodo)}</td></tr>
+    <tr class="dt-sub"><td colspan="2" style="padding-left:1.25rem">${fmt(fijos_mes)}/mes × ${duracion} mes(es)</td></tr>
+  `;
+  if(variables > 0){
+    html += `<tr><td class="dt-label">➖ Gastos variables del encargo</td><td class="dt-val dt-neg">− ${fmt(variables)}</td></tr>`;
+  }
+  html += `
+    <tr class="dt-total"><td class="dt-label">= BENEFICIO NETO DEL ENCARGO</td><td class="dt-val ${beneficio_sub>=0?'dt-pos':'dt-neg'}">${fmt(beneficio_sub)}</td></tr>
+    <tr><td class="dt-label" style="font-size:12px;color:var(--ink3)">Margen sobre ingreso</td><td class="dt-val" style="font-size:12px;color:var(--ink3)">${margen_sub.toFixed(1)}%</td></tr>
+  `;
+  if(duracion > 1){
+    html += `<tr class="dt-mes"><td>📅 Beneficio mensual medio</td><td class="dt-val">${fmt(beneficio_sub_mes)}/mes</td></tr>`;
+  }
+  if(coste_tiempo > 0){
+    html += `
+      <tr style="margin-top:8px"><td class="dt-label" style="color:var(--ink3)">⏱ Coste oportunidad de tu tiempo (${horas_tuyas}h × ${fmt(tarifa_hora)}/h)</td><td class="dt-val" style="color:var(--ink3)">− ${fmt(coste_tiempo)}</td></tr>
+      <tr class="dt-sub"><td colspan="2" style="padding-left:1.25rem">No es un coste contable pero sí real. Beneficio ajustado a tu tiempo: ${fmt(beneficio_sub - coste_tiempo)}</td></tr>
+    `;
+  }
+  tbody.innerHTML = html;
+
+  // Precio mínimo
+  setText('d-precio-minimo', fmt(precio_minimo));
+  setText('d-precio-desc', `Para un margen del ${(margen_obj*100).toFixed(0)}% sobre el precio. Actualmente cobras ${fmt(ingreso)} — ${ingreso >= precio_minimo ? fmt(ingreso - precio_minimo) + ' por encima del mínimo ✅' : fmt(precio_minimo - ingreso) + ' por debajo del mínimo ⚠️'}`);
+
+  // Punto equilibrio colabs
+  const eqEl = document.getElementById('d-equilibrio');
+  eqEl.textContent = max_colabs > 0 ? fmt(max_colabs) : 'Imposible con estos costes';
+  eqEl.style.color = max_colabs > 0 ? 'var(--green)' : 'var(--red)';
+  setText('d-equilibrio-desc', max_colabs > 0
+    ? `Los colaboradores no pueden cobrarte más de ${fmt(max_colabs)} (${max_colabs_pct.toFixed(1)}% del precio al cliente) para que no pierdas dinero.`
+    : 'Los costes fijos del período ya superan el precio al cliente.');
+
+  // ── ESCENARIOS ──
+  const escSub = document.getElementById('esc-sub');
+  escSub.textContent = fmt(beneficio_sub);
+  escSub.className = 'esc-resultado ' + (beneficio_sub >= 0 ? 'esc-verde' : 'esc-rojo');
+  setText('esc-sub-mes', duracion > 1 ? fmt(beneficio_sub_mes) + '/mes' : '');
+
+  const escSolo = document.getElementById('esc-solo');
+  escSolo.textContent = fmt(beneficio_solo_real);
+  escSolo.className = 'esc-resultado ' + (beneficio_solo_real >= 0 ? 'esc-verde' : 'esc-rojo');
+  setText('esc-solo-hora', horas_tuyas > 0 ? `${fmtN(tarifa_hora_efectiva)} €/hora efectiva` : '');
+
+  const escRec = document.getElementById('esc-rechazo');
+  escRec.textContent = fmt(perdida_rechazo);
+  escRec.className = 'esc-resultado esc-rojo';
+  setText('esc-rec-desc', `Sigues pagando ${fmt(ss_periodo + fijos_periodo)} en costes fijos`);
+
+  // Resaltar ganador
+  const winner = beneficio_sub >= beneficio_solo_real && beneficio_sub >= perdida_rechazo ? 'sub'
+    : beneficio_solo_real >= beneficio_sub && beneficio_solo_real >= perdida_rechazo ? 'solo' : 'rec';
+  ['sub','solo','rec'].forEach(k => {
+    const el = document.getElementById(`esc-box-${k}`);
+    if(el) el.className = k === winner ? 'escenario esc-winner' : 'escenario';
+  });
+}
+
+function resetForm(){
+  document.getElementById('precio_cliente').value  = 2000;
+  document.getElementById('duracion').value         = 1;
+  document.getElementById('cuota_ss').value         = 294;
+  document.getElementById('gastos_fijos').value     = 500;
+  document.getElementById('gastos_variables').value = 0;
+  document.getElementById('tarifa_hora').value      = 50;
+  document.getElementById('horas_tuyas').value      = 10;
+  document.getElementById('margen_minimo').value    = 20;
+  document.getElementById('colabs-body').innerHTML  = '';
+  numColabs = 0;
+  addColab();
+  calcular();
+}
+
+function exportPDF(){
+  const ingreso    = v('precio_cliente');
+  const duracion   = v('duracion') || 1;
+  const cuota_mes  = v('cuota_ss');
+  const fijos_mes  = v('gastos_fijos');
+  const variables  = v('gastos_variables');
+  const ss_per     = cuota_mes * duracion;
+  const fijos_per  = fijos_mes * duracion;
+  let total_colabs = 0;
+  for(let i=1;i<=numColabs+50;i++){
+    const row=document.getElementById(`colab-row-${i}`);
+    if(!row) continue;
+    total_colabs += parseFloat(document.getElementById(`colab-imp-${i}`)?.value)||0;
+  }
+  const coste   = total_colabs + ss_per + fijos_per + variables;
+  const benef   = ingreso - coste;
+  const margen  = ingreso > 0 ? (benef/ingreso*100) : 0;
+  const w = window.open('','_blank','width=800,height=900');
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Subcontratación NormaAlerta</title>
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Helvetica,Arial,sans-serif;font-size:13px;padding:40px;color:#1c1b18}
+  .hdr{display:flex;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #1a7a4a}
+  h1{font-size:18px;font-weight:600;color:#1a7a4a}h2{font-size:12px;font-weight:600;background:#3d3d3d;color:white;padding:5px 10px;border-radius:4px;margin:14px 0 7px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#f7f5ee;padding:14px;border-radius:8px;margin-bottom:14px}
+  .grid label{font-size:10px;text-transform:uppercase;color:#8c8b84;display:block;margin-bottom:2px}.grid span{font-size:13px;font-weight:500}
+  table{width:100%;border-collapse:collapse}td{padding:5px 8px;border-bottom:1px solid #edeae0;font-size:12px}
+  .r{text-align:right;font-family:monospace}.neg{color:#dc2626}.pos{color:#1a7a4a}
+  .total td{font-weight:700;border-top:2px solid #1c1b18;font-size:13px}
+  .res{background:#1c1b18;color:white;padding:16px;border-radius:10px;margin-top:14px}
+  .res-n{font-size:26px;font-weight:600;font-family:monospace;color:${benef>=0?'#4ade80':'#fca5a5'}}
+  .ftr{margin-top:16px;font-size:10px;color:#8c8b84;text-align:center;border-top:1px solid #edeae0;padding-top:10px}
+  @media print{body{padding:20px}}</style></head><body>
+  <div class="hdr"><div><h1>NormaAlerta — ¿Me compensa subcontratar?</h1></div><div style="font-size:11px;color:#8c8b84">normaalerta.com</div></div>
+  <div class="grid">
+    <div><label>Precio al cliente</label><span>${fmt(ingreso)}</span></div>
+    <div><label>Duración</label><span>${duracion} mes(es)</span></div>
+    <div><label>Total colaboradores</label><span>${fmt(total_colabs)}</span></div>
+    <div><label>Cuota SS × período</label><span>${fmt(ss_per)}</span></div>
+    <div><label>Gastos fijos × período</label><span>${fmt(fijos_per)}</span></div>
+    <div><label>Gastos variables</label><span>${fmt(variables)}</span></div>
+  </div>
+  <h2>Desglose</h2>
+  <table>
+    <tr><td>✅ Ingreso del cliente</td><td class="r pos">${fmt(ingreso)}</td></tr>
+    <tr><td>➖ Colaboradores</td><td class="r neg">− ${fmt(total_colabs)}</td></tr>
+    <tr><td>➖ Cuota SS del período</td><td class="r neg">− ${fmt(ss_per)}</td></tr>
+    <tr><td>➖ Gastos fijos del período</td><td class="r neg">− ${fmt(fijos_per)}</td></tr>
+    <tr><td>➖ Gastos variables</td><td class="r neg">− ${fmt(variables)}</td></tr>
+    <tr class="total"><td>= BENEFICIO NETO</td><td class="r ${benef>=0?'pos':'neg'}">${fmt(benef)}</td></tr>
+    <tr><td style="color:#8c8b84;font-size:11px">Margen</td><td class="r" style="color:#8c8b84;font-size:11px">${margen.toFixed(1)}%</td></tr>
+  </table>
+  <div class="res"><div class="res-n">${fmt(benef)}</div><div style="font-size:12px;opacity:.6;margin-top:4px">Resultado neto del encargo</div></div>
+  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Cálculo orientativo antes de IRPF final. Consulta con tu gestor.</div>
+  <script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.close();
+}
+
+// Init — añadir un colaborador por defecto
+addColab();
+document.getElementById(`colab-imp-1`).value = 1200;
+calcular();
+</script>
+</body>
+</html>
