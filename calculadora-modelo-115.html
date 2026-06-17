@@ -103,7 +103,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
       <div class="plazo-chip">1T <span>→ 20 abril</span></div>
       <div class="plazo-chip">2T <span>→ 20 julio</span></div>
       <div class="plazo-chip">3T <span>→ 20 octubre</span></div>
-      <div class="plazo-chip">4T <span>→ 20 enero</span></div>
+      <div class="plazo-chip">4T <span>→ 30 enero</span></div>
     </div>
   </div>
 
@@ -276,7 +276,7 @@ function calcTotal(totRet,numPerc,totRentas){
   const resultado=Math.max(0,totRet-comp);
   document.getElementById('resultado-num').textContent=fmt(resultado);
   const p=document.getElementById('periodo').value;
-  const plazos={'1T':'20 de abril','2T':'20 de julio','3T':'20 de octubre','4T':'20 de enero'};
+  const plazos={'1T':'20 de abril','2T':'20 de julio','3T':'20 de octubre','4T':'30 de enero'};
   document.getElementById('resultado-status').innerHTML=`<strong>A ingresar en Hacienda</strong> — Plazo: hasta el ${plazos[p]||'fecha oficial'}`;
   document.getElementById('rc-num').textContent=numPerc;
   document.getElementById('rc-rentas').textContent=fmt(totRentas);
