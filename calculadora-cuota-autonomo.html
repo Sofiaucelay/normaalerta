@@ -180,7 +180,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
         <tbody id="tbody-tramos"></tbody>
       </table>
       <div style="font-size:11px;color:var(--ink3);margin-top:.5rem;font-style:italic">
-        Tipo de cotización aplicado: 31,20% (contingencias comunes + cese de actividad + formación + MEI). Fuente: Ley 14/2022 y RD 504/2022 · TGSS.
+        Tipo de cotización aplicado: 31,50% (CC 28,30% + prof 1,30% + cese 0,90% + FP 0,10% + MEI 0,90%). Fuente: Orden PJC/297/2026 (BOE 31-mar-2026) · TGSS.
       </div>
     </div>
   </div>
@@ -262,22 +262,29 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
 </div>
 
 <script>
-// TRAMOS RETA 2026 — Fuente: Ley 14/2022 y tabla de tramos vigente
+// TRAMOS RETA 2026 — Orden PJC/297/2026 (BOE 31-mar-2026) · RDL 16/2025
+// Tipo total: 31,50% (CC 28,30% + prof 1,30% + cese 0,90% + FP 0,10% + MEI 0,90%)
+// cuotaMin = cuota fija oficial por tramo cotizando por base mínima
 const TRAMOS = [
-  { num:1,  min:0,       max:670,    baseMin:225.83,  baseMax:500,    label:'Hasta 670 €' },
-  { num:2,  min:670,     max:900,    baseMin:250.00,  baseMax:900,    label:'670 € – 900 €' },
-  { num:3,  min:900,     max:1166.7, baseMin:267.07,  baseMax:1166.7, label:'900 € – 1.166,70 €' },
-  { num:4,  min:1166.7,  max:1300,   baseMin:291.67,  baseMax:1300,   label:'1.166,70 € – 1.300 €' },
-  { num:5,  min:1300,    max:1500,   baseMin:294.35,  baseMax:1500,   label:'1.300 € – 1.500 €' },
-  { num:6,  min:1500,    max:1700,   baseMin:294.35,  baseMax:1700,   label:'1.500 € – 1.700 €' },
-  { num:7,  min:1700,    max:1850,   baseMin:390.00,  baseMax:1850,   label:'1.700 € – 1.850 €' },
-  { num:8,  min:1850,    max:2030,   baseMin:461.25,  baseMax:2030,   label:'1.850 € – 2.030 €' },
-  { num:9,  min:2030,    max:2330,   baseMin:530.98,  baseMax:2330,   label:'2.030 € – 2.330 €' },
-  { num:10, min:2330,    max:2760,   baseMin:600.25,  baseMax:2760,   label:'2.330 € – 2.760 €' },
-  { num:11, min:2760,    max:3190,   baseMin:900.00,  baseMax:3190,   label:'2.760 € – 3.190 €' },
-  { num:12, min:3190,    max:99999,  baseMin:1139.75, baseMax:4720.5, label:'Más de 3.190 €' },
+  // TABLA REDUCIDA (tramos 1-6)
+  { num:1,  min:0,       max:670,    baseMin:653.59,  baseMax:1633.99, cuotaMin:200, label:'Hasta 670 €' },
+  { num:2,  min:670,     max:900,    baseMin:718.95,  baseMax:1633.99, cuotaMin:220, label:'670 € – 900 €' },
+  { num:3,  min:900,     max:1166.7, baseMin:849.67,  baseMax:1633.99, cuotaMin:260, label:'900 € – 1.166,70 €' },
+  { num:4,  min:1166.7,  max:1300,   baseMin:898.69,  baseMax:1633.99, cuotaMin:275, label:'1.166,70 € – 1.300 €' },
+  { num:5,  min:1300,    max:1500,   baseMin:960.78,  baseMax:1633.99, cuotaMin:294, label:'1.300 € – 1.500 €' },
+  { num:6,  min:1500,    max:1700,   baseMin:960.78,  baseMax:1633.99, cuotaMin:294, label:'1.500 € – 1.700 €' },
+  // TABLA GENERAL (tramos 7-15)
+  { num:7,  min:1700,    max:1850,   baseMin:1143.79, baseMax:4720.5,  cuotaMin:350, label:'1.700 € – 1.850 €' },
+  { num:8,  min:1850,    max:2030,   baseMin:1209.15, baseMax:4720.5,  cuotaMin:370, label:'1.850 € – 2.030 €' },
+  { num:9,  min:2030,    max:2330,   baseMin:1274.51, baseMax:4720.5,  cuotaMin:390, label:'2.030 € – 2.330 €' },
+  { num:10, min:2330,    max:2760,   baseMin:1372.55, baseMax:4720.5,  cuotaMin:420, label:'2.330 € – 2.760 €' },
+  { num:11, min:2760,    max:3190,   baseMin:1633.99, baseMax:4720.5,  cuotaMin:500, label:'2.760 € – 3.190 €' },
+  { num:12, min:3190,    max:3620,   baseMin:1732.03, baseMax:4720.5,  cuotaMin:530, label:'3.190 € – 3.620 €' },
+  { num:13, min:3620,    max:4050,   baseMin:1830.07, baseMax:4720.5,  cuotaMin:560, label:'3.620 € – 4.050 €' },
+  { num:14, min:4050,    max:6000,   baseMin:1928.11, baseMax:4720.5,  cuotaMin:590, label:'4.050 € – 6.000 €' },
+  { num:15, min:6000,    max:99999,  baseMin:1928.11, baseMax:4720.5,  cuotaMin:590, label:'Más de 6.000 €' },
 ];
-const TIPO = 0.312; // 31,2% contingencias + cese + formación + MEI
+const TIPO = 0.315; // 31,5% tipo total 2026 con MEI 0,9% incluido
 
 function fmt(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+'€';}
 function fmtN(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2});}
@@ -294,7 +301,7 @@ function renderTabla(tramoActivo){
     const esActivo = t.num === tramoActivo?.num;
     const tr = document.createElement('tr');
     if(esActivo) tr.className = 'activo';
-    const cuotaMin = t.baseMin * TIPO;
+    const cuotaMin = t.cuotaMin;
     const cuotaMax = t.baseMax * TIPO;
     tr.innerHTML = `
       <td><strong>Tramo ${t.num}</strong></td>
@@ -328,8 +335,8 @@ function calcular(){
     cuotaMensual = 80;
     subLabel = 'Tarifa plana aplicada — 80€/mes durante 12 meses';
   } else {
-    cuotaMensual = tramo.baseMin * TIPO;
-    subLabel = `Tramo ${tramo.num} · Base mínima ${fmtN(tramo.baseMin)}€ × 31,2%`;
+    cuotaMensual = tramo.cuotaMin;
+    subLabel = `Tramo ${tramo.num} · Base mínima ${fmtN(tramo.baseMin)}€ × 31,5% (MEI incluido)`;
   }
 
   const cuotaAnual = cuotaMensual * 12;
@@ -401,7 +408,7 @@ function exportPDF(){
       <div style="font-family:monospace;font-size:16px;color:#4ade80">${fmtN(parseFloat(cuota)*12)} €/año</div>
     </div>
   </div>
-  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Cálculo orientativo basado en la tabla de tramos RETA 2026. Fuente: Ley 14/2022 · TGSS. Consulta siempre con tu gestor.</div>
+  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Cálculo orientativo basado en la tabla de tramos RETA 2026. Fuente: Orden PJC/297/2026 (BOE 31-mar-2026) · TGSS. Consulta siempre con tu gestor.</div>
   <script>window.onload=()=>window.print()<\/script></body></html>`);
   w.document.close();
 }
