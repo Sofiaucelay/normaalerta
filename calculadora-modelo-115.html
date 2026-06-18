@@ -3,7 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modelo 115 — Retenciones Arrendamientos | NormaAlerta</title>
+  <title>Calculadora Modelo 115 — Retención Alquiler 2026 | NormaAlerta</title>
+  <meta name="description" content="Calcula el Modelo 115 de retenciones sobre alquileres de inmuebles. Introduce las rentas pagadas y obtén el importe a ingresar a Hacienda. Gratis.">
+  <meta name="keywords" content="calculadora modelo 115, retención alquiler autónomos, modelo 115 hacienda 2026">
+  <meta name="author" content="NormaAlerta">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://normaalerta.com/calculadora-modelo-115.html">
+  <!-- Open Graph -->
+  <meta property="og:title" content="Calculadora Modelo 115 — Retención Alquiler 2026 | NormaAlerta">
+  <meta property="og:description" content="Calcula el Modelo 115 de retenciones sobre alquileres de inmuebles. Introduce las rentas pagadas y obtén el importe a ingresar a Hacienda. Gratis.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://normaalerta.com/calculadora-modelo-115.html">
+  <meta property="og:site_name" content="NormaAlerta">
+  <meta property="og:locale" content="es_ES">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Calculadora Modelo 115 — Retención Alquiler 2026 | NormaAlerta">
+  <meta name="twitter:description" content="Calcula el Modelo 115 de retenciones sobre alquileres de inmuebles. Introduce las rentas pagadas y obtén el importe a ingresar a Hacienda. Gratis.">
+
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;--ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;--paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;--border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);--amber-light:#fef3c7;--blue-light:#eff6ff}
@@ -306,7 +323,7 @@ function exportPDF(){
     const row=document.getElementById(`row-inm-${i}`);if(!row)continue;
     rows+=`<tr><td>${document.getElementById(`inm-nom-${i}`).value||'—'}</td><td>${document.getElementById(`inm-nif-${i}`).value||'—'}</td><td class="r">${v(`inm-renta-${i}`).toFixed(2)}</td><td class="r">${v(`inm-tipo-${i}`)}%</td><td class="r">${document.getElementById(`inm-ret-${i}`).textContent}</td></tr>`;
   }
-  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Modelo 115</title>
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
   <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Helvetica,Arial,sans-serif;font-size:13px;padding:40px;color:#1c1b18}
   .hdr{display:flex;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #1a7a4a}
   h1{font-size:18px;font-weight:600;color:#1a7a4a}h2{font-size:12px;font-weight:600;background:#3d3d3d;color:white;padding:5px 8px;border-radius:4px;margin:14px 0 6px}
