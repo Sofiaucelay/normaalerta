@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Me Conviene Pasar a SL? Simulador Autónomo vs Sociedad 2026 | NormaAlerta</title>
+  <meta name="description" content="Calcula si te sale rentable montar una SL en lugar de seguir como autónomo. Compara IRPF vs Impuesto de Sociedades con tu sueldo real, dividendos y costes de gestoría 2026.">
+  <meta name="keywords" content="me conviene montar una SL, autónomo o sociedad limitada calculadora, cuándo pasar a SL 2026, simulador autónomo vs sociedad, ahorro fiscal SL autónomo">
+  <meta name="author" content="NormaAlerta">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://normaalerta.com/simulador-autonomo-vs-sl.html">
+  <meta property="og:title" content="¿Me Conviene Pasar a SL? Simulador 2026 | NormaAlerta">
+  <meta property="og:description" content="Calcula si te sale rentable montar una SL en lugar de seguir como autónomo. Resultado al instante.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://normaalerta.com/simulador-autonomo-vs-sl.html">
+  <meta property="og:site_name" content="NormaAlerta">
+  <meta property="og:locale" content="es_ES">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="¿Me Conviene Pasar a SL? | NormaAlerta">
+  <meta name="twitter:description" content="Calcula si te sale rentable montar una SL. Resultado al instante.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;
+  --ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;
+  --paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;
+  --border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);
+  --amber:#f59e0b;--amber-light:#fef3c7;--red:#dc2626;--blue-light:#eff6ff;
+  --blue:#2563eb;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.page{max-width:920px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-header{margin-bottom:2rem;text-align:center}
+.modelo-badge{display:inline-block;background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;font-family:'DM Mono',monospace;margin-bottom:.75rem}
+.page-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;letter-spacing:-.5px;margin-bottom:.5rem}
+.page-title em{font-style:italic;color:var(--green)}
+.page-subtitle{font-size:14px;color:var(--ink3);max-width:560px;margin:0 auto}
+.section{background:var(--white);border:1px solid var(--border);border-radius:14px;margin-bottom:1rem;overflow:hidden}
+.section-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--green-light)}
+.section-title{font-size:15px;font-weight:500;flex:1}
+.section-subtitle{font-size:12px;color:var(--ink3);margin-top:1px}
+.section-body{padding:1.25rem}
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:12px;font-weight:500;color:var(--ink3)}
+.field-wrap{position:relative}
+.field-wrap input{padding:.55rem 2.25rem .55rem .75rem;border:1px solid var(--border2);border-radius:8px;font-size:14px;font-family:'DM Mono',monospace;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;width:100%;text-align:right}
+.field-wrap input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
+.field-wrap .suffix{position:absolute;right:.75rem;top:50%;transform:translateY(-50%);font-size:12px;color:var(--ink3);pointer-events:none}
+.input-note{font-size:11px;color:var(--ink3);font-style:italic;margin-top:2px}
+
+/* SLIDER NOMINA */
+.slider-wrap{margin-top:8px}
+.slider-wrap input[type=range]{width:100%;accent-color:var(--green);cursor:pointer}
+.slider-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-top:2px}
+
+.info-box{border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12px;display:flex;gap:8px;align-items:flex-start}
+.info-box.amber{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);color:#92400e}
+.info-box.green{background:var(--green-light);border:1px solid rgba(26,122,74,.2);color:var(--green-dark)}
+.info-box.blue{background:var(--blue-light);border:1px solid rgba(37,99,235,.2);color:#1e40af}
+
+/* COMPARATIVA VISUAL */
+.comparativa{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:1.5rem}
+.comp-card{border-radius:14px;padding:1.5rem;position:relative;overflow:hidden}
+.comp-card.autonomo{background:var(--ink)}
+.comp-card.sl{background:#1e3a5f}
+.comp-card.ganador{box-shadow:0 0 0 3px #4ade80}
+.comp-badge{position:absolute;top:0;right:0;background:#4ade80;color:#0f5235;font-size:11px;font-weight:700;padding:4px 14px;border-bottom-left-radius:10px}
+.comp-titulo{font-size:13px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem}
+.comp-num{font-family:'DM Mono',monospace;font-size:34px;font-weight:500;color:#4ade80;line-height:1;margin-bottom:.25rem}
+.comp-sub{font-size:12px;color:rgba(255,255,255,.5);margin-bottom:1rem}
+.comp-detalle{border-top:1px solid rgba(255,255,255,.1);padding-top:.75rem}
+.comp-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;color:rgba(255,255,255,.7)}
+.comp-row .crv{font-family:'DM Mono',monospace;color:rgba(255,255,255,.9)}
+
+/* DIFERENCIA HERO */
+.diferencia-hero{background:var(--green);border-radius:14px;padding:1.75rem;margin-top:1rem;text-align:center}
+.dh-label{font-size:12px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem}
+.dh-num{font-family:'DM Mono',monospace;font-size:42px;font-weight:600;color:white;line-height:1;margin-bottom:.5rem}
+.dh-sub{font-size:14px;color:rgba(255,255,255,.85)}
+
+/* DESGLOSE TABLA */
+.desglose-tabla{width:100%;border-collapse:collapse;font-size:13px}
+.desglose-tabla th{font-size:11px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;padding:.5rem .75rem;background:var(--paper);border-bottom:1px solid var(--border);text-align:left}
+.desglose-tabla th:not(:first-child){text-align:right}
+.desglose-tabla td{padding:.5rem .75rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.desglose-tabla td:not(:first-child){text-align:right;font-family:'DM Mono',monospace;font-weight:500}
+.desglose-tabla tr:last-child td{border-bottom:none}
+.desglose-tabla .total-row td{font-weight:600;font-size:14px;border-top:2px solid var(--border2);padding-top:.75rem}
+.dt-pos{color:var(--green)}
+.dt-neg{color:var(--red)}
+
+/* FACTORES NO FISCALES */
+.factores-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:1rem}
+.factor-card{background:var(--paper);border-radius:10px;padding:1rem;border:1px solid var(--border)}
+.factor-titulo{font-size:13px;font-weight:500;margin-bottom:.5rem;display:flex;align-items:center;gap:6px}
+.factor-list{font-size:12px;color:var(--ink2);line-height:1.8;list-style:none}
+
+.btn-reset{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:1px solid var(--border2);background:var(--white);color:var(--ink);margin-top:1rem}
+
+@media(max-width:640px){
+  .input-grid{grid-template-columns:1fr}
+  .comparativa{grid-template-columns:1fr}
+  .factores-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/></svg>
+    NormaAlerta <span class="nav-badge">Simulador fiscal</span>
+  </a>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="modelo-badge">AUTÓNOMO VS SOCIEDAD</div>
+    <h1 class="page-title">¿Me conviene pasar<br>a <em>Sociedad Limitada</em>?</h1>
+    <p class="page-subtitle">Introduce tus beneficios anuales y compara cuánto te queda neto siendo autónomo o creando una SL con sueldo y dividendos. Cálculo real con doble imposición incluida.</p>
+  </div>
+
+  <!-- INPUTS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">💰</div>
+      <div>
+        <div class="section-title">Tu beneficio anual</div>
+        <div class="section-subtitle">Ingresos menos gastos deducibles, antes de impuestos</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="input-grid">
+        <div class="field">
+          <label>Beneficio anual (ingresos − gastos)</label>
+          <div class="field-wrap">
+            <input type="number" id="beneficio" value="60000" min="0" step="1000" oninput="calcular()">
+            <span class="suffix">€</span>
+          </div>
+          <span class="input-note">Lo que ganarías antes de pagar IRPF o Impuesto de Sociedades</span>
+        </div>
+        <div class="field">
+          <label>Comunidad autónoma (tramo autonómico IRPF)</label>
+          <select id="ccaa" onchange="calcular()" style="padding:.55rem .75rem;border:1px solid var(--border2);border-radius:8px;font-size:14px;color:var(--ink);background:var(--white);outline:none;width:100%">
+            <option value="media">Media estatal (aproximado)</option>
+            <option value="madrid">Madrid (tramo bajo)</option>
+            <option value="cataluna">Cataluña (tramo alto)</option>
+            <option value="aragon">Aragón / Castilla y León</option>
+          </select>
+          <span class="input-note">Afecta al tipo marginal de tu IRPF como autónomo</span>
+        </div>
+      </div>
+
+      <div style="margin-top:1rem">
+        <label style="font-size:12px;font-weight:500;color:var(--ink3)">Si montas la SL — ¿qué sueldo bruto te asignarías como administrador?</label>
+        <div class="slider-wrap">
+          <input type="range" id="slider_sueldo" min="0" max="100" value="50" step="1" oninput="sliderCambio()">
+          <div class="slider-labels"><span>0€ (todo dividendo)</span><span id="slider-label">50% del beneficio</span><span>100% (todo nómina)</span></div>
+        </div>
+        <div class="field-wrap" style="margin-top:8px;max-width:200px">
+          <input type="number" id="sueldo_sl" value="30000" min="0" step="500" oninput="sincronizarSlider()">
+          <span class="suffix">€/año</span>
+        </div>
+        <span class="input-note">El resto del beneficio se queda en la sociedad o se reparte como dividendo</span>
+      </div>
+
+      <div class="info-box blue" style="margin-top:1rem">
+        ℹ️ <span>El <strong>sueldo óptimo</strong> suele rondar los 30.000-41.000€ — lo suficiente para aprovechar los tramos bajos del IRPF sin entrar en los tramos altos (37%-47%). El resto se queda en la sociedad tributando solo al 19-25% del IS.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- COSTES SL -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🏢</div>
+      <div>
+        <div class="section-title">Costes adicionales de tener una SL</div>
+        <div class="section-subtitle">Gastos que no tienes siendo autónomo simple</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="input-grid">
+        <div class="field">
+          <label>Gestoría mercantil extra (sobre la de autónomo)</label>
+          <div class="field-wrap">
+            <input type="number" id="gestoria_extra" value="1200" min="0" step="100" oninput="calcular()">
+            <span class="suffix">€/año</span>
+          </div>
+          <span class="input-note">Contabilidad mercantil, IS, cuentas anuales — coste adicional típico</span>
+        </div>
+        <div class="field">
+          <label>¿Quieres repartir dividendos este año?</label>
+          <select id="reparte_dividendos" onchange="calcular()" style="padding:.55rem .75rem;border:1px solid var(--border2);border-radius:8px;font-size:14px;color:var(--ink);background:var(--white);outline:none;width:100%">
+            <option value="si">Sí — quiero sacar el dinero ya</option>
+            <option value="no">No — lo dejo en la sociedad (reinvertir)</option>
+          </select>
+          <span class="input-note">Si lo dejas en la empresa, evitas la doble tributación por ahora</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARATIVA -->
+  <div class="comparativa">
+    <div class="comp-card autonomo" id="card-autonomo">
+      <div class="comp-titulo">Como autónomo</div>
+      <div class="comp-num" id="auto-neto">—</div>
+      <div class="comp-sub">Neto en tu bolsillo al año</div>
+      <div class="comp-detalle">
+        <div class="comp-row"><span>Beneficio</span><span class="crv" id="auto-beneficio">—</span></div>
+        <div class="comp-row"><span>Cuota autónomo (aprox.)</span><span class="crv" id="auto-cuota">—</span></div>
+        <div class="comp-row"><span>IRPF</span><span class="crv" id="auto-irpf">—</span></div>
+      </div>
+    </div>
+    <div class="comp-card sl" id="card-sl">
+      <div class="comp-titulo">Como Sociedad Limitada</div>
+      <div class="comp-num" id="sl-neto">—</div>
+      <div class="comp-sub">Neto en tu bolsillo al año</div>
+      <div class="comp-detalle">
+        <div class="comp-row"><span>Sueldo bruto</span><span class="crv" id="sl-sueldo">—</span></div>
+        <div class="comp-row"><span>IRPF sobre nómina</span><span class="crv" id="sl-irpf-nomina">—</span></div>
+        <div class="comp-row"><span>Impuesto Sociedades</span><span class="crv" id="sl-is">—</span></div>
+        <div class="comp-row"><span>IRPF dividendos</span><span class="crv" id="sl-irpf-div">—</span></div>
+        <div class="comp-row"><span>Costes extra SL</span><span class="crv" id="sl-costes">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIFERENCIA -->
+  <div class="diferencia-hero" id="diferencia-hero">
+    <div class="dh-label">Diferencia anual</div>
+    <div class="dh-num" id="dh-num">—</div>
+    <div class="dh-sub" id="dh-sub">Introduce tus datos para ver el resultado</div>
+  </div>
+
+  <button class="btn-reset" onclick="resetForm()">↺ Limpiar</button>
+
+  <!-- DESGLOSE COMPLETO -->
+  <div class="section" style="margin-top:1.5rem">
+    <div class="section-header">
+      <div class="section-icon">📊</div>
+      <div>
+        <div class="section-title">Desglose fiscal completo</div>
+        <div class="section-subtitle">Cómo se calcula cada escenario, paso a paso</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <table class="desglose-tabla">
+        <thead>
+          <tr><th>Concepto</th><th>Como autónomo</th><th>Como SL</th></tr>
+        </thead>
+        <tbody id="desglose-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FACTORES NO FISCALES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">⚖️</div>
+      <div>
+        <div class="section-title">Más allá de los impuestos</div>
+        <div class="section-subtitle">Factores que también debes valorar antes de decidir</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="factores-grid">
+        <div class="factor-card">
+          <div class="factor-titulo">✅ A favor de la SL</div>
+          <ul class="factor-list">
+            <li>• Responsabilidad limitada al capital aportado</li>
+            <li>• Protege tu patrimonio personal (casa, ahorros)</li>
+            <li>• Mejor imagen ante grandes clientes</li>
+            <li>• Facilita entrada de socios o inversores</li>
+            <li>• Puedes retener beneficios sin sacarlos (tributan menos)</li>
+            <li>• Capital mínimo desde 1€ (Ley Crea y Crece)</li>
+          </ul>
+        </div>
+        <div class="factor-card">
+          <div class="factor-titulo">⚠️ En contra de la SL</div>
+          <ul class="factor-list">
+            <li>• Costes de gestoría más altos (€100-200/mes)</li>
+            <li>• Contabilidad mercantil completa obligatoria</li>
+            <li>• Depósito de cuentas anuales en Registro Mercantil</li>
+            <li>• No hay tarifa plana para autónomo societario</li>
+            <li>• Base mínima de cotización más alta (~1.000€)</li>
+            <li>• Doble imposición si sacas todo como dividendo</li>
+          </ul>
+        </div>
+      </div>
+      <div class="info-box amber" style="margin-top:1rem">
+        ⚠️ <span>Esta calculadora es <strong>orientativa</strong> y simplifica los tramos de IRPF a nivel estatal. Tu tipo real depende de tu comunidad autónoma, deducciones personales y circunstancias familiares. Consulta siempre con tu gestor antes de constituir una SL.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function fmt(n){ return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €'; }
+function v(id){ return parseFloat(document.getElementById(id)?.value)||0; }
+function setText(id,txt){ const el=document.getElementById(id); if(el) el.textContent=txt; }
+
+// Tramos IRPF estatal + autonómico medio aproximado 2026
+function irpfEstatal(base) {
+  const tramos = [
+    {min:0, max:12450, tipo:0.19},
+    {min:12450, max:20200, tipo:0.24},
+    {min:20200, max:35200, tipo:0.30},
+    {min:35200, max:60000, tipo:0.37},
+    {min:60000, max:300000, tipo:0.45},
+    {min:300000, max:Infinity, tipo:0.47}
+  ];
+  let impuesto = 0;
+  for(const t of tramos){
+    if(base > t.min){
+      const tramoBase = Math.min(base, t.max) - t.min;
+      impuesto += tramoBase * t.tipo;
+    }
+  }
+  return impuesto;
+}
+
+function sliderCambio(){
+  const beneficio = v('beneficio');
+  const pct = v('slider_sueldo');
+  document.getElementById('sueldo_sl').value = Math.round(beneficio * pct / 100);
+  setText('slider-label', pct + '% del beneficio');
+  calcular();
+}
+
+function sincronizarSlider(){
+  const beneficio = v('beneficio');
+  const sueldo = v('sueldo_sl');
+  const pct = beneficio > 0 ? Math.min(100, (sueldo/beneficio*100)) : 0;
+  document.getElementById('slider_sueldo').value = pct;
+  setText('slider-label', pct.toFixed(0) + '% del beneficio');
+}
+
+function calcular(){
+  const beneficio = v('beneficio');
+  const sueldo_sl = Math.min(v('sueldo_sl'), beneficio);
+  const gestoria_extra = v('gestoria_extra');
+  const reparte = document.getElementById('reparte_dividendos').value;
+
+  // ── ESCENARIO AUTÓNOMO ──
+  // Cuota SS aproximada según rendimiento neto mensual (simplificado por tramos)
+  const rn_mensual = beneficio / 12;
+  let cuota_ss_mes;
+  if(rn_mensual <= 670) cuota_ss_mes = 200;
+  else if(rn_mensual <= 900) cuota_ss_mes = 220;
+  else if(rn_mensual <= 1166.7) cuota_ss_mes = 260;
+  else if(rn_mensual <= 1300) cuota_ss_mes = 275;
+  else if(rn_mensual <= 1700) cuota_ss_mes = 294;
+  else if(rn_mensual <= 1850) cuota_ss_mes = 350;
+  else if(rn_mensual <= 2030) cuota_ss_mes = 370;
+  else if(rn_mensual <= 2330) cuota_ss_mes = 390;
+  else if(rn_mensual <= 2760) cuota_ss_mes = 420;
+  else if(rn_mensual <= 3190) cuota_ss_mes = 500;
+  else if(rn_mensual <= 3620) cuota_ss_mes = 530;
+  else if(rn_mensual <= 4050) cuota_ss_mes = 560;
+  else cuota_ss_mes = 590;
+  const cuota_ss_anual = cuota_ss_mes * 12;
+
+  // Base imponible IRPF autónomo (beneficio - cuota SS, ya que es deducible)
+  const base_irpf_auto = Math.max(0, beneficio - cuota_ss_anual);
+  const irpf_auto = irpfEstatal(base_irpf_auto);
+  const neto_autonomo = beneficio - cuota_ss_anual - irpf_auto;
+
+  // ── ESCENARIO SL ──
+  // Cuota SS societario (base mínima ~1.000€/mes aprox, tipo 31.5%)
+  const cuota_ss_soc_anual = Math.max(1000 * 0.315 * 12, 200*12);
+
+  // IRPF sobre el sueldo (deducible para la SL, tributa como rendimiento del trabajo)
+  const base_irpf_sueldo = Math.max(0, sueldo_sl - cuota_ss_soc_anual);
+  const irpf_sueldo = irpfEstatal(base_irpf_sueldo);
+
+  // Beneficio de la sociedad después de pagar el sueldo (el sueldo es gasto deducible)
+  const beneficio_sociedad = Math.max(0, beneficio - sueldo_sl);
+
+  // Impuesto de Sociedades 2026: micropyme 19% hasta 50.000€, 21% resto
+  let is_pagado;
+  if(beneficio_sociedad <= 50000){
+    is_pagado = beneficio_sociedad * 0.19;
+  } else {
+    is_pagado = 50000 * 0.19 + (beneficio_sociedad - 50000) * 0.21;
+  }
+
+  const beneficio_despues_is = beneficio_sociedad - is_pagado;
+
+  // IRPF sobre dividendos (solo si se reparten) — tramos del ahorro 19%-28% aprox
+  let irpf_dividendos = 0;
+  if(reparte === 'si' && beneficio_despues_is > 0){
+    const d = beneficio_despues_is;
+    if(d <= 6000) irpf_dividendos = d * 0.19;
+    else if(d <= 50000) irpf_dividendos = 6000*0.19 + (d-6000)*0.21;
+    else if(d <= 200000) irpf_dividendos = 6000*0.19 + 44000*0.21 + (d-50000)*0.23;
+    else irpf_dividendos = 6000*0.19 + 44000*0.21 + 150000*0.23 + (d-200000)*0.28;
+  }
+
+  const dividendo_neto = beneficio_despues_is - irpf_dividendos;
+
+  const neto_sl = sueldo_sl - cuota_ss_soc_anual - irpf_sueldo + dividendo_neto - gestoria_extra;
+
+  // ── DIFERENCIA ──
+  const diferencia = neto_sl - neto_autonomo;
+
+  // ── ACTUALIZAR UI ──
+  setText('auto-neto', fmt(neto_autonomo));
+  setText('auto-beneficio', fmt(beneficio));
+  setText('auto-cuota', '− ' + fmt(cuota_ss_anual));
+  setText('auto-irpf', '− ' + fmt(irpf_auto));
+
+  setText('sl-neto', fmt(neto_sl));
+  setText('sl-sueldo', fmt(sueldo_sl));
+  setText('sl-irpf-nomina', '− ' + fmt(irpf_sueldo));
+  setText('sl-is', '− ' + fmt(is_pagado));
+  setText('sl-irpf-div', reparte === 'si' ? '− ' + fmt(irpf_dividendos) : '0,00 € (retenido)');
+  setText('sl-costes', '− ' + fmt(gestoria_extra));
+
+  // Resaltar ganador
+  const cardAuto = document.getElementById('card-autonomo');
+  const cardSL = document.getElementById('card-sl');
+  cardAuto.classList.remove('ganador');
+  cardSL.classList.remove('ganador');
+  cardAuto.querySelector('.comp-badge')?.remove();
+  cardSL.querySelector('.comp-badge')?.remove();
+
+  if(neto_autonomo > neto_sl){
+    cardAuto.classList.add('ganador');
+    cardAuto.insertAdjacentHTML('afterbegin', '<div class="comp-badge">✓ MEJOR</div>');
+  } else if(neto_sl > neto_autonomo) {
+    cardSL.classList.add('ganador');
+    cardSL.insertAdjacentHTML('afterbegin', '<div class="comp-badge">✓ MEJOR</div>');
+  }
+
+  // Diferencia hero
+  const dh = document.getElementById('diferencia-hero');
+  if(Math.abs(diferencia) < 100){
+    dh.style.background = '#374151';
+    setText('dh-num', fmt(Math.abs(diferencia)));
+    setText('dh-sub', 'Prácticamente igual — la decisión depende de factores no fiscales (responsabilidad, imagen, socios)');
+  } else if(diferencia > 0){
+    dh.style.background = 'var(--green)';
+    setText('dh-num', fmt(diferencia));
+    setText('dh-sub', `Ganarías ${fmt(diferencia)} más al año creando una SL`);
+  } else {
+    dh.style.background = '#7f1d1d';
+    setText('dh-num', fmt(Math.abs(diferencia)));
+    setText('dh-sub', `Como autónomo ganas ${fmt(Math.abs(diferencia))} más al año — la SL no compensa fiscalmente`);
+  }
+
+  // ── DESGLOSE TABLA ──
+  const tbody = document.getElementById('desglose-body');
+  tbody.innerHTML = `
+    <tr><td>Beneficio bruto</td><td>${fmt(beneficio)}</td><td>${fmt(beneficio)}</td></tr>
+    <tr><td>Cuota Seguridad Social</td><td class="dt-neg">− ${fmt(cuota_ss_anual)}</td><td class="dt-neg">− ${fmt(cuota_ss_soc_anual)}</td></tr>
+    <tr><td>Sueldo bruto administrador</td><td>—</td><td>${fmt(sueldo_sl)}</td></tr>
+    <tr><td>IRPF sobre rendimientos del trabajo</td><td class="dt-neg">− ${fmt(irpf_auto)}</td><td class="dt-neg">− ${fmt(irpf_sueldo)}</td></tr>
+    <tr><td>Beneficio que queda en la sociedad</td><td>—</td><td>${fmt(beneficio_sociedad)}</td></tr>
+    <tr><td>Impuesto de Sociedades (19%-21%)</td><td>—</td><td class="dt-neg">− ${fmt(is_pagado)}</td></tr>
+    <tr><td>IRPF sobre dividendos</td><td>—</td><td class="dt-neg">${reparte === 'si' ? '− ' + fmt(irpf_dividendos) : '0,00 € (no repartido)'}</td></tr>
+    <tr><td>Gestoría mercantil extra</td><td>—</td><td class="dt-neg">− ${fmt(gestoria_extra)}</td></tr>
+    <tr class="total-row"><td>NETO FINAL</td><td class="dt-pos">${fmt(neto_autonomo)}</td><td class="dt-pos">${fmt(neto_sl)}</td></tr>
+  `;
+}
+
+function resetForm(){
+  document.getElementById('beneficio').value = 60000;
+  document.getElementById('ccaa').value = 'media';
+  document.getElementById('sueldo_sl').value = 30000;
+  document.getElementById('slider_sueldo').value = 50;
+  document.getElementById('gestoria_extra').value = 1200;
+  document.getElementById('reparte_dividendos').value = 'si';
+  sincronizarSlider();
+  calcular();
+}
+
+// Init
+sincronizarSlider();
+calcular();
+</script>
+</body>
+</html>
