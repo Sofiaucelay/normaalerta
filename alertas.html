@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alertas del BOE — NormaAlerta</title>
+<meta name="description" content="Alertas del BOE en lenguaje claro: qué cambia, si te afecta y qué hacer. Actualizado automáticamente.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F7F4EC;
+    --cream-soft: #F1EDE2;
+    --ink: #1A1A1A;
+    --green: #1E5B49;
+    --green-dark: #163F33;
+    --green-pale: #DCEEE7;
+    --green-text: #1E5B49;
+    --gray: #6B6B63;
+    --border: #E3DFD2;
+    --risk: #B5482E;
+    --risk-bg: #F6E4DE;
+    --benefit: #1E5B49;
+    --benefit-bg: #DCEEE7;
+    --change: #8A6D1F;
+    --change-bg: #F3E9D0;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.5;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  nav a {
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 14px;
+    margin-left: 28px;
+  }
+
+  main {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 40px 24px 100px;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--green-pale);
+    color: var(--green-text);
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 42px;
+    line-height: 1.15;
+    margin: 0 0 16px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--green);
+  }
+
+  .subtitle {
+    color: var(--gray);
+    font-size: 17px;
+    max-width: 580px;
+    margin-bottom: 36px;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+
+  .filter-btn {
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--ink);
+    border-radius: 999px;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--green);
+  }
+
+  .filter-btn.active {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    color: var(--gray);
+    font-size: 14px;
+  }
+
+  .alertas-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .alerta-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 28px;
+    transition: box-shadow 0.15s ease;
+  }
+
+  .alerta-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+
+  .alerta-tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-tipo-riesgo { background: var(--risk-bg); color: var(--risk); }
+  .tag-tipo-beneficio { background: var(--benefit-bg); color: var(--benefit); }
+  .tag-tipo-cambio { background: var(--change-bg); color: var(--change); }
+
+  .tag-area {
+    background: var(--cream-soft);
+    color: var(--gray);
+    text-transform: none;
+    font-weight: 500;
+  }
+
+  .alerta-fecha {
+    font-size: 12px;
+    color: var(--gray);
+    font-weight: 500;
+    margin-left: auto;
+    text-transform: none;
+  }
+
+  .alerta-titulo {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0 0 8px;
+    line-height: 1.3;
+  }
+
+  .alerta-desc {
+    color: #4A4A44;
+    font-size: 15px;
+    margin: 0 0 16px;
+  }
+
+  .alerta-afecta {
+    background: var(--cream-soft);
+    border-left: 3px solid var(--green);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: var(--green-dark);
+  }
+
+  .alerta-afecta strong {
+    font-weight: 600;
+  }
+
+  .empty-state, .loading-state, .error-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--gray);
+  }
+
+  .loading-state .spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid var(--border);
+    border-top-color: var(--green);
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 640px) {
+    header { padding: 20px; }
+    nav { display: none; }
+    h1 { font-size: 32px; }
+    main { padding: 32px 16px 80px; }
+    .alerta-card { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">NormaAlerta</a>
+  <nav>
+    <a href="/#como-funciona">Cómo funciona</a>
+    <a href="/#que-incluye">Qué incluye</a>
+    <a href="/#herramientas">Herramientas</a>
+  </nav>
+</header>
+
+<main>
+  <div class="eyebrow">Actualizado automáticamente desde el BOE</div>
+  <h1>Esto es lo que <em>cambia</em><br>para tu negocio</h1>
+  <p class="subtitle">
+    Filtramos el BOE para que no tengas que leerlo tú. Cada alerta te dice qué ha cambiado,
+    si te afecta y qué hacer al respecto — sin jerga legal.
+  </p>
+
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-area="todas">Todas</button>
+    <button class="filter-btn" data-area="Fiscal">Fiscal</button>
+    <button class="filter-btn" data-area="Laboral">Laboral</button>
+    <button class="filter-btn" data-area="Mercantil">Mercantil</button>
+  </div>
+
+  <div class="meta-row">
+    <span id="contador">Cargando alertas…</span>
+  </div>
+
+  <div id="contenido">
+    <div class="loading-state">
+      <div class="spinner"></div>
+      Cargando alertas del BOE…
+    </div>
+  </div>
+</main>
+
+<script>
+  let todasLasAlertas = [];
+  let filtroActivo = 'todas';
+
+  const tipoLabel = {
+    'Riesgo': 'Riesgo',
+    'Beneficio': 'Oportunidad',
+    'Cambio': 'Cambio'
+  };
+
+  const tipoClase = {
+    'Riesgo': 'tag-tipo-riesgo',
+    'Beneficio': 'tag-tipo-beneficio',
+    'Cambio': 'tag-tipo-cambio'
+  };
+
+  function formatearFecha(fechaStr) {
+    if (!fechaStr) return '';
+    const [d, m, y] = fechaStr.includes('/') ? fechaStr.split('/') : [];
+    if (d && m && y) {
+      const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+      return `${d} ${meses[parseInt(m, 10) - 1]} ${y}`;
+    }
+    const fecha = new Date(fechaStr);
+    if (isNaN(fecha)) return fechaStr;
+    return fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  function renderAlertas() {
+    const contenido = document.getElementById('contenido');
+    const contador = document.getElementById('contador');
+
+    const filtradas = filtroActivo === 'todas'
+      ? todasLasAlertas
+      : todasLasAlertas.filter(a => a.area === filtroActivo);
+
+    contador.textContent = `${filtradas.length} alerta${filtradas.length === 1 ? '' : 's'}`;
+
+    if (filtradas.length === 0) {
+      contenido.innerHTML = `<div class="empty-state">No hay alertas en esta categoría todavía.</div>`;
+      return;
+    }
+
+    contenido.innerHTML = `<div class="alertas-list">${filtradas.map(a => `
+      <article class="alerta-card">
+        <div class="alerta-tags">
+          <span class="tag ${tipoClase[a.tipo] || 'tag-tipo-cambio'}">${tipoLabel[a.tipo] || a.tipo}</span>
+          <span class="tag tag-area">${a.area}</span>
+          <span class="alerta-fecha">${formatearFecha(a.fecha)}</span>
+        </div>
+        <h2 class="alerta-titulo">${a.titulo}</h2>
+        <p class="alerta-desc">${a.descripcion}</p>
+        ${a.queHacer ? `<div class="alerta-afecta"><strong>Qué hacer:</strong> ${a.queHacer}</div>` : ''}
+      </article>
+    `).join('')}</div>`;
+  }
+
+  document.getElementById('filters').addEventListener('click', (e) => {
+    if (!e.target.classList.contains('filter-btn')) return;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    filtroActivo = e.target.dataset.area;
+    renderAlertas();
+  });
+
+  async function cargarAlertas() {
+    try {
+      const res = await fetch('/api/alertas');
+      if (!res.ok) throw new Error('Respuesta no válida');
+      const data = await res.json();
+      todasLasAlertas = data.alertas || [];
+      renderAlertas();
+    } catch (err) {
+      document.getElementById('contenido').innerHTML = `
+        <div class="error-state">
+          No hemos podido cargar las alertas en este momento. Inténtalo de nuevo en unos minutos.
+        </div>`;
+      document.getElementById('contador').textContent = '';
+    }
+  }
+
+  cargarAlertas();
+</script>
+
+</body>
+</html>
