@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Cuánto Apartar Cada Mes para Impuestos? Calculadora Autónomo | NormaAlerta</title>
+  <meta name="description" content="Calcula exactamente cuánto apartar cada mes para no llevarte sustos con Hacienda. SS, IRPF trimestral y ajuste anual. Para autónomos en España 2026. Gratis.">
+  <meta name="keywords" content="cuánto apartar para impuestos autónomo, provisión impuestos autónomos, cuánto guardar para hacienda autónomo, reserva trimestral autónomos 2026">
+  <meta name="author" content="NormaAlerta">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://normaalerta.com/calculadora-provision-impuestos.html">
+  <meta property="og:title" content="¿Cuánto Apartar para Impuestos? Calculadora Autónomo | NormaAlerta">
+  <meta property="og:description" content="Calcula cuánto apartar cada mes para no llevarte sustos con Hacienda. SS, IRPF y ajuste anual. Gratis.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://normaalerta.com/calculadora-provision-impuestos.html">
+  <meta property="og:site_name" content="NormaAlerta">
+  <meta property="og:locale" content="es_ES">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="¿Cuánto Apartar para Impuestos? | NormaAlerta">
+  <meta name="twitter:description" content="Calcula cuánto apartar cada mes para no llevarte sustos con Hacienda. SS, IRPF y ajuste anual. Gratis.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;
+  --ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;
+  --paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;
+  --border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);
+  --amber:#f59e0b;--amber-light:#fef3c7;--red:#dc2626;--blue-light:#eff6ff;
+  --purple:#7c3aed;--purple-light:#ede9fe;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.page{max-width:860px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-header{margin-bottom:2rem;text-align:center}
+.modelo-badge{display:inline-block;background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;font-family:'DM Mono',monospace;margin-bottom:.75rem}
+.page-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;letter-spacing:-.5px;margin-bottom:.5rem}
+.page-title em{font-style:italic;color:var(--green)}
+.page-subtitle{font-size:14px;color:var(--ink3);max-width:540px;margin:0 auto}
+.section{background:var(--white);border:1px solid var(--border);border-radius:14px;margin-bottom:1rem;overflow:hidden}
+.section-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--green-light)}
+.section-title{font-size:15px;font-weight:500;flex:1}
+.section-subtitle{font-size:12px;color:var(--ink3);margin-top:1px}
+.section-body{padding:1.25rem}
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:12px;font-weight:500;color:var(--ink3)}
+.field-wrap{position:relative}
+.field-wrap input,.field select{padding:.55rem 2.25rem .55rem .75rem;border:1px solid var(--border2);border-radius:8px;font-size:14px;font-family:'DM Mono',monospace;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;width:100%;text-align:right}
+.field select{font-family:'DM Sans',sans-serif;text-align:left;padding-right:.75rem;appearance:none}
+.field-wrap input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
+.field-wrap .suffix{position:absolute;right:.75rem;top:50%;transform:translateY(-50%);font-size:12px;color:var(--ink3);pointer-events:none}
+.input-note{font-size:11px;color:var(--ink3);font-style:italic;margin-top:2px}
+.info-box{border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12px;display:flex;gap:8px;align-items:flex-start}
+.info-box.amber{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);color:#92400e}
+.info-box.green{background:var(--green-light);border:1px solid rgba(26,122,74,.2);color:var(--green-dark)}
+.info-box.blue{background:var(--blue-light);border:1px solid rgba(37,99,235,.2);color:#1e40af}
+
+/* RESULTADO PRINCIPAL */
+.resultado-hero{background:var(--ink);border-radius:14px;padding:1.75rem;margin-top:1.5rem;position:relative;overflow:hidden}
+.resultado-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;background:rgba(34,160,122,.06)}
+.rh-label{font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.375rem}
+.rh-num{font-family:'DM Mono',monospace;font-size:52px;font-weight:500;color:#4ade80;line-height:1;margin-bottom:.25rem}
+.rh-sub{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:1.5rem}
+.rh-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem}
+.rhc{background:rgba(255,255,255,.07);border-radius:8px;padding:.75rem}
+.rhc-label{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:3px}
+.rhc-val{font-size:13px;font-weight:500;font-family:'DM Mono',monospace;color:rgba(255,255,255,.9)}
+.btn-reset{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:var(--white)}
+
+/* DESGLOSE */
+.desglose-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:1rem}
+.dc{border-radius:12px;padding:1.25rem;text-align:center}
+.dc.ss{background:#ede9fe;border:1px solid rgba(124,58,237,.2)}
+.dc.irpf{background:var(--amber-light);border:1px solid rgba(245,158,11,.2)}
+.dc.total{background:var(--green-light);border:1px solid rgba(26,122,74,.2)}
+.dc-icon{font-size:24px;margin-bottom:.5rem}
+.dc-label{font-size:12px;font-weight:500;color:var(--ink2);margin-bottom:.375rem}
+.dc-num{font-family:'DM Mono',monospace;font-size:24px;font-weight:500;margin-bottom:.25rem}
+.dc.ss .dc-num{color:var(--purple)}
+.dc.irpf .dc-num{color:#92400e}
+.dc.total .dc-num{color:var(--green)}
+.dc-sub{font-size:11px;color:var(--ink3)}
+
+/* BARRA DISTRIBUCIÓN */
+.barra-dist{height:20px;border-radius:10px;overflow:hidden;display:flex;margin:1rem 0}
+.bd-ss{background:#7c3aed;transition:width .3s;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:white;white-space:nowrap;overflow:hidden}
+.bd-irpf{background:var(--amber);transition:width .3s;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:white;white-space:nowrap;overflow:hidden}
+.bd-neto{background:var(--green);transition:width .3s;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:white;white-space:nowrap;overflow:hidden}
+
+/* CALENDARIO TRIMESTRAL */
+.cal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:1rem}
+.cal-card{border-radius:10px;padding:1rem;text-align:center;background:var(--paper);border:1px solid var(--border)}
+.cal-card.proximo{background:var(--amber-light);border-color:rgba(245,158,11,.3)}
+.cc-trimestre{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);margin-bottom:.375rem}
+.cc-plazo{font-size:12px;font-weight:500;color:var(--ink);margin-bottom:.5rem}
+.cc-importe{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;color:var(--green)}
+.cc-modelos{font-size:10px;color:var(--ink3);margin-top:.25rem}
+
+@media(max-width:640px){
+  .input-grid{grid-template-columns:1fr}
+  .rh-grid{grid-template-columns:1fr 1fr}
+  .desglose-cards{grid-template-columns:1fr}
+  .cal-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/></svg>
+    NormaAlerta <span class="nav-badge">Calculadora fiscal</span>
+  </a>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="modelo-badge">PROVISIÓN TRIMESTRAL</div>
+    <h1 class="page-title">¿Cuánto tengo que apartar<br>cada mes para <em>no llevarte sustos</em>?</h1>
+    <p class="page-subtitle">La herramienta que todo autónomo necesita. Introduce lo que facturas y calcula exactamente cuánto apartar para SS, IRPF trimestral y la declaración anual.</p>
+  </div>
+
+  <!-- INPUTS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">💶</div>
+      <div>
+        <div class="section-title">Tu facturación y gastos este mes</div>
+        <div class="section-subtitle">Introduce los datos reales del mes — calcula al instante</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="input-grid">
+        <div class="field">
+          <label>Facturación del mes (sin IVA)</label>
+          <div class="field-wrap">
+            <input type="number" id="facturacion" value="3000" min="0" step="100" oninput="calcular()">
+            <span class="suffix">€</span>
+          </div>
+          <span class="input-note">Lo que has facturado este mes, sin contar el IVA</span>
+        </div>
+        <div class="field">
+          <label>Gastos deducibles del mes</label>
+          <div class="field-wrap">
+            <input type="number" id="gastos" value="600" min="0" step="50" oninput="calcular()">
+            <span class="suffix">€</span>
+          </div>
+          <span class="input-note">Gestoría, SS, software, material, teléfono...</span>
+        </div>
+        <div class="field">
+          <label>Tu cuota SS mensual</label>
+          <div class="field-wrap">
+            <input type="number" id="cuota_ss" value="294" min="0" step="1" oninput="calcular()">
+            <span class="suffix">€</span>
+          </div>
+          <span class="input-note">Ya incluida en gastos o por separado — evita contarla dos veces</span>
+        </div>
+        <div class="field">
+          <label>IRPF estimado anual (%)</label>
+          <div class="field-wrap">
+            <input type="number" id="irpf_pct" value="20" min="0" max="45" step="1" oninput="calcular()">
+            <span class="suffix">%</span>
+          </div>
+          <span class="input-note">Tu tipo efectivo estimado — entre 15% y 30% para la mayoría</span>
+        </div>
+        <div class="field">
+          <label>¿Tienes retenciones en tus facturas?</label>
+          <div class="field-wrap" style="position:relative">
+            <input type="number" id="retenciones" value="0" min="0" step="50" oninput="calcular()" style="padding-right:2.25rem">
+            <span class="suffix">€</span>
+          </div>
+          <span class="input-note">Suma de retenciones del 15% o 7% que te retienen tus clientes este mes</span>
+        </div>
+        <div class="field">
+          <label>¿Incluiste la SS en los gastos arriba?</label>
+          <select id="ss_en_gastos" onchange="calcular()" style="padding:.55rem .75rem;border:1px solid var(--border2);border-radius:8px;font-size:14px;color:var(--ink);background:var(--white);outline:none;width:100%">
+            <option value="si">Sí — la SS ya está en mis gastos</option>
+            <option value="no">No — la SS va por separado</option>
+          </select>
+        </div>
+      </div>
+      <div class="info-box green">
+        ✅ <span>La cuota SS es deducible al 100% en el Modelo 130. Si la incluiste en gastos, el cálculo ya la descuenta de tu base imponible correctamente.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTADO PRINCIPAL -->
+  <div class="resultado-hero">
+    <div class="rh-label">Aparta este mes</div>
+    <div class="rh-num" id="rh-total">—</div>
+    <div class="rh-sub" id="rh-sub">Introduce tus datos para ver el resultado</div>
+    <div class="rh-grid">
+      <div class="rhc"><div class="rhc-label">Cuota SS</div><div class="rhc-val" id="rhc-ss">—</div></div>
+      <div class="rhc"><div class="rhc-label">IRPF mensual</div><div class="rhc-val" id="rhc-irpf">—</div></div>
+      <div class="rhc"><div class="rhc-label">Retenciones ya pagadas</div><div class="rhc-val" id="rhc-ret">—</div></div>
+      <div class="rhc"><div class="rhc-label">Lo que es tuyo</div><div class="rhc-val" id="rhc-neto">—</div></div>
+    </div>
+    <button class="btn-reset" onclick="resetForm()">↺ Limpiar</button>
+  </div>
+
+  <!-- DESGLOSE -->
+  <div class="section" style="margin-top:1rem">
+    <div class="section-header">
+      <div class="section-icon">📊</div>
+      <div>
+        <div class="section-title">De cada euro que facturas, a dónde va</div>
+        <div class="section-subtitle">Distribución mensual de tu facturación</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="barra-dist" id="barra-dist">
+        <div class="bd-ss" id="bd-ss" style="width:10%">SS</div>
+        <div class="bd-irpf" id="bd-irpf" style="width:20%">IRPF</div>
+        <div class="bd-neto" id="bd-neto" style="width:70%">Tuyo</div>
+      </div>
+      <div class="desglose-cards">
+        <div class="dc ss">
+          <div class="dc-icon">🏛️</div>
+          <div class="dc-label">Seguridad Social</div>
+          <div class="dc-num" id="dc-ss">—</div>
+          <div class="dc-sub">Cuota mensual RETA fija</div>
+        </div>
+        <div class="dc irpf">
+          <div class="dc-icon">📋</div>
+          <div class="dc-label">IRPF (provisión)</div>
+          <div class="dc-num" id="dc-irpf">—</div>
+          <div class="dc-sub" id="dc-irpf-sub">—</div>
+        </div>
+        <div class="dc total">
+          <div class="dc-icon">💚</div>
+          <div class="dc-label">Lo que es tuyo</div>
+          <div class="dc-num" id="dc-neto">—</div>
+          <div class="dc-sub" id="dc-neto-pct">—</div>
+        </div>
+      </div>
+
+      <div style="margin-top:1.25rem;padding:1rem;background:var(--paper);border-radius:10px;border:1px solid var(--border)">
+        <div style="font-size:12px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Consejo de gestión</div>
+        <div style="font-size:13px;color:var(--ink2);line-height:1.6" id="consejo-texto">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALENDARIO TRIMESTRAL -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">📅</div>
+      <div>
+        <div class="section-title">Cuánto pagarás cada trimestre</div>
+        <div class="section-subtitle">Estimación de pagos trimestrales si mantienes este nivel de facturación</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="info-box amber" style="margin-top:1rem">
+        ⚠️ <span>El Modelo 130 se calcula sobre el <strong>acumulado anual</strong>, no solo del trimestre. Si en el 1T pagaste de más, el 2T puede salir a 0€. Esta estimación asume que es el primer trimestre del año o que partes de cero.</span>
+      </div>
+      <div class="info-box blue" style="margin-top:.75rem">
+        ℹ️ <span>Si tus clientes te retienen el 15% en factura, esas retenciones ya son anticipos del IRPF y se descuentan del 130. Si tienes más retenciones que cuota del 130, <strong>puede salirte a 0€ a pagar trimestralmente</strong> y ajustar en la renta anual.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function fmt(n){ return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €'; }
+function fmtPct(n){ return (parseFloat(n)||0).toFixed(1)+'%'; }
+function v(id){ return parseFloat(document.getElementById(id)?.value)||0; }
+function setText(id,txt){ const el=document.getElementById(id); if(el) el.textContent=txt; }
+
+function calcular(){
+  const facturacion = v('facturacion');
+  const gastos_raw  = v('gastos');
+  const cuota_ss    = v('cuota_ss');
+  const irpf_pct    = v('irpf_pct') / 100;
+  const retenciones = v('retenciones');
+  const ss_en_gastos = document.getElementById('ss_en_gastos').value;
+
+  // Si la SS ya está en gastos, no sumarla de nuevo
+  const gastos_totales = ss_en_gastos === 'si' ? gastos_raw : gastos_raw + cuota_ss;
+
+  // Rendimiento neto del mes
+  const rn_mes = Math.max(0, facturacion - gastos_totales);
+
+  // GDJ estimado mensual (5% anual / 12 meses, máx 2000/12)
+  const gdj_mes = Math.min(rn_mes * 0.05, 2000/12);
+  const rn_neto = Math.max(0, rn_mes - gdj_mes);
+
+  // IRPF mensual que deberías apartar
+  const irpf_mes = rn_neto * irpf_pct;
+
+  // Neto que ya te han retenido los clientes (no tienes que apartar esto)
+  // Las retenciones ya son anticipos — las descontamos de lo que debes apartar
+  const irpf_a_apartar = Math.max(0, irpf_mes - retenciones);
+
+  // Total a apartar
+  const total_apartar = cuota_ss + irpf_a_apartar;
+
+  // Lo que es tuyo
+  const neto_real = facturacion - gastos_totales - irpf_mes;
+
+  // Porcentajes para la barra
+  const pct_ss   = facturacion > 0 ? (cuota_ss / facturacion * 100) : 0;
+  const pct_irpf = facturacion > 0 ? (irpf_mes / facturacion * 100) : 0;
+  const pct_neto = Math.max(0, 100 - pct_ss - pct_irpf);
+
+  // ── ACTUALIZAR UI ──
+  setText('rh-total', fmt(total_apartar));
+  setText('rh-sub', `SS ${fmt(cuota_ss)} + IRPF ${fmt(irpf_a_apartar)}${retenciones > 0 ? ` (ya te retienen ${fmt(retenciones)})` : ''}`);
+  setText('rhc-ss', fmt(cuota_ss));
+  setText('rhc-irpf', fmt(irpf_a_apartar));
+  setText('rhc-ret', retenciones > 0 ? fmt(retenciones) : '—');
+  setText('rhc-neto', fmt(neto_real));
+
+  // Barra
+  const bdSS   = document.getElementById('bd-ss');
+  const bdIRPF = document.getElementById('bd-irpf');
+  const bdNeto = document.getElementById('bd-neto');
+  bdSS.style.width   = pct_ss + '%';
+  bdIRPF.style.width = pct_irpf + '%';
+  bdNeto.style.width = pct_neto + '%';
+  bdSS.textContent   = pct_ss > 8 ? `SS ${pct_ss.toFixed(0)}%` : '';
+  bdIRPF.textContent = pct_irpf > 8 ? `IRPF ${pct_irpf.toFixed(0)}%` : '';
+  bdNeto.textContent = pct_neto > 8 ? `Tuyo ${pct_neto.toFixed(0)}%` : '';
+
+  // Cards desglose
+  setText('dc-ss', fmt(cuota_ss));
+  setText('dc-irpf', fmt(irpf_mes));
+  setText('dc-irpf-sub', `${fmtPct(irpf_pct * 100)} sobre ${fmt(rn_neto)} de RN${retenciones > 0 ? ` · ${fmt(retenciones)} ya retenidos` : ''}`);
+  setText('dc-neto', fmt(neto_real));
+  setText('dc-neto-pct', `${fmtPct(facturacion > 0 ? neto_real/facturacion*100 : 0)} de lo que facturas`);
+
+  // Consejo
+  const pct_neto_real = facturacion > 0 ? (neto_real / facturacion * 100) : 0;
+  let consejo = '';
+  if(pct_neto_real < 30){
+    consejo = `⚠️ Tu margen neto es bajo (${fmtPct(pct_neto_real)} de lo que facturas). Revisa si puedes reducir gastos o aumentar tarifas. Con este nivel de gastos, necesitas facturar mucho para tener un sueldo digno.`;
+  } else if(pct_neto_real < 50){
+    consejo = `✅ Margen razonable (${fmtPct(pct_neto_real)}). Abre una cuenta separada y transfiere ${fmt(total_apartar)} cada vez que cobres una factura. Nunca toques ese dinero — es de Hacienda y de la SS.`;
+  } else {
+    consejo = `💚 Buen margen neto (${fmtPct(pct_neto_real)}). Configura una transferencia automática de ${fmt(total_apartar)}/mes a una cuenta de provisión. Con este nivel de facturación vas bien.`;
+  }
+  setText('consejo-texto', consejo);
+
+  // Calendario trimestral
+  const irpf_trimestral = irpf_mes * 3;
+  const retenciones_trim = retenciones * 3;
+  const modelo130_trim = Math.max(0, irpf_trimestral - retenciones_trim);
+  const trimestres = [
+    { label:'1T', plazo:'20 abril', modelos:'303 · 130 · 111 · 115' },
+    { label:'2T', plazo:'20 julio', modelos:'303 · 130 · 111 · 115' },
+    { label:'3T', plazo:'20 octubre', modelos:'303 · 130 · 111 · 115' },
+    { label:'4T', plazo:'30 enero', modelos:'303 · 130 · 111 · 115' },
+  ];
+  const cal = document.getElementById('cal-grid');
+  const hoy = new Date();
+  const mesActual = hoy.getMonth() + 1;
+  const proximoT = mesActual <= 3 ? 0 : mesActual <= 6 ? 1 : mesActual <= 9 ? 2 : 3;
+  cal.innerHTML = trimestres.map((t, i) => `
+    <div class="cal-card ${i === proximoT ? 'proximo' : ''}">
+      <div class="cc-trimestre">${t.label} 2026${i === proximoT ? ' · Próximo' : ''}</div>
+      <div class="cc-plazo">📅 ${t.plazo}</div>
+      <div class="cc-importe">${fmt(modelo130_trim)}</div>
+      <div class="cc-modelos">${t.modelos}</div>
+    </div>
+  `).join('');
+}
+
+function resetForm(){
+  document.getElementById('facturacion').value = 3000;
+  document.getElementById('gastos').value = 600;
+  document.getElementById('cuota_ss').value = 294;
+  document.getElementById('irpf_pct').value = 20;
+  document.getElementById('retenciones').value = 0;
+  document.getElementById('ss_en_gastos').value = 'si';
+  calcular();
+}
+
+calcular();
+</script>
+</body>
+</html>

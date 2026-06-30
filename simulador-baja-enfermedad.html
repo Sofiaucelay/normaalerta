@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Cuánto Cobro de Baja si soy Autónomo? Simulador 2026 | NormaAlerta</title>
+  <meta name="description" content="Calcula cuánto cobras de baja por enfermedad siendo autónomo en 2026. Días 1-3 sin prestación, 60% del día 4 al 20, 75% a partir del día 21. Resultado al instante.">
+  <meta name="keywords" content="cuánto cobro de baja autónomo, simulador baja enfermedad autónomos 2026, incapacidad temporal autónomo, prestación baja laboral RETA 2026">
+  <meta name="author" content="NormaAlerta">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://normaalerta.com/simulador-baja-enfermedad.html">
+  <meta property="og:title" content="¿Cuánto Cobro de Baja si soy Autónomo? Simulador 2026 | NormaAlerta">
+  <meta property="og:description" content="Calcula cuánto cobras de baja por enfermedad siendo autónomo en 2026. Resultado al instante.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://normaalerta.com/simulador-baja-enfermedad.html">
+  <meta property="og:site_name" content="NormaAlerta">
+  <meta property="og:locale" content="es_ES">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="¿Cuánto Cobro de Baja si soy Autónomo? | NormaAlerta">
+  <meta name="twitter:description" content="Calcula cuánto cobras de baja por enfermedad siendo autónomo en 2026. Resultado al instante.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;
+  --ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;
+  --paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;
+  --border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);
+  --amber:#f59e0b;--amber-light:#fef3c7;--red:#dc2626;--red-light:#fef2f2;--blue-light:#eff6ff;
+  --orange:#ea580c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.page{max-width:820px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-header{margin-bottom:2rem;text-align:center}
+.modelo-badge{display:inline-block;background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;font-family:'DM Mono',monospace;margin-bottom:.75rem}
+.page-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;letter-spacing:-.5px;margin-bottom:.5rem}
+.page-title em{font-style:italic;color:var(--green)}
+.page-subtitle{font-size:14px;color:var(--ink3);max-width:520px;margin:0 auto}
+.section{background:var(--white);border:1px solid var(--border);border-radius:14px;margin-bottom:1rem;overflow:hidden}
+.section-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--green-light)}
+.section-title{font-size:15px;font-weight:500;flex:1}
+.section-subtitle{font-size:12px;color:var(--ink3);margin-top:1px}
+.section-body{padding:1.25rem}
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:12px;font-weight:500;color:var(--ink3)}
+.field-wrap{position:relative}
+.field-wrap input{padding:.55rem 2.25rem .55rem .75rem;border:1px solid var(--border2);border-radius:8px;font-size:14px;font-family:'DM Mono',monospace;color:var(--ink);background:var(--white);outline:none;transition:border-color .15s;width:100%;text-align:right}
+.field-wrap input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,.1)}
+.field-wrap .suffix{position:absolute;right:.75rem;top:50%;transform:translateY(-50%);font-size:12px;color:var(--ink3);pointer-events:none}
+.field select{padding:.55rem .75rem;border:1px solid var(--border2);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--white);outline:none;width:100%}
+.input-note{font-size:11px;color:var(--ink3);font-style:italic;margin-top:2px}
+.info-box{border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12px;display:flex;gap:8px;align-items:flex-start}
+.info-box.amber{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);color:#92400e}
+.info-box.green{background:var(--green-light);border:1px solid rgba(26,122,74,.2);color:var(--green-dark)}
+.info-box.blue{background:var(--blue-light);border:1px solid rgba(37,99,235,.2);color:#1e40af}
+.info-box.red{background:var(--red-light);border:1px solid rgba(220,38,38,.2);color:#991b1b}
+
+/* RESULTADO */
+.resultado{background:var(--ink);border-radius:14px;padding:1.75rem;margin-top:1.5rem;position:relative;overflow:hidden}
+.resultado::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;background:rgba(34,160,122,.06)}
+.res-label{font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.375rem}
+.res-num{font-family:'DM Mono',monospace;font-size:44px;font-weight:500;color:#4ade80;line-height:1;margin-bottom:.25rem}
+.res-sub{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:1.5rem}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+.rc{background:rgba(255,255,255,.07);border-radius:8px;padding:.75rem}
+.rc-label{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:3px}
+.rc-val{font-size:14px;font-weight:500;font-family:'DM Mono',monospace;color:rgba(255,255,255,.9)}
+.rc-val.verde{color:#4ade80}
+.rc-val.rojo{color:#fca5a5}
+.btn-reset{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:none;background:rgba(255,255,255,.1);color:var(--white);border:1px solid rgba(255,255,255,.2)}
+
+/* DESGLOSE POR DÍAS */
+.dias-grid{display:flex;flex-direction:column;gap:8px;margin-top:1rem}
+.dia-bloque{border-radius:10px;padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center}
+.dia-bloque.sin-cobro{background:var(--red-light);border:1px solid rgba(220,38,38,.15)}
+.dia-bloque.cobro-60{background:var(--amber-light);border:1px solid rgba(245,158,11,.2)}
+.dia-bloque.cobro-75{background:var(--green-light);border:1px solid rgba(26,122,74,.2)}
+.dia-bloque.cuota{background:var(--paper2);border:1px solid var(--border)}
+.db-left{}
+.db-titulo{font-size:13px;font-weight:500;margin-bottom:2px}
+.db-sub{font-size:11px;opacity:.7}
+.db-val{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;text-align:right}
+.db-val.rojo{color:var(--red)}
+.db-val.amber{color:#92400e}
+.db-val.verde{color:var(--green)}
+.db-val.gris{color:var(--ink3)}
+
+/* BALANCE */
+.balance-card{border-radius:12px;padding:1.25rem;margin-top:1rem}
+.balance-card.positivo{background:var(--green-light);border:1px solid rgba(26,122,74,.2)}
+.balance-card.negativo{background:var(--red-light);border:1px solid rgba(220,38,38,.2)}
+.bc-titulo{font-size:13px;font-weight:500;margin-bottom:.5rem}
+.bc-num{font-family:'DM Mono',monospace;font-size:26px;font-weight:500}
+.bc-num.pos{color:var(--green)}
+.bc-num.neg{color:var(--red)}
+.bc-sub{font-size:11px;opacity:.7;margin-top:3px}
+
+@media(max-width:640px){
+  .input-grid{grid-template-columns:1fr}
+  .res-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/></svg>
+    NormaAlerta <span class="nav-badge">Simulador SS</span>
+  </a>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="modelo-badge">BAJA LABORAL AUTÓNOMO</div>
+    <h1 class="page-title">¿Cuánto cobro si me pongo<br><em>enfermo siendo autónomo</em>?</h1>
+    <p class="page-subtitle">Introduce tu base de cotización y los días de baja. Calcula exactamente cuánto cobras, cuánto pierdes y qué pasa con tu cuota según la normativa SS 2026.</p>
+  </div>
+
+  <!-- DATOS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🏥</div>
+      <div>
+        <div class="section-title">Tu situación</div>
+        <div class="section-subtitle">Base de cotización y tipo de baja</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="input-grid">
+        <div class="field">
+          <label>Tu base de cotización mensual (RETA)</label>
+          <div class="field-wrap">
+            <input type="number" id="base_cot" value="944.40" min="653.59" max="5101.20" step="10" oninput="calcular()">
+            <span class="suffix">€/m</span>
+          </div>
+          <span class="input-note">Base del mes anterior a la baja ÷ 30 = base reguladora diaria</span>
+        </div>
+        <div class="field">
+          <label>Tipo de baja</label>
+          <select id="tipo_baja" onchange="calcular()">
+            <option value="comun">Enfermedad común / Accidente no laboral</option>
+            <option value="profesional">Accidente laboral / Enfermedad profesional</option>
+          </select>
+          <span class="input-note">Profesional: cobras 75% desde el día siguiente a la baja</span>
+        </div>
+        <div class="field">
+          <label>Días de baja previstos</label>
+          <div class="field-wrap">
+            <input type="number" id="dias_baja" value="30" min="1" max="545" step="1" oninput="calcular()">
+            <span class="suffix">días</span>
+          </div>
+          <span class="input-note">Máximo legal: 365 días + prórroga de 180 días (545 total)</span>
+        </div>
+        <div class="field">
+          <label>Ingresos mensuales habituales (sin IVA)</label>
+          <div class="field-wrap">
+            <input type="number" id="ingresos_mes" value="2000" min="0" step="100" oninput="calcular()">
+            <span class="suffix">€/m</span>
+          </div>
+          <span class="input-note">Para calcular cuánto pierdes realmente</span>
+        </div>
+      </div>
+
+      <div class="info-box green">
+        ✅ <span><strong>Requisito mínimo:</strong> 180 días cotizados en los últimos 5 años para enfermedad común. Para accidente o enfermedad profesional no se requiere cotización previa. Fuente: Art. 172 LGSS y RETA 2026.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado">
+    <div class="res-label">Prestación total estimada</div>
+    <div class="res-num" id="res-total">—</div>
+    <div class="res-sub" id="res-sub">Introduce tus datos para ver el resultado</div>
+    <div class="res-grid">
+      <div class="rc"><div class="rc-label">Base reguladora diaria</div><div class="rc-val" id="rc-base">—</div></div>
+      <div class="rc"><div class="rc-label">Prestación diaria media</div><div class="rc-val verde" id="rc-diaria">—</div></div>
+      <div class="rc"><div class="rc-label">Pérdida neta estimada</div><div class="rc-val rojo" id="rc-perdida">—</div></div>
+    </div>
+    <button class="btn-reset" onclick="resetForm()">↺ Limpiar</button>
+  </div>
+
+  <!-- DESGLOSE POR DÍAS -->
+  <div class="section" style="margin-top:1rem">
+    <div class="section-header">
+      <div class="section-icon">📅</div>
+      <div>
+        <div class="section-title">Desglose día a día</div>
+        <div class="section-subtitle">Cuánto cobras en cada período según normativa SS 2026</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="dias-grid" id="dias-grid"></div>
+
+      <div style="margin-top:1.25rem" id="balance-wrap"></div>
+
+      <div class="info-box amber" style="margin-top:1rem">
+        ⚠️ <span><strong>Cuota SS los primeros 60 días:</strong> debes seguir pagando tu cuota mensual durante los 2 primeros meses de baja. <strong>A partir del día 61</strong> la mutua o el INSS asume el pago de la cuota hasta que te recuperes. Fuente: Art. 309 LGSS modificado 2019.</span>
+      </div>
+
+      <div class="info-box blue" style="margin-top:.75rem">
+        ℹ️ <span><strong>Plazo para solicitarla:</strong> tienes <strong>15 días naturales</strong> desde el inicio de la baja para presentar la solicitud. Si no la pides en plazo, pierdes los días anteriores a la solicitud. El trámite se hace ante tu mutua o el INSS.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- REQUISITOS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">📋</div>
+      <div>
+        <div class="section-title">Requisitos y lo que debes saber</div>
+        <div class="section-subtitle">Normativa vigente 2026 — Art. 172 LGSS y RETA</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="background:var(--paper);border-radius:10px;padding:1rem;border:1px solid var(--border)">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.5rem">✅ Requisitos para cobrarla</div>
+          <ul style="font-size:12px;color:var(--ink2);line-height:1.8;list-style:none">
+            <li>• Alta en el RETA en el momento de la baja</li>
+            <li>• Al corriente en el pago de cuotas (30 días para regularizar)</li>
+            <li>• 180 días cotizados en los últimos 5 años (enfermedad común)</li>
+            <li>• Sin requisito previo para accidente laboral</li>
+            <li>• Solicitud en los 15 días siguientes a la baja</li>
+          </ul>
+        </div>
+        <div style="background:var(--paper);border-radius:10px;padding:1rem;border:1px solid var(--border)">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.5rem">📌 Lo que NO sabías</div>
+          <ul style="font-size:12px;color:var(--ink2);line-height:1.8;list-style:none">
+            <li>• La tarifa plana NO se interrumpe por una baja</li>
+            <li>• La cuota la paga la mutua desde el día 61</li>
+            <li>• Duración máxima: 545 días (365 + prórroga 180)</li>
+            <li>• No puedes trabajar durante la baja (salvo autorización INSS)</li>
+            <li>• Darte de baja en el RETA durante la IT = pierdes la prestación</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function fmt(n){ return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €'; }
+function fmtN(n){ return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function v(id){ return parseFloat(document.getElementById(id)?.value)||0; }
+function setText(id,txt){ const el=document.getElementById(id); if(el) el.textContent=txt; }
+
+function calcular(){
+  const base_mes = v('base_cot');
+  const tipo     = document.getElementById('tipo_baja').value;
+  const dias     = Math.min(545, Math.max(1, v('dias_baja')));
+  const ingresos = v('ingresos_mes');
+
+  // Base reguladora diaria = base cotización mes anterior / 30
+  const br_diaria = base_mes / 30;
+
+  // Cálculo por períodos — normativa Art. 172 LGSS
+  let prestacion_total = 0;
+  let bloques = [];
+
+  if(tipo === 'comun'){
+    // Días 1-3: sin prestación
+    const dias_sin = Math.min(3, dias);
+    if(dias_sin > 0){
+      bloques.push({
+        titulo: `Días 1–${dias_sin} — Sin prestación`,
+        sub: 'Los 3 primeros días no cobras nada (carencia enfermedad común)',
+        dias: dias_sin,
+        pct: 0,
+        importe: 0,
+        tipo: 'sin-cobro'
+      });
+    }
+    // Días 4-20: 60%
+    if(dias > 3){
+      const d_inicio = 4, d_fin = Math.min(20, dias);
+      const n_dias = d_fin - d_inicio + 1;
+      const importe = n_dias * br_diaria * 0.60;
+      prestacion_total += importe;
+      bloques.push({
+        titulo: `Días ${d_inicio}–${d_fin} — 60% de la base reguladora`,
+        sub: `${n_dias} días × ${fmtN(br_diaria * 0.60)}€/día (BR diaria ${fmtN(br_diaria)}€ × 60%)`,
+        dias: n_dias, pct: 60, importe, tipo: 'cobro-60'
+      });
+    }
+    // Días 21+: 75%
+    if(dias > 20){
+      const d_inicio = 21, d_fin = dias;
+      const n_dias = d_fin - d_inicio + 1;
+      const importe = n_dias * br_diaria * 0.75;
+      prestacion_total += importe;
+      bloques.push({
+        titulo: `Días ${d_inicio}–${d_fin} — 75% de la base reguladora`,
+        sub: `${n_dias} días × ${fmtN(br_diaria * 0.75)}€/día (BR diaria ${fmtN(br_diaria)}€ × 75%)`,
+        dias: n_dias, pct: 75, importe, tipo: 'cobro-75'
+      });
+    }
+  } else {
+    // Accidente laboral / enfermedad profesional: 75% desde día siguiente
+    // Día del accidente: sin prestación (lo paga la empresa si hay cuenta ajena, para autónomo sin cobro)
+    bloques.push({
+      titulo: 'Día del accidente — Sin prestación',
+      sub: 'El día del accidente no se cobra prestación',
+      dias: 1, pct: 0, importe: 0, tipo: 'sin-cobro'
+    });
+    if(dias > 1){
+      const n_dias = dias - 1;
+      const importe = n_dias * br_diaria * 0.75;
+      prestacion_total += importe;
+      bloques.push({
+        titulo: `Días 2–${dias} — 75% desde el día siguiente`,
+        sub: `${n_dias} días × ${fmtN(br_diaria * 0.75)}€/día (BR diaria ${fmtN(br_diaria)}€ × 75%)`,
+        dias: n_dias, pct: 75, importe, tipo: 'cobro-75'
+      });
+    }
+  }
+
+  // Cuota SS que debes pagar los primeros 60 días
+  const dias_cuota = Math.min(60, dias);
+  const cuota_mes = base_mes * 0.315; // tipo total RETA 2026
+  const cuota_periodo = (dias_cuota / 30) * cuota_mes;
+  bloques.push({
+    titulo: `Cuota SS a pagar (primeros ${dias_cuota} días)`,
+    sub: dias <= 60
+      ? `Pagas tu cuota durante los ${dias_cuota} días — aprox. ${fmtN(cuota_mes)}€/mes × ${fmtN(dias_cuota/30)} meses`
+      : `Solo pagas los primeros 60 días. Del día 61 en adelante la mutua asume la cuota`,
+    dias: dias_cuota, pct: 0, importe: -cuota_periodo, tipo: 'cuota'
+  });
+
+  // Prestación diaria media
+  const prestacion_diaria = dias > 0 ? prestacion_total / dias : 0;
+
+  // Ingresos que perderías (estimado)
+  const ingresos_periodo = (dias / 30) * ingresos;
+  const perdida_neta = ingresos_periodo - prestacion_total + cuota_periodo;
+
+  // Neto real: prestación - cuota
+  const neto_real = prestacion_total - cuota_periodo;
+
+  // ── ACTUALIZAR UI ──
+  setText('res-total', fmt(prestacion_total));
+  setText('res-sub', `${dias} días de baja · Base reguladora diaria ${fmt(br_diaria)} · ${tipo === 'comun' ? 'Enfermedad común' : 'Accidente/EP'}`);
+  setText('rc-base', fmt(br_diaria) + '/día');
+  setText('rc-diaria', fmt(prestacion_diaria) + '/día');
+  document.getElementById('rc-perdida').textContent = fmt(perdida_neta);
+
+  // Desglose días
+  const grid = document.getElementById('dias-grid');
+  grid.innerHTML = bloques.map(b => `
+    <div class="dia-bloque ${b.tipo}">
+      <div class="db-left">
+        <div class="db-titulo">${b.titulo}</div>
+        <div class="db-sub">${b.sub}</div>
+      </div>
+      <div class="db-val ${b.tipo === 'sin-cobro' ? 'rojo' : b.tipo === 'cobro-60' ? 'amber' : b.tipo === 'cobro-75' ? 'verde' : 'gris'}">
+        ${b.tipo === 'cuota' ? '− ' + fmt(Math.abs(b.importe)) : fmt(b.importe)}
+      </div>
+    </div>
+  `).join('');
+
+  // Balance
+  const balanceWrap = document.getElementById('balance-wrap');
+  const positivo = neto_real >= 0;
+  balanceWrap.innerHTML = `
+    <div class="balance-card ${positivo ? 'positivo' : 'negativo'}">
+      <div class="bc-titulo">${positivo ? '✅ Balance neto de la baja (prestación − cuota SS)' : '⚠️ Balance neto de la baja (prestación − cuota SS)'}</div>
+      <div class="bc-num ${positivo ? 'pos' : 'neg'}">${fmt(neto_real)}</div>
+      <div class="bc-sub">Cobras ${fmt(prestacion_total)} de prestación y pagas ${fmt(cuota_periodo)} de cuota SS en este período</div>
+    </div>
+    ${ingresos > 0 ? `
+    <div class="balance-card negativo" style="margin-top:.75rem">
+      <div class="bc-titulo">💸 Lo que dejas de ingresar en este período</div>
+      <div class="bc-num neg">− ${fmt(ingresos_periodo)}</div>
+      <div class="bc-sub">Estimado a partir de tus ingresos mensuales habituales de ${fmt(ingresos)}</div>
+    </div>` : ''}
+  `;
+}
+
+function resetForm(){
+  document.getElementById('base_cot').value = 944.40;
+  document.getElementById('tipo_baja').value = 'comun';
+  document.getElementById('dias_baja').value = 30;
+  document.getElementById('ingresos_mes').value = 2000;
+  calcular();
+}
+
+calcular();
+</script>
+</body>
+</html>

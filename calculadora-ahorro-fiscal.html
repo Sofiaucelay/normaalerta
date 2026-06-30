@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Cuánto me Estoy Dejando sin Deducir? Calculadora Ahorro Fiscal | NormaAlerta</title>
+  <meta name="description" content="Descubre cuánto dinero te estás dejando sin deducir como autónomo. Introduce tus gastos reales y calcula el ahorro fiscal máximo legal según la AEAT 2026. Gratis.">
+  <meta name="keywords" content="calculadora ahorro fiscal autónomos, cuánto me puedo deducir autónomo, gastos deducibles calculadora, optimización fiscal autónomos 2026, cuánto me dejo de deducir">
+  <meta name="author" content="NormaAlerta">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://normaalerta.com/calculadora-ahorro-fiscal.html">
+  <meta property="og:title" content="¿Cuánto me Estoy Dejando sin Deducir? | NormaAlerta">
+  <meta property="og:description" content="Descubre cuánto dinero te estás dejando sin deducir como autónomo. Calcula tu ahorro fiscal máximo legal. Gratis.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://normaalerta.com/calculadora-ahorro-fiscal.html">
+  <meta property="og:site_name" content="NormaAlerta">
+  <meta property="og:locale" content="es_ES">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="¿Cuánto me Estoy Dejando sin Deducir? | NormaAlerta">
+  <meta name="twitter:description" content="Descubre cuánto dinero te estás dejando sin deducir como autónomo. Calcula tu ahorro fiscal máximo legal. Gratis.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;
+  --ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;
+  --paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;
+  --border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);
+  --amber:#f59e0b;--amber-light:#fef3c7;--red:#dc2626;--red-light:#fef2f2;--blue-light:#eff6ff;
+  --orange:#ea580c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.page{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-header{margin-bottom:2rem;text-align:center}
+.modelo-badge{display:inline-block;background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;font-family:'DM Mono',monospace;margin-bottom:.75rem}
+.page-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;letter-spacing:-.5px;margin-bottom:.5rem}
+.page-title em{font-style:italic;color:var(--green)}
+.page-subtitle{font-size:14px;color:var(--ink3);max-width:540px;margin:0 auto}
+
+.section{background:var(--white);border:1px solid var(--border);border-radius:14px;margin-bottom:1rem;overflow:hidden}
+.section-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--green-light)}
+.section-title{font-size:15px;font-weight:500;flex:1}
+.section-subtitle{font-size:12px;color:var(--ink3);margin-top:1px}
+.section-body{padding:1.25rem}
+
+.gasto-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.gasto-item{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:1rem;position:relative}
+.gasto-item.no-aplica{opacity:.5}
+.gasto-header{display:flex;align-items:center;gap:8px;margin-bottom:.625rem}
+.gasto-emoji{font-size:18px;flex-shrink:0}
+.gasto-nombre{font-size:13px;font-weight:500;color:var(--ink);flex:1}
+.gasto-pct{font-size:11px;font-weight:600;padding:2px 7px;border-radius:4px;background:var(--green-light);color:var(--green-dark);flex-shrink:0}
+.gasto-nota{font-size:11px;color:var(--ink3);margin-bottom:.625rem;line-height:1.4}
+.gasto-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.gasto-input-wrap{display:flex;flex-direction:column;gap:3px}
+.gasto-input-wrap label{font-size:10px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em}
+.gasto-input-wrap .field-wrap{position:relative}
+.gasto-input-wrap input{padding:.4rem 1.75rem .4rem .6rem;border:1px solid var(--border2);border-radius:6px;font-size:13px;font-family:'DM Mono',monospace;color:var(--ink);background:var(--white);outline:none;width:100%;text-align:right;transition:border-color .15s}
+.gasto-input-wrap input:focus{border-color:var(--green)}
+.gasto-input-wrap .suffix{position:absolute;right:.5rem;top:50%;transform:translateY(-50%);font-size:11px;color:var(--ink3);pointer-events:none}
+.gasto-resultado{margin-top:.625rem;padding:.5rem .75rem;background:var(--green-light);border-radius:6px;display:flex;justify-content:space-between;align-items:center}
+.gr-label{font-size:11px;color:var(--green-dark)}
+.gr-val{font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:var(--green)}
+
+/* RESULTADO */
+.resultado-total{background:var(--ink);border-radius:14px;padding:1.75rem;margin-top:1.5rem;position:relative;overflow:hidden}
+.resultado-total::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;background:rgba(34,160,122,.06)}
+.rt-label{font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.375rem}
+.rt-num{font-family:'DM Mono',monospace;font-size:48px;font-weight:500;color:#4ade80;line-height:1;margin-bottom:.25rem}
+.rt-sub{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:1.5rem}
+.rt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+.rtc{background:rgba(255,255,255,.07);border-radius:8px;padding:.75rem}
+.rtc-label{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:3px}
+.rtc-val{font-size:15px;font-weight:500;font-family:'DM Mono',monospace;color:rgba(255,255,255,.9)}
+.rtc-val.verde{color:#4ade80}
+.export-row{display:flex;gap:8px;flex-wrap:wrap}
+.btn-export{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:none}
+.btn-pdf{background:var(--green);color:var(--white)}
+.btn-reset{background:rgba(255,255,255,.1);color:var(--white);border:1px solid rgba(255,255,255,.2)}
+
+/* DESGLOSE */
+.desglose-tabla{width:100%;border-collapse:collapse;font-size:13px}
+.desglose-tabla th{font-size:11px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;padding:.5rem .75rem;background:var(--paper);border-bottom:1px solid var(--border);text-align:left}
+.desglose-tabla th:not(:first-child){text-align:right}
+.desglose-tabla td{padding:.5rem .75rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.desglose-tabla td:not(:first-child){text-align:right;font-family:'DM Mono',monospace;font-weight:500}
+.desglose-tabla tr:last-child td{border-bottom:none}
+.desglose-tabla .total-row td{font-weight:600;font-size:14px;border-top:2px solid var(--border2);padding-top:.75rem}
+.dt-pos{color:var(--green)}
+.dt-neg{color:var(--red)}
+
+.info-box{border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12px;display:flex;gap:8px;align-items:flex-start}
+.info-box.amber{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);color:#92400e}
+.info-box.green{background:var(--green-light);border:1px solid rgba(26,122,74,.2);color:var(--green-dark)}
+.info-box.blue{background:var(--blue-light);border:1px solid rgba(37,99,235,.2);color:#1e40af}
+
+@media(max-width:640px){
+  .gasto-grid{grid-template-columns:1fr}
+  .rt-grid{grid-template-columns:1fr 1fr}
+  .gasto-inputs{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/></svg>
+    NormaAlerta <span class="nav-badge">Calculadora fiscal</span>
+  </a>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="modelo-badge">AHORRO FISCAL</div>
+    <h1 class="page-title">¿Cuánto dinero te estás<br>dejando <em>sin deducir</em>?</h1>
+    <p class="page-subtitle">Introduce tus gastos reales y calcula exactamente cuánto puedes deducirte según la normativa AEAT 2026. Descubre el dinero que estás dejando sobre la mesa cada año.</p>
+  </div>
+
+  <!-- DATOS BASE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">📊</div>
+      <div>
+        <div class="section-title">Datos base de tu actividad</div>
+        <div class="section-subtitle">Para calcular el ahorro fiscal total y los límites aplicables</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="gasto-inputs" style="grid-template-columns:1fr 1fr 1fr;gap:14px">
+        <div class="gasto-input-wrap">
+          <label>Ingresos brutos anuales (sin IVA)</label>
+          <div class="field-wrap">
+            <input type="number" id="ingresos_base" value="35000" min="0" step="100" oninput="calcular()">
+            <span class="suffix">€</span>
+          </div>
+        </div>
+        <div class="gasto-input-wrap">
+          <label>IRPF estimado (%)</label>
+          <div class="field-wrap">
+            <input type="number" id="irpf_base" value="20" min="0" max="45" step="1" oninput="calcular()">
+            <span class="suffix">%</span>
+          </div>
+        </div>
+        <div class="gasto-input-wrap">
+          <label>Régimen fiscal</label>
+          <select id="regimen" onchange="calcular()" style="padding:.4rem .6rem;border:1px solid var(--border2);border-radius:6px;font-size:13px;width:100%;background:var(--white);color:var(--ink);outline:none">
+            <option value="simplificada">Estimación Directa Simplificada</option>
+            <option value="normal">Estimación Directa Normal</option>
+          </select>
+        </div>
+      </div>
+      <div class="info-box green" style="margin-top:1rem">
+        ✅ <span>Cálculo basado en la normativa AEAT 2026. Fuentes: Ley 35/2006 IRPF, RD 439/2007, RDL 16/2025. Porcentajes oficiales verificados.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- GASTOS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🧾</div>
+      <div>
+        <div class="section-title">Tus gastos anuales — introduce lo que gastas realmente</div>
+        <div class="section-subtitle">La herramienta calcula automáticamente lo que puedes deducirte según la AEAT</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="gasto-grid" id="gastos-grid">
+
+        <!-- 1. CUOTA SS -->
+        <div class="gasto-item">
+          <div class="gasto-header">
+            <span class="gasto-emoji">🏛️</span>
+            <span class="gasto-nombre">Cuota Seguridad Social (RETA)</span>
+            <span class="gasto-pct">100%</span>
+          </div>
+          <div class="gasto-nota">Deducible al 100% sin necesidad de factura. Solo el recibo de la SS. Fuente: Art. 30.2 Ley IRPF.</div>
+          <div class="gasto-inputs" style="grid-template-columns:1fr">
+            <div class="gasto-input-wrap">
+              <label>Cuota mensual × 12</label>
+              <div class="field-wrap">
+                <input type="number" id="g_ss" value="294" min="0" step="1" oninput="calcular()">
+                <span class="suffix">€/m</span>
+              </div>
+            </div>
+          </div>
+          <div class="gasto-resultado">
+            <span class="gr-label">Deducción anual</span>
+            <span class="gr-val" id="r_ss">—</span>
+          </div>
+        </div>
+
+        <!-- 2. GESTORÍA -->
+        <div class="gasto-item">
+          <div class="gasto-header">
+            <span class="gasto-emoji">📋</span>
+            <span class="gasto-nombre">Gestoría / Asesoría fiscal</span>
+            <span class="gasto-pct">100%</span>
+          </div>
+          <div class="gasto-nota">Honorarios de gestoría, asesoría fiscal, contable o laboral. Deducibles al 100% con factura.</div>
+          <div class="gasto-inputs" style="grid-template-columns:1fr">
+            <div class="gasto-input-wrap">
+              <label>Gasto anual en gestoría</label>
+              <div class="field-wrap">
+                <input type="number" id="g_gestoria" value="600" min="0" step="50" oninput="calcular()">
+                <span class="suffix">€</span>
+              </div>
+            </div>
+          </div>
+          <div class="gasto-resultado">
+            <span class="gr-label">Deducción anual</span>
+            <span class="gr-val" id="r_gestoria">—</span>
+          </div>
+        </div>
+
+        <!-- 3. SUMINISTROS HOGAR -->
+        <div class="gasto-item">
+          <div class="gasto-header">
+            <span class="gasto-emoji">🏠</span>
+            <span class="gasto-nombre">Suministros (trabajas en casa)</span>
+            <span class="gasto-pct">30% × m²</span>
+          </div>
+          <div class="gasto-nota">Luz, agua, gas, internet. Fórmula AEAT: gasto × (m² despacho / m² vivienda) × 30%. Requiere declarar afectación en modelo 036/037.</div>
+          <div class="gasto-inputs">
+            <div class="gasto-input-wrap">
+              <label>Suministros anuales totales</label>
+              <div class="field-wrap">
+                <input type="number" id="g_sum_total" value="2400" min="0" step="100" oninput="calcular()">
+                <span class="suffix">€</span>
+              </div>
+            </div>
+            <div class="gasto-input-wrap">
+              <label>% m² despacho / vivienda</label>
+              <div class="field-wrap">
+                <input type="number" id="g_sum_pct" value="15" min="0" max="100" step="1" oninput="calcular()">
+                <span class="suffix">%</span>
+              </div>
+            </div>
+          </div>
+          <div class="gasto-resultado">
+            <span class="gr-label">Deducción anual (× 30%)</span>
+            <span class="gr-val" id="r_sum">—</span>
+          </div>
+        </div>
+
+        <!-- 4. ALQUILER/HIPOTECA HOGAR -->
+        <div class="gasto-item">
+          <div class="gasto-header">
+            <span class="gasto-emoji">🏡</span>
+            <span class="gasto-nombre">Alquiler / IBI / Comunidad (hogar)</span>
+            <span class="gasto-pct">% m²</span>
+          </div>
+          <div class="gasto-nota">Si trabajas en casa: deducible en proporción directa a los m² afectos. Sin el 30% adicional de suministros. Requiere afectación en 036/037.</div>
+          <div class="gasto-inputs">
+            <div class="gasto-input-wrap">
+              <label>Alquiler/IBI/comunidad anual</label>
+              <div class="field-wrap">
+                <input type="number" id="g_alq_total" value="7200" min="0" step="100" oninput="calcular()">
+                <span class="suffix">€</span>
+              </div>
+            </div>
+            <div class="gasto-input-wrap">
+              <label>% m² despacho / vivienda</label>
+              <div class="field-wrap">
+                <input type="number" id="g_alq_pct" value="15" min="0" max="100" step="1" oninput="calcular()">
+                <span class="suffix">%</span>
+              </div>
+            </div>
+          </div>
+          <div class="gasto-resultado">
+            <span class="gr-label">Deducción anual</span>
+            <span class="gr-val" id="r_alq">—</span>
+          </div>
+        </div>
+
+        <!-- 5. TELÉFONO / MÓVIL -->
+        <div class="gasto-item">
+          <div class="gasto-header">
+            <span class="gasto-emoji">📱</span>
+            <span class="gasto-nombre">Teléfono / Móvil</span>
+            <span class="gasto-pct">50%-100%</span>
+          </div>
+          <div class="gasto-nota">Uso exclusivo profesional: 100%. Uso mixto: Hacienda acepta generalmente 50% si está justificado. Línea exclusiva trabajo: 100%.</div>
+          <div class="gasto-inputs">
+            <div class="gasto-input-wrap">
+              <label>Gasto anual teléfono</label>
+              <div class="field-wrap">
+                <input type="number" id="g_tel_total" value="600" min="0" step="50" oninput="calcular()">
+                <span class="suffix">€</span>
+              </div>
+            </div>
+            <div class="gasto-input-wrap">
+              <label>% uso profesional</label>
+              <div class="field-wrap">
+                <input type="number" id="g_tel_pct" value="50" min="0" max="100" step="5" oninput="calcular()">
+                <span class="suffix">%</span>
+              </div>
+            </div>
+          </div>
+          <div class="gasto-resultado">
+            <span class="gr-label">Deducción anual</span>
+            <span class="gr-val" id="r_tel">—</span>
+          </div>
+        </div>
+
+        <!-- 6. ORDENADOR / EQUIPOS -->
+        <div class="gasto-item">
+          <div class="gasto-header">
+            <span class="gasto-emoji">💻</span>
+            <span class="gasto-nombre">Ordenador / Equipos informáticos</span>
+            <span class="gasto-pct">26%/año</span>
+          </div>
+          <div class="gasto-nota">Se amortiza, no se deduce de golpe. Tabla AEAT simplificada: coeficiente máximo 26% anual (vida útil ~4 años). Activos ≤300€: amortización libre en el año de compra.</div>
+          <div class="gasto-inputs">
+            <div class="gasto-input-wrap">
+              <label>Valor total equipos</label>
+              <div class="field-wrap">
+                <input type="number" id="g_ord_total" value="1500" min="0" step="100" oninput="calcular()">
+                <span class="suffix">€</span>
+              </div>
+            </div>
+            <div class="gasto-input-wrap">
+              <label>¿Alguno ≤ 300€?</label>
+              <div class="field-wrap">
+                <input type="number" id="g_ord_libre" value="0" min="0" step="50" oninput="calcular()" placeholder="0">
+                <span class="suffix">€</span>
+              </div>
+            </div>
+          </div>
+          <div class="gasto-resultado">
+            <span class="gr-label">Deducción anual (amortización)</span>
+            <span class="gr-val" id="r_ord">—</span>
+          </div>
+        </div>
+
+        <!-- 7. SOFTWARE / SUSCRIPCIONES -->
+        <div class="gasto-item">
+          <div class="gasto-header">
+            <span class="gasto-emoji">🖥️</span>
+            <span class="gasto-nombre">Software / Suscripciones profesionales</span>
+            <span class="gasto-pct">100%</span>
+          </div>
+          <div class="gasto-nota">Adobe, Notion, Slack, CRM, almacenamiento cloud, herramientas de diseño, etc. Deducibles al 100% si son para la actividad.</div>
+          <div class="gasto-inputs" style="grid-template-columns:1fr">
+            <div class="gasto-input-wrap">
+              <label>Gasto anual en software</label>
+              <div class="field-wrap">
+                <input type="number" id="g_soft" value="500" min="0" step="50" oninput="calcular()">
+                <span class="suffix">€</span>
+              </div>
+            </div>
+          </div>
+          <div class="gasto-resultado">
+            <span class="gr-label">Deducción anual</span>
+            <span class="gr-val" id="r_soft">—</span>
+          </div>
+        </div>
+
+        <!-- 8. FORMACIÓN -->
+        <div class="gasto-item">
+          <div class="gasto-header">
+            <span class="gasto-emoji">📚</span>
+            <span class="gasto-nombre">Formación / Cursos / Libros</span>
+            <span class="gasto-pct">100%</span>
+          </div>
+          <div class="gasto-nota">Cursos, másteres, libros técnicos, suscripciones a revistas del sector. 100% deducibles si están relacionados con tu actividad. También formación online.</div>
+          <div class="gasto-inputs" style="grid-template-columns:1fr">
+            <div class="gasto-input-wrap">
+              <label>Gasto anual en formación</label>
+              <div class="field-wrap">
+                <input type="number" id="g_form" value="400" min="0" step="50" oninput="calcular()">
+                <span class="suffix">€</span>
+              </div>
+            </div>
+          </div>
+          <div class="gasto-resultado">
+            <span class="gr-label">Deducción anual</span>
+            <span class="gr-val" id="r_form">—</span>
+          </div>
+        </div>
+
+        <!-- 9. DIETAS Y MANUTENCIÓN -->
+        <div class="gasto-item">
+          <div class="gasto-header">
+            <span class="gasto-emoji">🍽️</span>
+            <span class="gasto-nombre">Dietas y manutención (comidas trabajo)</span>
+            <span class="gasto-pct">Límite AEAT</span>
+          </div>
+          <div class="gasto-nota">Límites AEAT 2026: Restaurante en España 26,67€/día. Pernoctación España 53,34€/día. Pago obligatorio con tarjeta. Requiere justificación profesional.</div>
+          <div class="gasto-inputs">
+            <div class="gasto-input-wrap">
+              <label>Comidas trabajo anuales</label>
+              <div class="field-wrap">
+                <input type="number" id="g_diet_total" value="800" min="0" step="50" oninput="calcular()">
+                <span class="suffix">€</span>
+              </div>
+            </div>
+            <div class="gasto-input-wrap">
+              <label>Días con comida de trabajo</label>
+              <div class="field-wrap">
+                <input type="number" id="g_diet_dias" value="30" min="0" max="365" step="1" oninput="calcular()">
+                <span class="suffix">días</span>
+              </div>
+            </div>
+          </div>
+          <div class="gasto-resultado">
+            <span class="gr-label">Deducción anual (máx. 26,67€/día)</span>
+            <span class="gr-val" id="r_diet">—</span>
+          </div>
+        </div>
+
+        <!-- 10. SEGURO DE SALUD -->
+        <div class="gasto-item">
+          <div class="gasto-header">
+            <span class="gasto-emoji">🏥</span>
+            <span class="gasto-nombre">Seguro de salud (autónomo y familia)</span>
+            <span class="gasto-pct">500€-1.500€/pers.</span>
+          </div>
+          <div class="gasto-nota">Límite: 500€/año por persona (autónomo, cónyuge, hijos menores de 25 que convivan). Sube a 1.500€/persona si hay discapacidad reconocida. Art. 30.2.5 Ley IRPF. Solo primas de seguro médico privado.</div>
+          <div class="gasto-inputs">
+            <div class="gasto-input-wrap">
+              <label>Prima anual seguro salud</label>
+              <div class="field-wrap">
+                <input type="number" id="g_seg_total" value="600" min="0" step="50" oninput="calcular()">
+                <span class="suffix">€</span>
+              </div>
+            </div>
+            <div class="gasto-input-wrap">
+              <label>Nº personas cubiertas</label>
+              <div class="field-wrap">
+                <input type="number" id="g_seg_personas" value="1" min="1" max="10" step="1" oninput="calcular()">
+                <span class="suffix">pers.</span>
+              </div>
+            </div>
+          </div>
+          <div class="gasto-inputs" style="margin-top:8px">
+            <div class="gasto-input-wrap">
+              <label>¿Cuántas con discapacidad reconocida?</label>
+              <div class="field-wrap">
+                <input type="number" id="g_seg_discapacidad" value="0" min="0" max="10" step="1" oninput="calcular()">
+                <span class="suffix">pers.</span>
+              </div>
+              <span style="font-size:10px;color:var(--ink3)">Esas personas tienen límite de 1.500€ en lugar de 500€</span>
+            </div>
+          </div>
+          <div class="gasto-resultado">
+            <span class="gr-label">Deducción anual (límite según discapacidad)</span>
+            <span class="gr-val" id="r_seg">—</span>
+          </div>
+        </div>
+
+        <!-- 11. MATERIAL DE OFICINA -->
+        <div class="gasto-item">
+          <div class="gasto-header">
+            <span class="gasto-emoji">✏️</span>
+            <span class="gasto-nombre">Material de oficina / Papelería</span>
+            <span class="gasto-pct">100%</span>
+          </div>
+          <div class="gasto-nota">Material de trabajo, papelería, impresión, tóner, cartuchos. Deducible al 100% con factura y vinculación a la actividad.</div>
+          <div class="gasto-inputs" style="grid-template-columns:1fr">
+            <div class="gasto-input-wrap">
+              <label>Gasto anual en material</label>
+              <div class="field-wrap">
+                <input type="number" id="g_mat" value="200" min="0" step="50" oninput="calcular()">
+                <span class="suffix">€</span>
+              </div>
+            </div>
+          </div>
+          <div class="gasto-resultado">
+            <span class="gr-label">Deducción anual</span>
+            <span class="gr-val" id="r_mat">—</span>
+          </div>
+        </div>
+
+        <!-- 12. OTROS GASTOS PROFESIONALES -->
+        <div class="gasto-item">
+          <div class="gasto-header">
+            <span class="gasto-emoji">📌</span>
+            <span class="gasto-nombre">Otros gastos profesionales</span>
+            <span class="gasto-pct">100%</span>
+          </div>
+          <div class="gasto-nota">Cuotas de asociaciones, colegios profesionales, publicidad, hosting web, dominio, tarjetas de visita, seguros RC, banco, etc.</div>
+          <div class="gasto-inputs" style="grid-template-columns:1fr">
+            <div class="gasto-input-wrap">
+              <label>Otros gastos deducibles anuales</label>
+              <div class="field-wrap">
+                <input type="number" id="g_otros" value="300" min="0" step="50" oninput="calcular()">
+                <span class="suffix">€</span>
+              </div>
+            </div>
+          </div>
+          <div class="gasto-resultado">
+            <span class="gr-label">Deducción anual</span>
+            <span class="gr-val" id="r_otros">—</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTADO TOTAL -->
+  <div class="resultado-total">
+    <div class="rt-label">Ahorro fiscal total anual estimado</div>
+    <div class="rt-num" id="rt-ahorro">—</div>
+    <div class="rt-sub" id="rt-sub">Introduce tus datos para ver el resultado</div>
+    <div class="rt-grid">
+      <div class="rtc"><div class="rtc-label">Total gastos deducibles</div><div class="rtc-val verde" id="rt-deducibles">—</div></div>
+      <div class="rtc"><div class="rtc-label">Reducción base imponible</div><div class="rtc-val" id="rt-base">—</div></div>
+      <div class="rtc"><div class="rtc-label">Ahorro en tu declaración</div><div class="rtc-val verde" id="rt-ahorro2">—</div></div>
+    </div>
+    <div class="export-row">
+      <button class="btn-export btn-pdf" onclick="exportPDF()">⬇ Descargar PDF</button>
+      <button class="btn-export btn-reset" onclick="resetForm()">↺ Limpiar</button>
+    </div>
+  </div>
+
+  <!-- DESGLOSE TABLA -->
+  <div class="section" style="margin-top:1rem">
+    <div class="section-header">
+      <div class="section-icon">📊</div>
+      <div>
+        <div class="section-title">Desglose completo de deducciones</div>
+        <div class="section-subtitle">Cada gasto con su porcentaje AEAT y deducción anual</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <table class="desglose-tabla">
+        <thead>
+          <tr>
+            <th>Concepto</th>
+            <th>Gasto real</th>
+            <th>% deducible</th>
+            <th>Deducción</th>
+            <th>Ahorro IRPF</th>
+          </tr>
+        </thead>
+        <tbody id="desglose-tbody"></tbody>
+      </table>
+      <div style="margin-top:1rem;padding:1rem;background:var(--paper);border-radius:10px;border:1px solid var(--border)">
+        <div style="font-size:12px;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Gastos de difícil justificación — <span id="gdj-tipo">Estimación Directa Simplificada</span></div>
+        <div style="font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--green)" id="gdj-val">—</div>
+        <div style="font-size:11px;color:var(--ink3);margin-top:.25rem" id="gdj-desc">—</div>
+      </div>
+      <div class="info-box amber" style="margin-top:1rem">
+        ⚠️ <span>Cálculo <strong>orientativo</strong> basado en la normativa AEAT 2026. El ahorro real depende de tu situación fiscal completa y los documentos justificativos que tengas. Consulta con tu gestor antes de aplicar deducciones dudosas.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function fmt(n){ return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €'; }
+function fmtN(n){ return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function v(id){ return parseFloat(document.getElementById(id)?.value)||0; }
+function setText(id,txt){ const el=document.getElementById(id); if(el) el.textContent=txt; }
+
+function calcular(){
+  const ingresos = v('ingresos_base');
+  const irpf_pct = v('irpf_base') / 100;
+  const regimen  = document.getElementById('regimen').value;
+
+  // ── CALCULAR CADA GASTO ──
+  const ss_anual   = v('g_ss') * 12;
+  const r_ss       = ss_anual;
+
+  const r_gestoria = v('g_gestoria');
+  const r_soft     = v('g_soft');
+  const r_form     = v('g_form');
+  const r_mat      = v('g_mat');
+  const r_otros    = v('g_otros');
+
+  // Suministros: total × (m²%) × 30%
+  const r_sum = v('g_sum_total') * (v('g_sum_pct')/100) * 0.30;
+
+  // Alquiler: total × (m²%) — sin el 30%
+  const r_alq = v('g_alq_total') * (v('g_alq_pct')/100);
+
+  // Teléfono: total × %
+  const r_tel = v('g_tel_total') * (v('g_tel_pct')/100);
+
+  // Ordenador: amortización 26%/año + libre los ≤300€
+  const ord_normal = Math.max(0, v('g_ord_total') - v('g_ord_libre'));
+  const r_ord = ord_normal * 0.26 + v('g_ord_libre');
+
+  // Dietas: mínimo entre lo gastado y el límite (26,67€/día)
+  const limite_dietas = v('g_diet_dias') * 26.67;
+  const r_diet = Math.min(v('g_diet_total'), limite_dietas);
+
+  // Seguro salud: límite 500€/persona normal, 1.500€/persona con discapacidad
+  const personas_total = v('g_seg_personas');
+  const personas_discap = Math.min(v('g_seg_discapacidad'), personas_total);
+  const personas_normal = personas_total - personas_discap;
+  const limite_seg = (personas_normal * 500) + (personas_discap * 1500);
+  const r_seg = Math.min(v('g_seg_total'), limite_seg);
+
+  // Total deducciones sin GDJ
+  const total_sin_gdj = r_ss + r_gestoria + r_sum + r_alq + r_tel + r_ord + r_soft + r_form + r_diet + r_seg + r_mat + r_otros;
+
+  // Rendimiento neto previo
+  const rn_previo = Math.max(0, ingresos - total_sin_gdj);
+
+  // Gastos difícil justificación (solo estimación directa simplificada)
+  let gdj = 0;
+  let gdj_texto = '';
+  if(regimen === 'simplificada'){
+    gdj = Math.min(rn_previo * 0.05, 2000);
+    gdj_texto = `5% sobre ${fmt(rn_previo)} de rendimiento neto = ${fmt(gdj)} (máximo 2.000€/año). Art. 30.2 RIRPF y RDL 16/2025.`;
+  } else {
+    gdj_texto = 'No aplica en Estimación Directa Normal.';
+  }
+
+  const total_deducibles = total_sin_gdj + gdj;
+  const base_imponible   = Math.max(0, ingresos - total_deducibles);
+  const ahorro_irpf      = total_deducibles * irpf_pct;
+
+  // ── ACTUALIZAR UI ──
+  setText('r_ss',       fmt(r_ss));
+  setText('r_gestoria', fmt(r_gestoria));
+  setText('r_sum',      fmt(r_sum));
+  setText('r_alq',      fmt(r_alq));
+  setText('r_tel',      fmt(r_tel));
+  setText('r_ord',      fmt(r_ord));
+  setText('r_soft',     fmt(r_soft));
+  setText('r_form',     fmt(r_form));
+  setText('r_diet',     fmt(r_diet));
+  setText('r_seg',      fmt(r_seg));
+  setText('r_mat',      fmt(r_mat));
+  setText('r_otros',    fmt(r_otros));
+
+  setText('rt-ahorro',     fmt(ahorro_irpf));
+  setText('rt-ahorro2',    fmt(ahorro_irpf));
+  setText('rt-deducibles', fmt(total_deducibles));
+  setText('rt-base',       fmt(rn_previo));
+  setText('rt-sub',        `Aplicando ${fmt(total_deducibles)} de gastos deducibles reduces tu base imponible de ${fmt(ingresos)} a ${fmt(base_imponible)}`);
+
+  // GDJ
+  setText('gdj-tipo',  regimen === 'simplificada' ? 'Estimación Directa Simplificada' : 'Estimación Directa Normal');
+  setText('gdj-val',   regimen === 'simplificada' ? fmt(gdj) : '0,00 €');
+  setText('gdj-desc',  gdj_texto);
+
+  // ── DESGLOSE TABLA ──
+  const partidas = [
+    { nombre:'Cuota SS (RETA)', gasto: ss_anual,               pct: '100%',                    ded: r_ss },
+    { nombre:'Gestoría / Asesoría', gasto: v('g_gestoria'),    pct: '100%',                    ded: r_gestoria },
+    { nombre:'Suministros hogar', gasto: v('g_sum_total'),     pct: `${(v('g_sum_pct')*0.30).toFixed(1)}%`, ded: r_sum },
+    { nombre:'Alquiler/IBI hogar', gasto: v('g_alq_total'),    pct: `${v('g_alq_pct').toFixed(0)}%`, ded: r_alq },
+    { nombre:'Teléfono / Móvil', gasto: v('g_tel_total'),      pct: `${v('g_tel_pct').toFixed(0)}%`, ded: r_tel },
+    { nombre:'Ordenador / Equipos (amort.)', gasto: v('g_ord_total'), pct: '26%/año',           ded: r_ord },
+    { nombre:'Software / Suscripciones', gasto: v('g_soft'),   pct: '100%',                    ded: r_soft },
+    { nombre:'Formación / Libros', gasto: v('g_form'),          pct: '100%',                    ded: r_form },
+    { nombre:'Dietas y manutención', gasto: v('g_diet_total'), pct: 'Máx. 26,67€/día',         ded: r_diet },
+    { nombre:'Seguro de salud', gasto: v('g_seg_total'),       pct: `${fmtN(limite_seg)}€ máx.`,         ded: r_seg },
+    { nombre:'Material de oficina', gasto: v('g_mat'),          pct: '100%',                    ded: r_mat },
+    { nombre:'Otros gastos prof.', gasto: v('g_otros'),        pct: '100%',                    ded: r_otros },
+    { nombre:'Gastos difícil justif.', gasto: 0,               pct: '5% RN (máx. 2.000€)',     ded: gdj },
+  ];
+
+  const tbody = document.getElementById('desglose-tbody');
+  tbody.innerHTML = partidas.map(p => `
+    <tr>
+      <td>${p.nombre}</td>
+      <td>${p.gasto > 0 ? fmt(p.gasto) : '—'}</td>
+      <td style="color:var(--ink3)">${p.pct}</td>
+      <td class="dt-pos">${fmt(p.ded)}</td>
+      <td class="dt-pos">${fmt(p.ded * irpf_pct)}</td>
+    </tr>
+  `).join('') + `
+    <tr class="total-row">
+      <td colspan="3"><strong>TOTAL DEDUCCIONES ANUALES</strong></td>
+      <td class="dt-pos"><strong>${fmt(total_deducibles)}</strong></td>
+      <td class="dt-pos"><strong>${fmt(ahorro_irpf)}</strong></td>
+    </tr>
+  `;
+}
+
+function resetForm(){
+  const defaults = {
+    ingresos_base:35000, irpf_base:20, g_ss:294, g_gestoria:600,
+    g_sum_total:2400, g_sum_pct:15, g_alq_total:7200, g_alq_pct:15,
+    g_tel_total:600, g_tel_pct:50, g_ord_total:1500, g_ord_libre:0,
+    g_soft:500, g_form:400, g_diet_total:800, g_diet_dias:30,
+    g_seg_total:600, g_seg_personas:1, g_seg_discapacidad:0, g_mat:200, g_otros:300
+  };
+  Object.entries(defaults).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if(el) el.value = val;
+  });
+  calcular();
+}
+
+function exportPDF(){
+  const ingresos = v('ingresos_base');
+  const irpf_pct = v('irpf_base');
+  const total_ded_el = document.getElementById('rt-deducibles')?.textContent || '—';
+  const ahorro_el = document.getElementById('rt-ahorro')?.textContent || '—';
+  const w = window.open('','_blank','width=800,height=900');
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Ahorro Fiscal NormaAlerta</title>
+  <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Helvetica,Arial,sans-serif;font-size:13px;padding:40px;color:#1c1b18}
+  .hdr{display:flex;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #1a7a4a}
+  h1{font-size:18px;font-weight:600;color:#1a7a4a}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#f7f5ee;padding:14px;border-radius:8px;margin-bottom:16px}
+  .grid label{font-size:10px;text-transform:uppercase;color:#8c8b84;display:block;margin-bottom:2px}.grid span{font-size:14px;font-weight:500}
+  .res{background:#1c1b18;color:white;padding:18px;border-radius:10px;margin-top:14px}
+  .res-n{font-size:30px;font-weight:600;font-family:monospace;color:#4ade80}
+  .ftr{margin-top:18px;font-size:10px;color:#8c8b84;text-align:center;border-top:1px solid #edeae0;padding-top:10px}
+  @media print{body{padding:20px}}</style></head><body>
+  <div class="hdr"><div><h1>NormaAlerta — Calculadora de Ahorro Fiscal</h1></div><div style="font-size:11px;color:#8c8b84">normaalerta.com</div></div>
+  <div class="grid">
+    <div><label>Ingresos brutos anuales</label><span>${fmt(ingresos)}</span></div>
+    <div><label>IRPF estimado</label><span>${irpf_pct}%</span></div>
+    <div><label>Total gastos deducibles</label><span>${total_ded_el}</span></div>
+    <div><label>Ahorro fiscal estimado</label><span style="color:#1a7a4a">${ahorro_el}</span></div>
+  </div>
+  <div class="res">
+    <div style="font-size:11px;opacity:.5;text-transform:uppercase;margin-bottom:4px">Ahorro fiscal anual estimado</div>
+    <div class="res-n">${ahorro_el}</div>
+    <div style="font-size:12px;opacity:.5;margin-top:4px">Aplicando todos los gastos deducibles según normativa AEAT 2026</div>
+  </div>
+  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Cálculo orientativo. Consulta con tu gestor. Fuentes: Ley 35/2006 IRPF · RD 439/2007 · RDL 16/2025 · AEAT.</div>
+  <script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.close();
+}
+
+// Init
+calcular();
+</script>
+</body>
+</html>
