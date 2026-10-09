@@ -319,7 +319,7 @@ async function enviar(){
   } catch(err){
     quitarTyping();
     historial.pop();
-    agregarMensaje('assistant', (err.status === 429 ? 'Has hecho muchas consultas seguidas. ' : 'Lo siento, ha ocurrido un error al conectar con el asistente. ') + 'Por favor inténtalo de nuevo en unos minutos.');
+    agregarMensaje('assistant', (err.status === 429 ? 'Has hecho muchas consultas seguidas. ' : 'Lo siento, ha ocurrido un error al conectar con el asistente (' + (err.message || 'sin detalle') + '). ') + 'Por favor inténtalo de nuevo en unos minutos.');
     console.error(err);
   }
 

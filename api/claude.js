@@ -90,7 +90,8 @@ export default async function handler(req, res) {
     const data = await r.json();
     if (!r.ok) {
       console.error('Error API Claude:', r.status, JSON.stringify(data).slice(0, 500));
-      return res.status(502).json({ error: 'El servicio de IA no ha respondido correctamente' });
+      const tipo = data && data.error && data.error.type ? data.error.type : 'desconocido';
+      return res.status(502).json({ error: 'El servicio de IA no ha respondido correctamente', codigo: r.status, tipo });
     }
     const texto = (data.content || []).filter((b) => b.type === 'text').map((b) => b.text).join('\n');
     return res.status(200).json({ texto });

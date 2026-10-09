@@ -12,7 +12,7 @@
     let data = {};
     try { data = await r.json(); } catch (e) { /* respuesta no JSON */ }
     if (!r.ok || !data.texto) {
-      const err = new Error(data.error || 'No se pudo conectar con el asistente');
+      const err = new Error((data.error || 'No se pudo conectar con el asistente') + (data.codigo ? ' · código ' + data.codigo + ' ' + data.tipo : ''));
       err.status = r.status;
       throw err;
     }
