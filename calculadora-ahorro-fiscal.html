@@ -156,7 +156,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
         </div>
       </div>
       <div class="info-box green" style="margin-top:1rem">
-        ✅ <span>Cálculo basado en la normativa AEAT 2026. Fuentes: Ley 35/2006 IRPF, RD 439/2007, RDL 16/2025. Porcentajes oficiales verificados.</span>
+        ✅ <span>Cálculo basado en la normativa AEAT 2026. Fuentes: Ley 35/2006 IRPF, RD 439/2007 (RIRPF). Porcentajes oficiales verificados.</span>
       </div>
     </div>
   </div>
@@ -185,7 +185,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
             <div class="gasto-input-wrap">
               <label>Cuota mensual × 12</label>
               <div class="field-wrap">
-                <input type="number" id="g_ss" value="294" min="0" step="1" oninput="calcular()">
+                <input type="number" id="g_ss" value="381" min="0" step="1" oninput="calcular()">
                 <span class="suffix">€/m</span>
               </div>
             </div>
@@ -226,7 +226,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
             <span class="gasto-nombre">Suministros (trabajas en casa)</span>
             <span class="gasto-pct">30% × m²</span>
           </div>
-          <div class="gasto-nota">Luz, agua, gas, internet. Fórmula AEAT: gasto × (m² despacho / m² vivienda) × 30%. Requiere declarar afectación en modelo 036/037.</div>
+          <div class="gasto-nota">Luz, agua, gas, internet. Fórmula AEAT: gasto × (m² despacho / m² vivienda) × 30%. Requiere declarar la afectación en el modelo 036.</div>
           <div class="gasto-inputs">
             <div class="gasto-input-wrap">
               <label>Suministros anuales totales</label>
@@ -256,7 +256,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
             <span class="gasto-nombre">Alquiler / IBI / Comunidad (hogar)</span>
             <span class="gasto-pct">% m²</span>
           </div>
-          <div class="gasto-nota">Si trabajas en casa: deducible en proporción directa a los m² afectos. Sin el 30% adicional de suministros. Requiere afectación en 036/037.</div>
+          <div class="gasto-nota">Si trabajas en casa: deducible en proporción directa a los m² afectos. Sin el 30% adicional de suministros. Requiere afectación en el modelo 036.</div>
           <div class="gasto-inputs">
             <div class="gasto-input-wrap">
               <label>Alquiler/IBI/comunidad anual</label>
@@ -612,7 +612,7 @@ function calcular(){
   let gdj_texto = '';
   if(regimen === 'simplificada'){
     gdj = Math.min(rn_previo * 0.05, 2000);
-    gdj_texto = `5% sobre ${fmt(rn_previo)} de rendimiento neto = ${fmt(gdj)} (máximo 2.000€/año). Art. 30.2 RIRPF y RDL 16/2025.`;
+    gdj_texto = `5% sobre ${fmt(rn_previo)} de rendimiento neto = ${fmt(gdj)} (máximo 2.000€/año). Art. 30.2 RIRPF.`;
   } else {
     gdj_texto = 'No aplica en Estimación Directa Normal.';
   }
@@ -683,7 +683,7 @@ function calcular(){
 
 function resetForm(){
   const defaults = {
-    ingresos_base:35000, irpf_base:20, g_ss:294, g_gestoria:600,
+    ingresos_base:35000, irpf_base:20, g_ss:381, g_gestoria:600,
     g_sum_total:2400, g_sum_pct:15, g_alq_total:7200, g_alq_pct:15,
     g_tel_total:600, g_tel_pct:50, g_ord_total:1500, g_ord_libre:0,
     g_soft:500, g_form:400, g_diet_total:800, g_diet_dias:30,
@@ -724,7 +724,7 @@ function exportPDF(){
     <div class="res-n">${ahorro_el}</div>
     <div style="font-size:12px;opacity:.5;margin-top:4px">Aplicando todos los gastos deducibles según normativa AEAT 2026</div>
   </div>
-  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Cálculo orientativo. Consulta con tu gestor. Fuentes: Ley 35/2006 IRPF · RD 439/2007 · RDL 16/2025 · AEAT.</div>
+  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Cálculo orientativo. Consulta con tu gestor. Fuentes: Ley 35/2006 IRPF · RD 439/2007 · AEAT.</div>
   <script>window.onload=()=>window.print()<\/script></body></html>`);
   w.document.close();
 }

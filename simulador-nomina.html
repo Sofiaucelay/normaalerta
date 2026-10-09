@@ -286,19 +286,21 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
       <button class="dtab" onclick="setTab('nomina',this)">Nómina empleado</button>
     </div>
     <div class="desglose-panel active" id="panel-empresa">
-      <div class="desglose-row"><span class="dr-label">Salario bruto mensual</span><span class="dr-val" id="d-bruto">—</span></div>
+      <div class="desglose-row"><span class="dr-label">Salario bruto mensual (con extras prorrateadas)</span><span class="dr-val" id="d-bruto">—</span></div>
       <div class="desglose-row"><span class="dr-label">+ SS empresa — Contingencias comunes (23,60%)</span><span class="dr-pct">23,60%</span><span class="dr-val" id="d-ss-cc">—</span></div>
-      <div class="desglose-row"><span class="dr-label">+ SS empresa — Desempleo tipo general (5,50%)</span><span class="dr-pct">5,50%</span><span class="dr-val" id="d-ss-desempleo">—</span></div>
+      <div class="desglose-row"><span class="dr-label">+ SS empresa — Desempleo</span><span class="dr-pct" id="d-ss-desempleo-pct">5,50%</span><span class="dr-val" id="d-ss-desempleo">—</span></div>
       <div class="desglose-row"><span class="dr-label">+ SS empresa — FOGASA (0,20%)</span><span class="dr-pct">0,20%</span><span class="dr-val" id="d-ss-fogasa">—</span></div>
       <div class="desglose-row"><span class="dr-label">+ SS empresa — Formación profesional (0,60%)</span><span class="dr-pct">0,60%</span><span class="dr-val" id="d-ss-fp">—</span></div>
-      <div class="desglose-row"><span class="dr-label">+ SS empresa — MEI (0,58%)</span><span class="dr-pct">0,58%</span><span class="dr-val" id="d-ss-mei">—</span></div>
+      <div class="desglose-row"><span class="dr-label">+ SS empresa — MEI (0,75%)</span><span class="dr-pct">0,75%</span><span class="dr-val" id="d-ss-mei">—</span></div>
+          <div class="desglose-row"><span class="dr-label">+ SS empresa — Accidentes de trabajo (tarifa media aprox.) y solidaridad</span><span class="dr-pct">~1,50%</span><span class="dr-val" id="d-ss-atep">—</span></div>
       <div class="desglose-row total-row"><span class="dr-label">= COSTE TOTAL EMPRESA/MES</span><span class="dr-val" id="d-total-emp">—</span></div>
     </div>
     <div class="desglose-panel" id="panel-nomina">
       <div class="desglose-row"><span class="dr-label">Salario bruto</span><span class="dr-val" id="d2-bruto">—</span></div>
       <div class="desglose-row"><span class="dr-label">− SS trabajador — Contingencias comunes (4,70%)</span><span class="dr-pct">4,70%</span><span class="dr-val" id="d2-ss-cc">—</span></div>
-      <div class="desglose-row"><span class="dr-label">− SS trabajador — Desempleo (1,55%)</span><span class="dr-pct">1,55%</span><span class="dr-val" id="d2-ss-desempleo">—</span></div>
+      <div class="desglose-row"><span class="dr-label">− SS trabajador — Desempleo</span><span class="dr-pct" id="d2-ss-desempleo-pct">1,55%</span><span class="dr-val" id="d2-ss-desempleo">—</span></div>
       <div class="desglose-row"><span class="dr-label">− SS trabajador — Formación profesional (0,10%)</span><span class="dr-pct">0,10%</span><span class="dr-val" id="d2-ss-fp">—</span></div>
+          <div class="desglose-row"><span class="dr-label">− SS trabajador — MEI (0,15%) y solidaridad</span><span class="dr-pct">0,15%</span><span class="dr-val" id="d2-ss-mei">—</span></div>
       <div class="desglose-row subtotal"><span class="dr-label">Base IRPF (bruto − SS trabajador)</span><span class="dr-val" id="d2-base-irpf">—</span></div>
       <div class="desglose-row"><span class="dr-label">− Retención IRPF estimada</span><span class="dr-pct" id="d2-irpf-pct">—</span><span class="dr-val" id="d2-irpf">—</span></div>
       <div class="desglose-row total-row"><span class="dr-label">= SALARIO NETO</span><span class="dr-val" id="d2-neto">—</span></div>
@@ -338,197 +340,132 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
 
 </div>
 
+<script src="/js/fiscal-2026.js"></script>
 <script>
-// BASES MÍNIMAS POR GRUPO DE COTIZACIÓN 2026 (€/mes)
-const BASES_MINIMAS = {
-  1: 1847.40, 2: 1531.80, 3: 1331.40, 4: 1323.60,
-  5: 1323.60, 6: 1323.60, 7: 1323.60,
-  8: 43.23, 9: 43.23, 10: 43.23, 11: 43.23
-};
-const BASE_MAX = 4720.50;
-
-// TIPOS COTIZACIÓN SS 2026
-const SS_EMP = {
-  cc: 0.236,        // Contingencias comunes
-  desempleo: 0.055, // Desempleo tipo general (indefinido)
-  fogasa: 0.002,    // FOGASA
-  fp: 0.006,        // Formación profesional
-  mei: 0.0058,      // Mecanismo Equidad Intergeneracional
-};
-const SS_TRAB = {
-  cc: 0.047,        // Contingencias comunes
-  desempleo: 0.0155,// Desempleo
-  fp: 0.001,        // Formación profesional
-};
-
-// TIPOS IRPF ESTIMADOS 2026 según situación familiar y salario bruto anual
-function calcIRPF_pct(brutoAnual, situacion, numHijos){
-  let base = 0;
-
-  if(situacion === 'soltero_sin_hijos'){
-    if(brutoAnual <= 12450) base = 0;
-    else if(brutoAnual <= 16000) base = 0.08;
-    else if(brutoAnual <= 20000) base = 0.12;
-    else if(brutoAnual <= 25000) base = 0.15;
-    else if(brutoAnual <= 30000) base = 0.18;
-    else if(brutoAnual <= 40000) base = 0.22;
-    else if(brutoAnual <= 50000) base = 0.26;
-    else base = 0.30;
-  } else if(['soltero_con_hijos','viudo','separado'].includes(situacion)){
-    if(brutoAnual <= 14000) base = 0;
-    else if(brutoAnual <= 18000) base = 0.05;
-    else if(brutoAnual <= 22000) base = 0.09;
-    else if(brutoAnual <= 28000) base = 0.12;
-    else if(brutoAnual <= 35000) base = 0.16;
-    else if(brutoAnual <= 45000) base = 0.20;
-    else base = 0.25;
-    // Viudo/separado tienen mínimo personal más alto
-    if(['viudo','separado'].includes(situacion)) base = Math.max(0, base - 0.01);
-  } else if(situacion === 'casado_un_ingreso'){
-    if(brutoAnual <= 14000) base = 0;
-    else if(brutoAnual <= 18000) base = 0.04;
-    else if(brutoAnual <= 22000) base = 0.08;
-    else if(brutoAnual <= 28000) base = 0.11;
-    else if(brutoAnual <= 35000) base = 0.15;
-    else if(brutoAnual <= 45000) base = 0.19;
-    else base = 0.24;
-  } else if(situacion === 'casado_conyuge_discapacidad'){
-    if(brutoAnual <= 15000) base = 0;
-    else if(brutoAnual <= 20000) base = 0.05;
-    else if(brutoAnual <= 26000) base = 0.09;
-    else if(brutoAnual <= 33000) base = 0.13;
-    else if(brutoAnual <= 42000) base = 0.17;
-    else base = 0.22;
-  } else if(situacion === 'discapacidad_33'){
-    // Reducción mínimo personal por discapacidad 33-65%: +3.000€
-    if(brutoAnual <= 14000) base = 0;
-    else if(brutoAnual <= 18000) base = 0.06;
-    else if(brutoAnual <= 23000) base = 0.10;
-    else if(brutoAnual <= 30000) base = 0.14;
-    else if(brutoAnual <= 40000) base = 0.18;
-    else base = 0.23;
-  } else if(situacion === 'discapacidad_65'){
-    // Reducción mínimo personal por discapacidad ≥65%: +9.000€
-    if(brutoAnual <= 16000) base = 0;
-    else if(brutoAnual <= 21000) base = 0.04;
-    else if(brutoAnual <= 27000) base = 0.08;
-    else if(brutoAnual <= 35000) base = 0.12;
-    else if(brutoAnual <= 45000) base = 0.16;
-    else base = 0.21;
-  } else { // casado dos ingresos (default)
-    if(brutoAnual <= 12450) base = 0;
-    else if(brutoAnual <= 16000) base = 0.09;
-    else if(brutoAnual <= 20000) base = 0.13;
-    else if(brutoAnual <= 25000) base = 0.16;
-    else if(brutoAnual <= 30000) base = 0.19;
-    else if(brutoAnual <= 40000) base = 0.23;
-    else if(brutoAnual <= 50000) base = 0.27;
-    else base = 0.31;
-  }
-
-  // Reducción por hijos (mínimo familiar IRPF)
-  // 1º hijo: 1.836€, 2º: 2.040€, 3º: 3.672€, 4º+: 4.182€
-  const n = parseInt(numHijos);
-  let reduccionHijos = 0;
-  if(n >= 1) reduccionHijos += 0.010;
-  if(n >= 2) reduccionHijos += 0.012;
-  if(n >= 3) reduccionHijos += 0.020; // familia numerosa general
-  if(n >= 4) reduccionHijos += 0.025; // familia numerosa especial
-  if(n >= 5) reduccionHijos += 0.030;
-
-  return Math.max(0, base - reduccionHijos);
-}
+// Bases, tipos y retención IRPF 2026: /js/fiscal-2026.js (Orden PJC/297/2026 · RIRPF)
+const F = window.NA2026;
 
 function fmt(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
 function fmtN(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtP(n){return (n*100).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';}
 function set(id,val){const el=document.getElementById(id);if(el)el.textContent=fmt(val);}
+function setT(id,txt){const el=document.getElementById(id);if(el)el.textContent=txt;}
 function v(id){return parseFloat(document.getElementById(id)?.value)||0;}
 
+// Situación familiar del formulario → situación del art. 81 RIRPF y discapacidad
+function datosFamiliares(situacion, hijos){
+  const monoparental = ['soltero_con_hijos','viudo','separado'].includes(situacion) && hijos > 0;
+  const conyugeSinRentas = ['casado_un_ingreso','casado_conyuge_discapacidad'].includes(situacion);
+  return {
+    situacion: monoparental ? 1 : conyugeSinRentas ? 2 : 3,
+    hijos,
+    // con dos progenitores, cada uno aplica el 50 % del mínimo por descendientes
+    hijosCompartidos: !monoparental,
+    discapacidad: situacion === 'discapacidad_65' ? 65 : situacion === 'discapacidad_33' ? 33 : 0,
+  };
+}
+
+let ultimo = {};
 function calcular(){
   const bruto_mes = v('salario_bruto');
   const num_pagas = parseInt(document.getElementById('num_pagas').value);
   const situacion = document.getElementById('situacion_familiar').value;
-  const num_hijos = document.getElementById('num_hijos').value;
+  const num_hijos = parseInt(document.getElementById('num_hijos').value) || 0;
   const grupo = parseInt(document.getElementById('grupo_cotizacion').value);
   const jornada_pct = parseInt(document.getElementById('jornada').value) / 100;
+  const contrato = document.getElementById('tipo_contrato').value;
+  const temporal = contrato === 'temporal';
 
   if(bruto_mes <= 0) return;
 
-  // Base de cotización efectiva (mínimo por grupo proporcional a jornada)
-  const base_min_grupo = (BASES_MINIMAS[grupo] || 1323.60) * jornada_pct;
-  const base_cotizacion = Math.max(bruto_mes, base_min_grupo);
-
-  // Salario bruto anual
   const bruto_anual = bruto_mes * num_pagas;
+  // Base de cotización mensual: incluye el prorrateo de las pagas extra
+  const remuneracion_mes = bruto_anual / 12;
+  const base_min_grupo = (F.RG.basesMinMensuales[grupo] || F.RG.baseMinDiaria * 30) * jornada_pct;
+  const base_cotizacion = Math.min(F.RG.baseMaxima, Math.max(remuneracion_mes, base_min_grupo));
+  const solid = F.solidaridadMensual(remuneracion_mes);
 
-  // SS empresa sobre base de cotización
-  const ss_emp_cc = base_cotizacion * SS_EMP.cc;
-  const ss_emp_desempleo = base_cotizacion * SS_EMP.desempleo;
-  const ss_emp_fogasa = base_cotizacion * SS_EMP.fogasa;
-  const ss_emp_fp = base_cotizacion * SS_EMP.fp;
-  const ss_emp_mei = base_cotizacion * SS_EMP.mei;
-  const ss_emp_total = ss_emp_cc + ss_emp_desempleo + ss_emp_fogasa + ss_emp_fp + ss_emp_mei;
+  // SS empresa
+  const E = F.RG.empresa, T = F.RG.trabajador;
+  const t_des_emp = temporal ? E.desempleoTemp : E.desempleoIndef;
+  const ss_emp_cc = base_cotizacion * E.cc;
+  const ss_emp_desempleo = base_cotizacion * t_des_emp;
+  const ss_emp_fogasa = base_cotizacion * E.fogasa;
+  const ss_emp_fp = base_cotizacion * E.fp;
+  const ss_emp_mei = base_cotizacion * E.mei;
+  const ss_emp_atep = base_cotizacion * E.atep + solid.empresa;
+  const ss_emp_total = ss_emp_cc + ss_emp_desempleo + ss_emp_fogasa + ss_emp_fp + ss_emp_mei + ss_emp_atep;
 
-  // Coste total empresa/mes
-  const coste_mes = bruto_mes + ss_emp_total;
-  const coste_anual = coste_mes * 12;
+  // SS trabajador
+  const t_des_trab = temporal ? T.desempleoTemp : T.desempleoIndef;
+  const ss_trab_cc = base_cotizacion * T.cc;
+  const ss_trab_desempleo = base_cotizacion * t_des_trab;
+  const ss_trab_fp = base_cotizacion * T.fp;
+  const ss_trab_mei = base_cotizacion * T.mei + solid.trabajador;
+  const ss_trab_total = ss_trab_cc + ss_trab_desempleo + ss_trab_fp + ss_trab_mei;
 
-  // SS trabajador sobre base de cotización
-  const ss_trab_cc = base_cotizacion * SS_TRAB.cc;
-  const ss_trab_desempleo = base_cotizacion * SS_TRAB.desempleo;
-  const ss_trab_fp = base_cotizacion * SS_TRAB.fp;
-  const ss_trab_total = ss_trab_cc + ss_trab_desempleo + ss_trab_fp;
+  // Coste empresa: 12 mensualidades de cotización + todas las pagas
+  const coste_anual = bruto_anual + ss_emp_total * 12;
+  const coste_mes = coste_anual / 12;
 
-  // Base IRPF
+  // Retención IRPF (procedimiento general art. 82-86 RIRPF)
+  const fam = datosFamiliares(situacion, num_hijos);
+  const irpf_pct = F.tipoRetencionNomina(bruto_anual, ss_trab_total * 12, fam);
+  const irpf_mes = bruto_mes * irpf_pct;
+
+  // Nómina de un mes ordinario
   const base_irpf = bruto_mes - ss_trab_total;
-
-  // IRPF
-  const irpf_pct = calcIRPF_pct(bruto_anual, situacion, num_hijos);
-  const irpf_mes = base_irpf * irpf_pct;
-
-  // Neto
   const neto_mes = bruto_mes - ss_trab_total - irpf_mes;
 
-  // Aviso base mínima
   const avisoEl = document.getElementById('aviso-base-min');
-  if(bruto_mes < base_min_grupo && avisoEl){
-    avisoEl.style.display = 'flex';
-    avisoEl.innerHTML = `⚠️ <span>El salario de <strong>${fmt(bruto_mes)}</strong> está por debajo de la base mínima del Grupo ${grupo} (<strong>${fmt(base_min_grupo)}</strong>). La cotización se calculará sobre la base mínima.</span>`;
-  } else if(avisoEl){
-    avisoEl.style.display = 'none';
+  if(avisoEl){
+    if(remuneracion_mes < base_min_grupo){
+      avisoEl.style.display = 'flex';
+      avisoEl.innerHTML = `⚠️ <span>La remuneración mensual con pagas prorrateadas (<strong>${fmt(remuneracion_mes)}</strong>) está por debajo de la base mínima del Grupo ${grupo} (<strong>${fmt(base_min_grupo)}</strong>). Se cotiza por la base mínima. Comprueba también el SMI 2026 (1.221 €/mes en 14 pagas a jornada completa).</span>`;
+    } else if(remuneracion_mes > F.RG.baseMaxima){
+      avisoEl.style.display = 'flex';
+      avisoEl.innerHTML = `ℹ️ <span>La remuneración supera la base máxima (${fmt(F.RG.baseMaxima)}). Se cotiza por la base máxima y sobre el exceso se aplica la cotización adicional de solidaridad.</span>`;
+    } else {
+      avisoEl.style.display = 'none';
+    }
   }
+  ultimo = { irpf_pct, t_des_emp, t_des_trab };
 
-  // ── ACTUALIZAR RESULTADO PRINCIPAL ──
+  // ── RESULTADO PRINCIPAL ──
   set('r-coste-mes', coste_mes);
-  document.getElementById('r-coste-mes-sub').textContent = `${fmtN(coste_anual)}€/año`;
+  setT('r-coste-mes-sub', `${fmtN(coste_anual)}€/año (media mensual con pagas extra)`);
   set('r-neto-mes', neto_mes);
-  document.getElementById('r-irpf-pct').textContent = (irpf_pct * 100).toFixed(1) + '%';
-  document.getElementById('r-irpf-eur').textContent = `${fmtN(irpf_mes)}€/mes retenidos`;
+  setT('r-irpf-pct', fmtP(irpf_pct));
+  setT('r-irpf-eur', `${fmtN(irpf_mes)}€/mes retenidos`);
   set('r-ss-emp', ss_emp_total);
   set('r-ss-trab', ss_trab_total);
   set('r-coste-anual', coste_anual);
 
   // ── DESGLOSE EMPRESA ──
-  set('d-bruto', bruto_mes);
+  set('d-bruto', remuneracion_mes);
   set('d-ss-cc', ss_emp_cc);
   set('d-ss-desempleo', ss_emp_desempleo);
+  setT('d-ss-desempleo-pct', fmtP(t_des_emp));
   set('d-ss-fogasa', ss_emp_fogasa);
   set('d-ss-fp', ss_emp_fp);
   set('d-ss-mei', ss_emp_mei);
+  set('d-ss-atep', ss_emp_atep);
   set('d-total-emp', coste_mes);
 
   // ── DESGLOSE NÓMINA ──
   set('d2-bruto', bruto_mes);
   set('d2-ss-cc', -ss_trab_cc);
   set('d2-ss-desempleo', -ss_trab_desempleo);
+  setT('d2-ss-desempleo-pct', fmtP(t_des_trab));
   set('d2-ss-fp', -ss_trab_fp);
+  set('d2-ss-mei', -ss_trab_mei);
   set('d2-base-irpf', base_irpf);
-  document.getElementById('d2-irpf-pct').textContent = (irpf_pct*100).toFixed(1)+'%';
+  setT('d2-irpf-pct', fmtP(irpf_pct));
   set('d2-irpf', -irpf_mes);
   set('d2-neto', neto_mes);
 
   // ── COMPARADOR 3 PARTES ──
-  set('c-bruto', bruto_mes); set('c-ss-emp', ss_emp_total); set('c-total', coste_mes); set('c-anual', coste_anual);
+  set('c-bruto', remuneracion_mes); set('c-ss-emp', ss_emp_total); set('c-total', coste_mes); set('c-anual', coste_anual);
   set('c2-bruto', bruto_mes); set('c2-ss-trab', ss_trab_total); set('c2-irpf', irpf_mes); set('c2-neto', neto_mes);
   set('c3-ss-emp', ss_emp_total); set('c3-ss-trab', ss_trab_total); set('c3-irpf', irpf_mes);
   set('c3-total', ss_emp_total + ss_trab_total + irpf_mes);
@@ -590,10 +527,11 @@ function exportPDF(){
     <tr><th style="width:65%">Concepto</th><th>%</th><th class="r">Importe/mes</th></tr>
     <tr><td>Salario bruto</td><td>—</td><td class="r">${document.getElementById('d-bruto').textContent}</td></tr>
     <tr><td>SS empresa — Contingencias comunes</td><td>23,60%</td><td class="r">${document.getElementById('d-ss-cc').textContent}</td></tr>
-    <tr><td>SS empresa — Desempleo</td><td>5,50%</td><td class="r">${document.getElementById('d-ss-desempleo').textContent}</td></tr>
+    <tr><td>SS empresa — Desempleo</td><td>${fmtP(ultimo.t_des_emp)}</td><td class="r">${document.getElementById('d-ss-desempleo').textContent}</td></tr>
     <tr><td>SS empresa — FOGASA</td><td>0,20%</td><td class="r">${document.getElementById('d-ss-fogasa').textContent}</td></tr>
     <tr><td>SS empresa — Formación profesional</td><td>0,60%</td><td class="r">${document.getElementById('d-ss-fp').textContent}</td></tr>
-    <tr><td>SS empresa — MEI</td><td>0,58%</td><td class="r">${document.getElementById('d-ss-mei').textContent}</td></tr>
+    <tr><td>SS empresa — MEI</td><td>0,75%</td><td class="r">${document.getElementById('d-ss-mei').textContent}</td></tr>
+    <tr><td>SS empresa — AT/EP (aprox.) y solidaridad</td><td>~1,50%</td><td class="r">${document.getElementById('d-ss-atep').textContent}</td></tr>
     <tr class="tot"><td colspan="2">COSTE TOTAL EMPRESA/MES</td><td class="r">${document.getElementById('d-total-emp').textContent}</td></tr>
   </table>
   <h2>Desglose nómina empleado</h2>
@@ -601,12 +539,13 @@ function exportPDF(){
     <tr><th style="width:65%">Concepto</th><th>%</th><th class="r">Importe/mes</th></tr>
     <tr><td>Salario bruto</td><td>—</td><td class="r">${document.getElementById('d2-bruto').textContent}</td></tr>
     <tr><td>− SS trabajador — Contingencias comunes</td><td>4,70%</td><td class="r">${document.getElementById('d2-ss-cc').textContent}</td></tr>
-    <tr><td>− SS trabajador — Desempleo</td><td>1,55%</td><td class="r">${document.getElementById('d2-ss-desempleo').textContent}</td></tr>
+    <tr><td>− SS trabajador — Desempleo</td><td>${fmtP(ultimo.t_des_trab)}</td><td class="r">${document.getElementById('d2-ss-desempleo').textContent}</td></tr>
     <tr><td>− SS trabajador — Formación profesional</td><td>0,10%</td><td class="r">${document.getElementById('d2-ss-fp').textContent}</td></tr>
+    <tr><td>− SS trabajador — MEI y solidaridad</td><td>0,15%</td><td class="r">${document.getElementById('d2-ss-mei').textContent}</td></tr>
     <tr><td>− Retención IRPF estimada</td><td>${irpf}</td><td class="r">${document.getElementById('d2-irpf').textContent}</td></tr>
     <tr class="tot"><td colspan="2">SALARIO NETO</td><td class="r">${document.getElementById('d2-neto').textContent}</td></tr>
   </table>
-  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Cálculo orientativo basado en tablas cotización SS 2026 y tipos IRPF estimados. Consulta con tu gestoría para un cálculo exacto.</div>
+  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Cálculo orientativo: Orden PJC/297/2026 (cotización) y procedimiento de retención del RIRPF con escala estatal + autonómica tipo. Consulta con tu gestoría para un cálculo exacto.</div>
   <script>window.onload=()=>window.print()<\/script></body></html>`);
   w.document.close();
 }

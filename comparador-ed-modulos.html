@@ -356,6 +356,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
 
 </div>
 
+<script src="/js/fiscal-2026.js"></script>
 <script>
 function fmt(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
 function fmtPct(n){return (parseFloat(n)||0).toFixed(1)+'%';}
@@ -474,7 +475,7 @@ function calcular(){
     cardED.className='comp-card loser';
     document.getElementById('ed-total').className='comp-fila-val total loser';
     recTitulo.textContent='El régimen de módulos es tu mejor opción';
-    recTexto.innerHTML=`Con tus datos actuales, los módulos te suponen un ahorro de <strong>${fmt(diff)} al año</strong>. Esto ocurre cuando tus gastos reales son bajos en relación a los ingresos. <strong>Ventaja adicional:</strong> en módulos no necesitas justificar gastos ni llevar contabilidad compleja, y la cuota es predecible. <strong>Recuerda:</strong> debes comprobar que no superas los límites de facturación del régimen (300.000€ ventas / 250.000€ a empresas).`;
+    recTexto.innerHTML=`Con tus datos actuales, los módulos te suponen un ahorro de <strong>${fmt(diff)} al año</strong>. Esto ocurre cuando tus gastos reales son bajos en relación a los ingresos. <strong>Ventaja adicional:</strong> en módulos no necesitas justificar gastos ni llevar contabilidad compleja, y la cuota es predecible. <strong>Recuerda:</strong> debes comprobar que no superas los límites de facturación del régimen (en 2026: 250.000 € de ingresos totales y 125.000 € facturados a empresarios o profesionales, medidos sobre 2025; y 250.000 € de compras).`;
   }
 
   document.getElementById('resultado').className='resultado visible';
@@ -482,18 +483,8 @@ function calcular(){
 }
 
 function calcIRPF(base){
-  // Tramos IRPF 2026 (escala estatal + autonómica media estimada)
-  if(base<=0) return 0;
-  let irpf=0;
-  const tramos=[[12450,0.19],[7750,0.24],[15000,0.30],[24800,0.37],[240000,0.45],[Infinity,0.47]];
-  let resta=base;
-  for(const [limite,tipo] of tramos){
-    if(resta<=0) break;
-    const aplicar=Math.min(resta,limite);
-    irpf+=aplicar*tipo;
-    resta-=aplicar;
-  }
-  return irpf;
+  // Escala estatal + autonómica tipo con mínimo personal (5.550 €) — /js/fiscal-2026.js
+  return window.NA2026.irpfActividadAnual(base, {});
 }
 
 function resetForm(){

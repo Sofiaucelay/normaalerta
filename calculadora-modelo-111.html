@@ -228,7 +228,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
             <td><div class="auto-val" id="tr11">0,00 €</div></td>
           </tr>
           <tr>
-            <td><div class="row-label">Honorarios profesionales — nuevos autónomos (7%)</div><div class="row-info">Primeros 2 años de actividad profesional con reducción — art. 95.1 RIRPF</div></td>
+            <td><div class="row-label">Honorarios profesionales — nuevos autónomos (7%)</div><div class="row-info">Año de inicio de la actividad y los dos siguientes (si no hubo actividad el año anterior) — art. 101.5 LIRPF</div></td>
             <td><div class="row-casilla">07/08/09</div></td>
             <td><div class="input-wrap"><input type="number" id="np12" value="0" min="0" step="1" style="width:60px;padding-right:.4rem" oninput="calcProf()"></div></td>
             <td><div class="input-wrap"><input type="number" id="ti12" value="0" min="0" step="0.01" oninput="calcProf()"><span class="input-euro">€</span></div></td>
@@ -244,7 +244,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
             <td><div class="auto-val" id="tr13">0,00 €</div></td>
           </tr>
           <tr>
-            <td><div class="row-label">Rendimientos de módulos (estimación objetiva)</div><div class="row-info">Tipo 1% — art. 95.2 RIRPF. Solo si el perceptor está en módulos</div></td>
+            <td><div class="row-label">Rendimientos de módulos (estimación objetiva)</div><div class="row-info">Tipo 1% — art. 95.6 RIRPF. Solo actividades en módulos del art. 95.6 (carpintería, fontanería, transporte…)</div></td>
             <td><div class="row-casilla">07/08/09</div></td>
             <td><div class="input-wrap"><input type="number" id="np14" value="0" min="0" step="1" style="width:60px;padding-right:.4rem" oninput="calcProf()"></div></td>
             <td><div class="input-wrap"><input type="number" id="ti14" value="0" min="0" step="0.01" oninput="calcProf()"><span class="input-euro">€</span></div></td>
@@ -252,11 +252,11 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
             <td><div class="auto-val" id="tr14">0,00 €</div></td>
           </tr>
           <tr>
-            <td><div class="row-label">Cesión de derechos de imagen</div><div class="row-info">Tipo 19% — art. 101.7 LIRPF</div></td>
+            <td><div class="row-label">Cesión de derechos de imagen</div><div class="row-info">Tipo 24% — art. 101.7 LIRPF</div></td>
             <td><div class="row-casilla">—</div></td>
             <td><div class="input-wrap"><input type="number" id="np15" value="0" min="0" step="1" style="width:60px;padding-right:.4rem" oninput="calcProf()"></div></td>
             <td><div class="input-wrap"><input type="number" id="ti15" value="0" min="0" step="0.01" oninput="calcProf()"><span class="input-euro">€</span></div></td>
-            <td><div class="input-wrap"><input type="number" class="pct" id="tt15" value="19" min="0" max="47" step="0.01" oninput="calcProf()"><span class="input-pct">%</span></div></td>
+            <td><div class="input-wrap"><input type="number" class="pct" id="tt15" value="24" min="0" max="47" step="0.01" oninput="calcProf()"><span class="input-pct">%</span></div></td>
             <td><div class="auto-val" id="tr15">0,00 €</div></td>
           </tr>
           <tr class="subtotal-row">
@@ -397,6 +397,7 @@ function resetForm(){
       else if(i.id==='tt11'||i.id==='tt13') i.value=15;
       else if(i.id==='tt12') i.value=7;
       else if(i.id==='tt14') i.value=1;
+      else if(i.id==='tt15') i.value=24;
       else if(i.id.includes('tt2')) i.value=19;
       else i.value=15;
     } else if(!i.classList.contains('nperc')) i.value=0;

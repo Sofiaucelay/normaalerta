@@ -149,13 +149,13 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
         <div class="field">
           <label>Gastos deducibles anuales previstos</label>
           <input type="number" id="gastos" value="8000" min="0" step="100" oninput="calcular()">
-          <span class="input-note">Alquiler, suministros, material, gestoría, SS...</span>
+          <span class="input-note">Alquiler, suministros, material, gestoría… (sin incluir tu cuota de autónomo)</span>
         </div>
         <div class="field">
-          <label>¿Llevas menos de 2 años de alta?</label>
+          <label>Tipo de autónomo</label>
           <select id="nuevo" onchange="calcular()">
-            <option value="no">No — llevo más de 2 años</option>
-            <option value="si">Sí — soy nuevo autónomo</option>
+            <option value="fisica">Persona física (deducción 7 %)</option>
+            <option value="societario">Societario / administrador de SL (deducción 3 %)</option>
           </select>
         </div>
         <div class="field">
@@ -167,7 +167,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
         </div>
       </div>
       <div class="info-box">
-        ℹ️ <span>El <strong>rendimiento neto</strong> es lo que usará la Seguridad Social para asignarte el tramo. Se calcula como: ingresos − gastos deducibles. Si estás en estimación directa simplificada, resta también el 5% de gastos de difícil justificación (máx. 2.000€).</span>
+        ℹ️ <span>La Seguridad Social asigna el tramo con tu <strong>rendimiento neto</strong> (ingresos − gastos, sin restar la cuota de autónomo) menos una deducción por gastos genéricos del <strong>7 %</strong> (3 % si eres societario). La calculadora la aplica automáticamente.</span>
       </div>
     </div>
   </div>
@@ -178,7 +178,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
       <div class="section-icon">📊</div>
       <div>
         <div class="section-title">Tabla de tramos 2026 — tu tramo resaltado</div>
-        <div class="section-subtitle">Real Decreto-ley de cotización por ingresos reales · RETA</div>
+        <div class="section-subtitle">Orden PJC/297/2026 · cotización por ingresos reales · RETA</div>
       </div>
     </div>
     <div class="section-body">
@@ -186,7 +186,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
         <thead>
           <tr>
             <th>Tramo</th>
-            <th>Rdto. neto anual</th>
+            <th>Rdto. neto mensual</th>
             <th>Base mínima/mes</th>
             <th>Base máxima/mes</th>
             <th>Cuota mín./mes</th>
@@ -197,7 +197,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
         <tbody id="tbody-tramos"></tbody>
       </table>
       <div style="font-size:11px;color:var(--ink3);margin-top:.5rem;font-style:italic">
-        Tipo de cotización aplicado: 31,50% (CC 28,30% + prof 1,30% + cese 0,90% + FP 0,10% + MEI 0,90%). Fuente: Orden PJC/297/2026 (BOE 31-mar-2026) · TGSS.
+        Tipo de cotización aplicado: 31,50% (CC 28,30% + prof 1,30% + cese 0,90% + FP 0,10% + MEI 0,90%). Fuente: Orden PJC/297/2026 (BOE 31-mar-2026) · TGSS. Rendimiento computable = rendimiento neto − 7 % (3 % societarios).
       </div>
     </div>
   </div>
@@ -214,15 +214,15 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
     <div class="section-body">
       <p style="font-size:13px;color:var(--ink2);margin-bottom:.75rem">Si tus ingresos cambian, puedes ajustar tu base de cotización hasta 6 veces al año. Cada cambio tiene una fecha límite de solicitud y una fecha de efecto:</p>
       <div class="plazos-grid">
-        <div class="plazo-chip"><div class="plazo-mes">1 marzo</div><div class="plazo-efecto">Efecto: 1 abril</div></div>
-        <div class="plazo-chip"><div class="plazo-mes">1 mayo</div><div class="plazo-efecto">Efecto: 1 junio</div></div>
-        <div class="plazo-chip proximo"><div class="plazo-mes">1 julio</div><div class="plazo-efecto">Efecto: 1 agosto</div></div>
-        <div class="plazo-chip"><div class="plazo-mes">1 septiembre</div><div class="plazo-efecto">Efecto: 1 octubre</div></div>
-        <div class="plazo-chip"><div class="plazo-mes">1 noviembre</div><div class="plazo-efecto">Efecto: 1 diciembre</div></div>
-        <div class="plazo-chip"><div class="plazo-mes">1 enero</div><div class="plazo-efecto">Efecto: 1 febrero</div></div>
+        <div class="plazo-chip"><div class="plazo-mes">Enero–febrero</div><div class="plazo-efecto">Efecto: 1 marzo</div></div>
+        <div class="plazo-chip"><div class="plazo-mes">Marzo–abril</div><div class="plazo-efecto">Efecto: 1 mayo</div></div>
+        <div class="plazo-chip"><div class="plazo-mes">Mayo–junio</div><div class="plazo-efecto">Efecto: 1 julio</div></div>
+        <div class="plazo-chip"><div class="plazo-mes">Julio–agosto</div><div class="plazo-efecto">Efecto: 1 septiembre</div></div>
+        <div class="plazo-chip"><div class="plazo-mes">Septiembre–octubre</div><div class="plazo-efecto">Efecto: 1 noviembre</div></div>
+        <div class="plazo-chip"><div class="plazo-mes">Noviembre–diciembre</div><div class="plazo-efecto">Efecto: 1 enero</div></div>
       </div>
       <div class="info-box green" style="margin-top:.875rem">
-        ✅ <span>Si al final del año tus ingresos reales son diferentes a los previstos, la TGSS hará una <strong>regularización</strong>. Si pagaste de más, te devuelven. Si pagaste de menos, debes ingresar la diferencia. El plazo para la regularización es antes del 31 de diciembre del año siguiente.</span>
+        ✅ <span>Si al final del año tus ingresos reales son diferentes a los previstos, la TGSS hará una <strong>regularización</strong>. Si pagaste de más, te devuelven. Si pagaste de menos, debes ingresar la diferencia. La regularización se hace cuando Hacienda comunica tus rendimientos reales a la TGSS, normalmente al año siguiente.</span>
       </div>
     </div>
   </div>
@@ -278,112 +278,95 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
 
 </div>
 
+<script src="/js/fiscal-2026.js"></script>
 <script>
-// TRAMOS RETA 2026 — Orden PJC/297/2026 (BOE 31-mar-2026) · RDL 16/2025
-// Tipo total: 31,50% (CC 28,30% + prof 1,30% + cese 0,90% + FP 0,10% + MEI 0,90%)
-// cuotaMin = cuota fija oficial por tramo cotizando por base mínima
-const TRAMOS = [
-  // TABLA REDUCIDA (tramos 1-6)
-  { num:1,  min:0,       max:670,    baseMin:653.59,  baseMax:1633.99, cuotaMin:200, label:'Hasta 670 €' },
-  { num:2,  min:670,     max:900,    baseMin:718.95,  baseMax:1633.99, cuotaMin:220, label:'670 € – 900 €' },
-  { num:3,  min:900,     max:1166.7, baseMin:849.67,  baseMax:1633.99, cuotaMin:260, label:'900 € – 1.166,70 €' },
-  { num:4,  min:1166.7,  max:1300,   baseMin:898.69,  baseMax:1633.99, cuotaMin:275, label:'1.166,70 € – 1.300 €' },
-  { num:5,  min:1300,    max:1500,   baseMin:960.78,  baseMax:1633.99, cuotaMin:294, label:'1.300 € – 1.500 €' },
-  { num:6,  min:1500,    max:1700,   baseMin:960.78,  baseMax:1633.99, cuotaMin:294, label:'1.500 € – 1.700 €' },
-  // TABLA GENERAL (tramos 7-15)
-  { num:7,  min:1700,    max:1850,   baseMin:1143.79, baseMax:4720.5,  cuotaMin:350, label:'1.700 € – 1.850 €' },
-  { num:8,  min:1850,    max:2030,   baseMin:1209.15, baseMax:4720.5,  cuotaMin:370, label:'1.850 € – 2.030 €' },
-  { num:9,  min:2030,    max:2330,   baseMin:1274.51, baseMax:4720.5,  cuotaMin:390, label:'2.030 € – 2.330 €' },
-  { num:10, min:2330,    max:2760,   baseMin:1372.55, baseMax:4720.5,  cuotaMin:420, label:'2.330 € – 2.760 €' },
-  { num:11, min:2760,    max:3190,   baseMin:1633.99, baseMax:4720.5,  cuotaMin:500, label:'2.760 € – 3.190 €' },
-  { num:12, min:3190,    max:3620,   baseMin:1732.03, baseMax:4720.5,  cuotaMin:530, label:'3.190 € – 3.620 €' },
-  { num:13, min:3620,    max:4050,   baseMin:1830.07, baseMax:4720.5,  cuotaMin:560, label:'3.620 € – 4.050 €' },
-  { num:14, min:4050,    max:6000,   baseMin:1928.11, baseMax:4720.5,  cuotaMin:590, label:'4.050 € – 6.000 €' },
-  { num:15, min:6000,    max:99999,  baseMin:1928.11, baseMax:4720.5,  cuotaMin:590, label:'Más de 6.000 €' },
-];
-const TIPO = 0.315; // 31,5% tipo total 2026 con MEI 0,9% incluido
+// TRAMOS RETA 2026 — Orden PJC/297/2026 (BOE 31-mar-2026). Datos en /js/fiscal-2026.js
+const F = window.NA2026;
+const TRAMOS = F.RETA.tramos;
+const TIPO = F.RETA.tipo; // 31,5 %
 
 function fmt(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+'€';}
 function fmtN(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function v(id){return parseFloat(document.getElementById(id)?.value)||0;}
+function etiquetaTramo(t){ return t.tabla === 'Reducida' ? 'Tramo ' + t.num + ' (reducida)' : 'Tramo ' + t.num; }
+function rangoTramo(t){
+  if(t.max === Infinity) return 'Más de ' + fmtN(t.min) + ' €';
+  if(t.min === 0) return 'Hasta ' + fmtN(t.max) + ' €';
+  return fmtN(t.min) + ' € – ' + fmtN(t.max) + ' €';
+}
+function esSocietario(){ return document.getElementById('nuevo').value === 'societario'; }
 
-function getTramo(rdtoMensual){
-  return TRAMOS.find(t => rdtoMensual >= t.min && rdtoMensual < t.max) || TRAMOS[TRAMOS.length-1];
+// Devuelve el detalle del cálculo con la fórmula de la TGSS:
+// (rendimiento neto + cuotas pagadas) − 7 % de gastos genéricos (3 % societarios) → / 12 → tramo
+function calcularDatos(){
+  const ingresos = v('ingresos');
+  const gastos = v('gastos');
+  const societario = esSocietario();
+  const rdtoAnual = Math.max(0, ingresos - gastos);
+  const computableAnual = F.rendimientoComputableReta(rdtoAnual, 0, societario);
+  const rdtoMensual = computableAnual / 12;
+  const tramo = F.tramoReta(rdtoMensual);
+  let base = tramo.baseMin;
+  if(societario) base = Math.max(base, F.RETA.baseMinSocietario);
+  return { ingresos, gastos, societario, rdtoAnual, computableAnual, rdtoMensual, tramo, base };
 }
 
 function renderTabla(tramoActivo){
   const tbody = document.getElementById('tbody-tramos');
   tbody.innerHTML = '';
   TRAMOS.forEach(t => {
-    const esActivo = t.num === tramoActivo?.num;
+    const esActivo = tramoActivo && t.num === tramoActivo.num;
     const tr = document.createElement('tr');
     if(esActivo) tr.className = 'activo';
-    const cuotaMin = t.cuotaMin;
-    const cuotaMax = t.baseMax * TIPO;
     tr.innerHTML = `
-      <td><strong>Tramo ${t.num}</strong></td>
-      <td>${t.label}/mes</td>
+      <td><strong>${etiquetaTramo(t)}</strong></td>
+      <td>${rangoTramo(t)}/mes</td>
       <td>${fmtN(t.baseMin)} €</td>
       <td>${fmtN(t.baseMax)} €</td>
-      <td style="color:var(--green-dark);font-weight:500">${fmtN(cuotaMin)} €</td>
-      <td>${fmtN(cuotaMax)} €</td>
+      <td style="color:var(--green-dark);font-weight:500">${fmtN(F.cuotaReta(t.baseMin))} €</td>
+      <td>${fmtN(F.cuotaReta(t.baseMax))} €</td>
       <td>${esActivo ? '<span class="tramo-badge tb-activo">← Tu tramo</span>' : '<span class="tramo-badge tb-normal">—</span>'}</td>
     `;
     tbody.appendChild(tr);
   });
 }
 
+let ultimaCuota = 0;
 function calcular(){
-  const ingresos = v('ingresos');
-  const gastos = v('gastos');
+  const d = calcularDatos();
   const esTarifaPlana = document.getElementById('tarifa_plana').value === 'si';
 
-  // Rendimiento neto
-  const rdtoAnual = Math.max(0, ingresos - gastos);
-  const rdtoMensual = rdtoAnual / 12;
-
-  // Tramo
-  const tramo = getTramo(rdtoMensual);
-
-  // Cuota
-  let cuotaMensual;
-  let subLabel = '';
+  let cuotaMensual, subLabel;
   if(esTarifaPlana){
-    cuotaMensual = 80;
-    subLabel = 'Tarifa plana aplicada — 80€/mes durante 12 meses';
+    cuotaMensual = F.RETA.tarifaPlana;
+    subLabel = 'Tarifa plana: 80 €/mes durante 12 meses (prorrogable otros 12 si tu rendimiento anual no supera el SMI)';
   } else {
-    cuotaMensual = tramo.cuotaMin;
-    subLabel = `Tramo ${tramo.num} · Base mínima ${fmtN(tramo.baseMin)}€ × 31,5% (MEI incluido)`;
+    cuotaMensual = F.cuotaReta(d.base);
+    subLabel = `${etiquetaTramo(d.tramo)} · Base ${fmtN(d.base)} € × 31,5 % (MEI incluido)` + (d.societario ? ' · base mínima de societario' : '');
   }
+  ultimaCuota = cuotaMensual;
 
-  const cuotaAnual = cuotaMensual * 12;
-
-  // Actualizar resultado
   document.getElementById('resultado-num').textContent = fmtN(cuotaMensual) + ' €/mes';
   document.getElementById('resultado-sub').textContent = subLabel;
-  document.getElementById('rc-rdto').textContent = fmtN(rdtoAnual) + ' €';
-  document.getElementById('rc-rdto-mes').textContent = fmtN(rdtoMensual) + ' €';
-  document.getElementById('rc-tramo').textContent = esTarifaPlana ? 'Tarifa plana' : `Tramo ${tramo.num}`;
-  document.getElementById('rc-base').textContent = esTarifaPlana ? '—' : fmtN(tramo.baseMin) + ' €';
+  document.getElementById('rc-rdto').textContent = fmtN(d.rdtoAnual) + ' €';
+  document.getElementById('rc-rdto-mes').textContent = fmtN(d.rdtoMensual) + ' €';
+  document.getElementById('rc-tramo').textContent = esTarifaPlana ? 'Tarifa plana' : etiquetaTramo(d.tramo);
+  document.getElementById('rc-base').textContent = esTarifaPlana ? '—' : fmtN(d.base) + ' €';
 
-  // Render tabla
-  renderTabla(tramo);
+  renderTabla(d.tramo);
 }
 
 function resetForm(){
   document.getElementById('ingresos').value = 30000;
   document.getElementById('gastos').value = 8000;
-  document.getElementById('nuevo').value = 'no';
+  document.getElementById('nuevo').value = 'fisica';
   document.getElementById('tarifa_plana').value = 'no';
   calcular();
 }
 
 function exportPDF(){
-  const ingresos = v('ingresos');
-  const gastos = v('gastos');
-  const rdtoAnual = Math.max(0, ingresos - gastos);
-  const rdtoMensual = rdtoAnual / 12;
-  const tramo = getTramo(rdtoMensual);
+  const d = calcularDatos();
+  const { ingresos, gastos, rdtoAnual, rdtoMensual, tramo } = d;
   const cuota = document.getElementById('resultado-num').textContent;
   const esTarifaPlana = document.getElementById('tarifa_plana').value === 'si';
 
@@ -406,15 +389,15 @@ function exportPDF(){
     <div><label>Ingresos brutos anuales</label><span>${fmtN(ingresos)} €</span></div>
     <div><label>Gastos deducibles anuales</label><span>${fmtN(gastos)} €</span></div>
     <div><label>Rendimiento neto anual</label><span>${fmtN(rdtoAnual)} €</span></div>
-    <div><label>Rendimiento neto mensual</label><span>${fmtN(rdtoMensual)} €</span></div>
-    <div><label>Tramo asignado</label><span>${esTarifaPlana ? 'Tarifa plana' : 'Tramo ' + tramo.num}</span></div>
-    <div><label>Base de cotización mínima</label><span>${esTarifaPlana ? '—' : fmtN(tramo.baseMin) + ' €/mes'}</span></div>
+    <div><label>Rdto. computable mensual (−7 %)</label><span>${fmtN(rdtoMensual)} €</span></div>
+    <div><label>Tramo asignado</label><span>${esTarifaPlana ? 'Tarifa plana' : etiquetaTramo(tramo)}</span></div>
+    <div><label>Base de cotización mínima</label><span>${esTarifaPlana ? '—' : fmtN(d.base) + ' €/mes'}</span></div>
   </div>
   <h2>Tabla de tramos RETA 2026</h2>
   <table><tr><th>Tramo</th><th>Rdto. neto mensual</th><th class="c">Base mín. (€)</th><th class="c">Base máx. (€)</th><th class="c">Cuota mín. (€)</th><th class="c">Cuota máx. (€)</th></tr>
   ${TRAMOS.map(t => {
     const activo = t.num === tramo.num && !esTarifaPlana;
-    return `<tr ${activo?'class="activo"':''}><td>Tramo ${t.num}</td><td>${t.label}/mes</td><td class="c">${fmtN(t.baseMin)}</td><td class="c">${fmtN(t.baseMax)}</td><td class="c">${fmtN(t.baseMin*0.312)}</td><td class="c">${fmtN(t.baseMax*0.312)}</td></tr>`;
+    return `<tr ${activo?'class="activo"':''}><td>${etiquetaTramo(t)}</td><td>${rangoTramo(t)}/mes</td><td class="c">${fmtN(t.baseMin)}</td><td class="c">${fmtN(t.baseMax)}</td><td class="c">${fmtN(F.cuotaReta(t.baseMin))}</td><td class="c">${fmtN(F.cuotaReta(t.baseMax))}</td></tr>`;
   }).join('')}</table>
   <div class="res">
     <div><div style="font-size:10px;opacity:.5;text-transform:uppercase;margin-bottom:4px">Cuota mensual estimada</div>
@@ -422,10 +405,10 @@ function exportPDF(){
     <div style="font-size:12px;opacity:.6;margin-top:4px">${document.getElementById('resultado-sub').textContent}</div></div>
     <div style="text-align:right">
       <div style="font-size:10px;opacity:.5;margin-bottom:3px">Cuota anual estimada</div>
-      <div style="font-family:monospace;font-size:16px;color:#4ade80">${fmtN(parseFloat(cuota)*12)} €/año</div>
+      <div style="font-family:monospace;font-size:16px;color:#4ade80">${fmtN(ultimaCuota*12)} €/año</div>
     </div>
   </div>
-  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Cálculo orientativo basado en la tabla de tramos RETA 2026. Fuente: Orden PJC/297/2026 (BOE 31-mar-2026) · TGSS. Consulta siempre con tu gestor.</div>
+  <div class="ftr">Generado con NormaAlerta · normaalerta.com · Cálculo orientativo basado en la tabla de tramos RETA 2026. Fuente: Orden PJC/297/2026 (BOE 31-mar-2026) · TGSS. Rendimiento computable = rendimiento neto − 7 % (3 % societarios). Consulta siempre con tu gestor.</div>
   <script>window.onload=()=>window.print()<\/script></body></html>`);
   w.document.close();
 }

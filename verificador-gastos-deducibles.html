@@ -157,7 +157,7 @@ const GASTOS = [
       {ok:true, texto:'Calcula: (m² oficina / m² totales) × 30% = % deducible de suministros'},
       {ok:true, texto:'Ejemplo: oficina 15m² en piso de 100m² → 15% × 30% = 4,5% de los suministros'},
       {ok:true, texto:'Necesitas estar dado de alta con el domicilio como lugar de actividad'},
-      {ok:false, texto:'El alquiler o hipoteca de la vivienda NO es deducible en ningún caso'},
+      {ok:true, texto:'Si afectas parte de la vivienda y lo declaras en el 036, puedes deducir la parte proporcional (m²) de alquiler, IBI, comunidad, intereses de hipoteca y amortización'},
       {ok:false, texto:'Si no estás dado de alta en ese domicilio, Hacienda puede rechazarlo'},
     ],
     fuente:'Art. 30 LIRPF | Consulta DGT V1185-16'
@@ -204,11 +204,11 @@ const GASTOS = [
     desc:'Para el IVA, la LIVA presume un 50% de afectación empresarial salvo prueba en contrario. Para el IRPF, la deducción es mucho más restrictiva — Hacienda exige exclusividad o actividades tasadas.',
     condiciones:[
       {ok:true, texto:'IVA: deducible al 50% salvo que pruebes mayor porcentaje de uso profesional'},
-      {ok:true, texto:'IRPF: solo deducible si la actividad requiere el vehículo (art. 22 RIVA)'},
+      {ok:true, texto:'IRPF: solo deducible si está afecto exclusivamente o en actividades tasadas (art. 22 RIRPF)'},
       {ok:false, texto:'IRPF: para uso mixto general, Hacienda tiende a rechazar la deducción'},
       {ok:false, texto:'Sin registro de kilometraje es muy difícil justificar el porcentaje'},
     ],
-    fuente:'Art. 95.Tres LIVA | Art. 22 RIVA | Consulta DGT V1449-21'
+    fuente:'Art. 95.Tres LIVA | Art. 22 RIRPF'
   },
   {
     id:'gasolina', cat:'transporte', icono:'⛽', nombre:'Gasolina y combustible',
@@ -248,11 +248,11 @@ const GASTOS = [
   // ── TECNOLOGÍA ──
   {
     id:'ordenador', cat:'tecnologia', icono:'💻', nombre:'Ordenador, tablet, portátil',
-    deducible:'parcial', pct:'100% si exclusivo | 50% si mixto',
-    desc:'Si el ordenador se usa exclusivamente para el trabajo, es deducible al 100%. Si tiene uso mixto (personal y profesional), Hacienda acepta generalmente el 50%, aunque puede cuestionarlo.',
+    deducible:'parcial', pct:'100% si exclusivo',
+    desc:'En IRPF, un ordenador (bien indivisible) solo es deducible si está afecto exclusivamente a la actividad: no se admite un 50 % por uso mixto, aunque se tolera un uso privado accesorio y notoriamente irrelevante. En IVA sí puede deducirse en proporción al uso profesional.',
     condiciones:[
       {ok:true, texto:'Uso exclusivo profesional: 100% deducible en IRPF e IVA'},
-      {ok:true, texto:'Uso mixto: 50% es el criterio generalmente aceptado'},
+      {ok:false, texto:'Uso mixto: en IRPF no es deducible; en IVA, solo el porcentaje de uso profesional que puedas probar'},
       {ok:true, texto:'Si supera 300€, se amortiza en varios años (amortización inmovilizado)'},
       {ok:false, texto:'Sin factura a tu nombre o NIF, no es deducible'},
     ],
@@ -261,9 +261,9 @@ const GASTOS = [
   {
     id:'movil', cat:'tecnologia', icono:'📱', nombre:'Teléfono móvil y factura del móvil',
     deducible:'parcial', pct:'50%',
-    desc:'La AEAT acepta generalmente el 50% de deducción tanto del terminal como de la factura mensual del móvil, reconociendo que hay uso mixto. Si tienes una línea exclusivamente profesional, puede ser el 100%.',
+    desc:'La factura de una línea de uso mixto puede deducirse en la proporción de uso profesional que puedas justificar (un 50 % es un criterio habitual, no una regla legal). El terminal, al ser indivisible, en IRPF exige uso exclusivo. Con una línea solo profesional, 100%.',
     condiciones:[
-      {ok:true, texto:'Línea mixta: 50% deducible tanto en IVA como en IRPF'},
+      {ok:true, texto:'Línea mixta: deducible la parte de uso profesional que puedas justificar'},
       {ok:true, texto:'Línea exclusivamente profesional: 100% deducible'},
       {ok:true, texto:'Factura mensual a tu nombre o empresa con NIF'},
       {ok:false, texto:'Si no tienes factura (tarjeta de prepago), no es deducible'},
@@ -284,11 +284,11 @@ const GASTOS = [
   },
   {
     id:'camara', cat:'tecnologia', icono:'📷', nombre:'Cámara de fotos o vídeo',
-    deducible:'parcial', pct:'100% si profesional | 50% si mixto',
-    desc:'Deducible al 100% si tu actividad requiere fotografía o vídeo (fotógrafo, diseñador, youtuber...). Si el uso es mixto, el criterio habitual es el 50%.',
+    deducible:'parcial', pct:'100% si afecta en exclusiva',
+    desc:'Deducible al 100% si tu actividad requiere fotografía o vídeo (fotógrafo, diseñador, youtuber...) y está afecta en exclusiva. En IRPF no se admite un porcentaje por uso mixto; en IVA, sí en proporción al uso profesional.',
     condiciones:[
       {ok:true, texto:'Actividad fotográfica o audiovisual: 100% justificable'},
-      {ok:true, texto:'Uso mixto en otras actividades: 50% es el criterio seguro'},
+      {ok:false, texto:'Uso mixto: no deducible en IRPF; en IVA solo la parte profesional que puedas probar'},
       {ok:false, texto:'Si la actividad no requiere fotografía, es difícil de justificar'},
     ],
     fuente:'Art. 29 LIRPF'
@@ -352,7 +352,7 @@ const GASTOS = [
       {ok:false, texto:'Actividades deportivas: NO deducibles'},
       {ok:true, texto:'Excepción: si eres entrenador personal o profesional del deporte'},
     ],
-    fuente:'Resolución TEAC 00/01517/2011'
+    fuente:'Art. 28 y 29 LIRPF (gasto personal)'
   },
   {
     id:'peluqueria', cat:'personal', icono:'✂️', nombre:'Peluquería y estética',
@@ -378,17 +378,17 @@ const GASTOS = [
   },
   {
     id:'comidas_trabajo', cat:'personal', icono:'🍽️', nombre:'Comidas y restaurantes de trabajo',
-    deducible:'parcial', pct:'50% IVA | con límites en IRPF',
-    desc:'Las comidas con clientes o proveedores son deducibles, pero con condiciones. En IVA al 50%. En IRPF deben estar justificadas como gastos de representación. Los autónomos tienen un límite de 26,67€/día en España.',
+    deducible:'parcial', pct:'Con límites (1 % cifra de negocios)',
+    desc:'Las comidas con clientes o proveedores son deducibles con condiciones: en IRPF, como atenciones a clientes, con el límite conjunto del 1 % del importe neto de la cifra de negocios. El IVA solo es deducible si el gasto es deducible en IRPF y está documentado con factura completa (art. 96.Uno.5º LIVA).',
     condiciones:[
       {ok:true, texto:'Debe haber una razón de negocio: reunión con cliente, proveedor, colaborador'},
       {ok:true, texto:'Factura con NIF (no vale ticket sin NIF)'},
-      {ok:true, texto:'IVA: deducible al 50% (art. 96.Uno.2 LIVA)'},
-      {ok:true, texto:'IRPF: deducible como gasto de representación con límites razonables'},
+      {ok:true, texto:'IVA: deducible solo si el gasto es deducible en IRPF (art. 96.Uno.5º LIVA)'},
+      {ok:true, texto:'IRPF: atenciones a clientes, límite del 1 % de la cifra de negocios'},
       {ok:false, texto:'Comida diaria sin cliente: no es deducible como representación'},
       {ok:false, texto:'Alcohol en exceso o gastos ostentosos pueden ser rechazados'},
     ],
-    fuente:'Art. 96.Uno.2 LIVA | Art. 28 LIRPF | Resolución TEAC'
+    fuente:'Art. 96.Uno.5º LIVA | Art. 15.e) LIS | Art. 28 LIRPF'
   },
   {
     id:'dietas', cat:'personal', icono:'🧳', nombre:'Dietas por desplazamiento fuera del municipio',
@@ -486,14 +486,14 @@ const GASTOS = [
   {
     id:'regalo_clientes', cat:'otros', icono:'🎁', nombre:'Regalos a clientes',
     deducible:'parcial', pct:'IVA no deducible | IRPF limitado',
-    desc:'Los regalos a clientes tienen un tratamiento desfavorable: el IVA NO es deducible (art. 96.Uno.1 LIVA). En IRPF sí pueden deducirse como gasto de representación pero con criterio restrictivo.',
+    desc:'Los regalos a clientes tienen un tratamiento desfavorable: el IVA NO es deducible (art. 96.Uno.5º LIVA). En IRPF sí pueden deducirse como gasto de representación pero con criterio restrictivo.',
     condiciones:[
-      {ok:false, texto:'IVA: NO deducible en ningún caso (art. 96.Uno.1 LIVA)'},
-      {ok:true, texto:'IRPF: deducible como gasto de representación con moderación'},
+      {ok:false, texto:'IVA: NO deducible en ningún caso (art. 96.Uno.5º LIVA)'},
+      {ok:true, texto:'IRPF: deducible como atención a clientes, con el límite del 1 % de la cifra de negocios'},
       {ok:false, texto:'Regalos excesivos o sin relación comercial pueden ser rechazados'},
       {ok:true, texto:'Guardar factura y documentar el motivo comercial del regalo'},
     ],
-    fuente:'Art. 96.Uno.1 LIVA | Art. 28 LIRPF'
+    fuente:'Art. 96.Uno.5º LIVA | Art. 15.e) LIS'
   },
   {
     id:'intereses_prestamo', cat:'otros', icono:'🏛️', nombre:'Intereses de préstamo para la actividad',

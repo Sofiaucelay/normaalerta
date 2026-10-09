@@ -290,7 +290,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
             <li>• Contabilidad mercantil completa obligatoria</li>
             <li>• Depósito de cuentas anuales en Registro Mercantil</li>
             <li>• No hay tarifa plana para autónomo societario</li>
-            <li>• Base mínima de cotización más alta (~1.000€)</li>
+            <li>• Base mínima de cotización más alta (1.424,40 €/mes en 2026)</li>
             <li>• Doble imposición si sacas todo como dividendo</li>
           </ul>
         </div>
@@ -303,6 +303,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
 
 </div>
 
+<script src="/js/fiscal-2026.js"></script>
 <script>
 function fmt(n){ return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €'; }
 function v(id){ return parseFloat(document.getElementById(id)?.value)||0; }
@@ -350,61 +351,40 @@ function calcular(){
   const gestoria_extra = v('gestoria_extra');
   const reparte = document.getElementById('reparte_dividendos').value;
 
+  // Parámetros 2026: /js/fiscal-2026.js
+  const F = window.NA2026;
+
   // ── ESCENARIO AUTÓNOMO ──
-  // Cuota SS aproximada según rendimiento neto mensual (simplificado por tramos)
-  const rn_mensual = beneficio / 12;
-  let cuota_ss_mes;
-  if(rn_mensual <= 670) cuota_ss_mes = 200;
-  else if(rn_mensual <= 900) cuota_ss_mes = 220;
-  else if(rn_mensual <= 1166.7) cuota_ss_mes = 260;
-  else if(rn_mensual <= 1300) cuota_ss_mes = 275;
-  else if(rn_mensual <= 1700) cuota_ss_mes = 294;
-  else if(rn_mensual <= 1850) cuota_ss_mes = 350;
-  else if(rn_mensual <= 2030) cuota_ss_mes = 370;
-  else if(rn_mensual <= 2330) cuota_ss_mes = 390;
-  else if(rn_mensual <= 2760) cuota_ss_mes = 420;
-  else if(rn_mensual <= 3190) cuota_ss_mes = 500;
-  else if(rn_mensual <= 3620) cuota_ss_mes = 530;
-  else if(rn_mensual <= 4050) cuota_ss_mes = 560;
-  else cuota_ss_mes = 590;
+  // Cuota SS: tramo según rendimiento computable (beneficio − 7 % de gastos genéricos)
+  const tramo_auto = F.tramoReta(F.rendimientoComputableReta(beneficio, 0, false) / 12);
+  const cuota_ss_mes = F.cuotaReta(tramo_auto.baseMin);
   const cuota_ss_anual = cuota_ss_mes * 12;
 
-  // Base imponible IRPF autónomo (beneficio - cuota SS, ya que es deducible)
-  const base_irpf_auto = Math.max(0, beneficio - cuota_ss_anual);
-  const irpf_auto = irpfEstatal(base_irpf_auto);
+  // IRPF autónomo: beneficio − cuota SS (deducible) − 5 % difícil justificación (máx. 2.000 €), con mínimo personal
+  const rn_auto = Math.max(0, beneficio - cuota_ss_anual);
+  const base_irpf_auto = Math.max(0, rn_auto - Math.min(rn_auto * 0.05, 2000));
+  const irpf_auto = F.irpfActividadAnual(base_irpf_auto, {});
   const neto_autonomo = beneficio - cuota_ss_anual - irpf_auto;
 
   // ── ESCENARIO SL ──
-  // Cuota SS societario (base mínima ~1.000€/mes aprox, tipo 31.5%)
-  const cuota_ss_soc_anual = Math.max(1000 * 0.315 * 12, 200*12);
+  // Cuota SS societario: base del tramo de su retribución (−3 %), con mínimo de 1.424,40 € en 2026
+  const tramo_soc = F.tramoReta(F.rendimientoComputableReta(sueldo_sl, 0, true) / 12);
+  const cuota_ss_soc_anual = F.cuotaReta(Math.max(tramo_soc.baseMin, F.RETA.baseMinSocietario)) * 12;
 
-  // IRPF sobre el sueldo (deducible para la SL, tributa como rendimiento del trabajo)
-  const base_irpf_sueldo = Math.max(0, sueldo_sl - cuota_ss_soc_anual);
-  const irpf_sueldo = irpfEstatal(base_irpf_sueldo);
+  // IRPF sobre el sueldo (rendimiento del trabajo, con reducción art. 20 y mínimo personal)
+  const irpf_sueldo = F.irpfAsalariadoAnual(sueldo_sl, cuota_ss_soc_anual, {});
 
   // Beneficio de la sociedad después de pagar el sueldo (el sueldo es gasto deducible)
   const beneficio_sociedad = Math.max(0, beneficio - sueldo_sl);
 
-  // Impuesto de Sociedades 2026: micropyme 19% hasta 50.000€, 21% resto
-  let is_pagado;
-  if(beneficio_sociedad <= 50000){
-    is_pagado = beneficio_sociedad * 0.19;
-  } else {
-    is_pagado = 50000 * 0.19 + (beneficio_sociedad - 50000) * 0.21;
-  }
-
+  // Impuesto de Sociedades 2026: microempresa 19 % hasta 50.000 € y 21 % el resto
+  const is_pagado = F.cuotaISMicro(beneficio_sociedad, 2026);
   const beneficio_despues_is = beneficio_sociedad - is_pagado;
 
-  // IRPF sobre dividendos (solo si se reparten) — tramos del ahorro 19%-28% aprox
-  let irpf_dividendos = 0;
-  if(reparte === 'si' && beneficio_despues_is > 0){
-    const d = beneficio_despues_is;
-    if(d <= 6000) irpf_dividendos = d * 0.19;
-    else if(d <= 50000) irpf_dividendos = 6000*0.19 + (d-6000)*0.21;
-    else if(d <= 200000) irpf_dividendos = 6000*0.19 + 44000*0.21 + (d-50000)*0.23;
-    else irpf_dividendos = 6000*0.19 + 44000*0.21 + 150000*0.23 + (d-200000)*0.28;
-  }
+  // IRPF sobre dividendos (base del ahorro 19/21/23/27/30 %)
+  const irpf_dividendos = (reparte === 'si' && beneficio_despues_is > 0) ? F.cuotaAhorro(beneficio_despues_is) : 0;
 
+  // Si no se reparte, el beneficio queda en la sociedad (se muestra como patrimonio de la SL)
   const dividendo_neto = beneficio_despues_is - irpf_dividendos;
 
   const neto_sl = sueldo_sl - cuota_ss_soc_anual - irpf_sueldo + dividendo_neto - gestoria_extra;
@@ -463,9 +443,9 @@ function calcular(){
     <tr><td>Beneficio bruto</td><td>${fmt(beneficio)}</td><td>${fmt(beneficio)}</td></tr>
     <tr><td>Cuota Seguridad Social</td><td class="dt-neg">− ${fmt(cuota_ss_anual)}</td><td class="dt-neg">− ${fmt(cuota_ss_soc_anual)}</td></tr>
     <tr><td>Sueldo bruto administrador</td><td>—</td><td>${fmt(sueldo_sl)}</td></tr>
-    <tr><td>IRPF sobre rendimientos del trabajo</td><td class="dt-neg">− ${fmt(irpf_auto)}</td><td class="dt-neg">− ${fmt(irpf_sueldo)}</td></tr>
+    <tr><td>IRPF (actividad / trabajo)</td><td class="dt-neg">− ${fmt(irpf_auto)}</td><td class="dt-neg">− ${fmt(irpf_sueldo)}</td></tr>
     <tr><td>Beneficio que queda en la sociedad</td><td>—</td><td>${fmt(beneficio_sociedad)}</td></tr>
-    <tr><td>Impuesto de Sociedades (19%-21%)</td><td>—</td><td class="dt-neg">− ${fmt(is_pagado)}</td></tr>
+    <tr><td>Impuesto de Sociedades (19%-21% en 2026)</td><td>—</td><td class="dt-neg">− ${fmt(is_pagado)}</td></tr>
     <tr><td>IRPF sobre dividendos</td><td>—</td><td class="dt-neg">${reparte === 'si' ? '− ' + fmt(irpf_dividendos) : '0,00 € (no repartido)'}</td></tr>
     <tr><td>Gestoría mercantil extra</td><td>—</td><td class="dt-neg">− ${fmt(gestoria_extra)}</td></tr>
     <tr class="total-row"><td>NETO FINAL</td><td class="dt-pos">${fmt(neto_autonomo)}</td><td class="dt-pos">${fmt(neto_sl)}</td></tr>
