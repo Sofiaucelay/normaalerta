@@ -163,7 +163,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
         <div class="field">
           <label>Gastos deducibles anuales</label>
           <input type="number" id="aut-gastos" value="12000" min="0" step="500" oninput="calcular()">
-          <span class="input-note">Alquiler, suministros, material, gestoría, SS...</span>
+          <span class="input-note">Alquiler, suministros, material, gestoría… (sin la cuota de autónomo)</span>
         </div>
         <div class="divider-label">Cotización SS</div>
         <div class="field">
@@ -291,7 +291,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
       </div>
       <div class="comp-body">
         <div class="comp-row"><span class="cr-label">Salario bruto anual</span><span class="cr-val" id="s-bruto">—</span></div>
-        <div class="comp-row"><span class="cr-label">− SS trabajador (6,35%)</span><span class="cr-val negativo" id="s-ss">—</span></div>
+        <div class="comp-row"><span class="cr-label">− SS trabajador (6,50%)</span><span class="cr-val negativo" id="s-ss">—</span></div>
         <div class="comp-row"><span class="cr-label">= Base liquidable IRPF</span><span class="cr-val" id="s-base">—</span></div>
         <div class="comp-row"><span class="cr-label">− IRPF estimado</span><span class="cr-val negativo" id="s-irpf">—</span></div>
         <div class="comp-row"><span class="cr-label">Vacaciones (22 días/año)</span><span class="cr-val" style="color:var(--green-dark)">✓ Incluidas</span></div>
@@ -355,60 +355,32 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
 
 </div>
 
+<script src="/js/fiscal-2026.js"></script>
 <script>
-// SS TRABAJADOR 2026
-const SS_TRAB_PCT = 0.047 + 0.0155 + 0.001; // CC + desempleo + FP = 6,35%
+// Parámetros 2026: /js/fiscal-2026.js
+const F = window.NA2026;
+// SS trabajador 2026: CC 4,70 + desempleo 1,55 + FP 0,10 + MEI 0,15 = 6,50 %
+const SS_TRAB_PCT = F.RG.trabajador.cc + F.RG.trabajador.desempleoIndef + F.RG.trabajador.fp + F.RG.trabajador.mei;
 
-// IRPF estimado según situación y renta anual
-function calcIRPF(base, situacion, hijos){
-  const n = parseInt(hijos);
-  let tipo = 0;
-
-  if(situacion === 'soltero'){
-    if(base <= 12450) tipo = 0;
-    else if(base <= 16000) tipo = 0.08;
-    else if(base <= 20000) tipo = 0.12;
-    else if(base <= 25000) tipo = 0.15;
-    else if(base <= 30000) tipo = 0.18;
-    else if(base <= 40000) tipo = 0.22;
-    else if(base <= 50000) tipo = 0.26;
-    else if(base <= 70000) tipo = 0.30;
-    else tipo = 0.34;
-  } else if(situacion === 'soltero_hijos'){
-    if(base <= 14000) tipo = 0;
-    else if(base <= 18000) tipo = 0.06;
-    else if(base <= 23000) tipo = 0.10;
-    else if(base <= 29000) tipo = 0.13;
-    else if(base <= 37000) tipo = 0.17;
-    else if(base <= 48000) tipo = 0.21;
-    else tipo = 0.26;
-  } else if(situacion === 'casado_1ingreso'){
-    if(base <= 14000) tipo = 0;
-    else if(base <= 18000) tipo = 0.05;
-    else if(base <= 23000) tipo = 0.09;
-    else if(base <= 29000) tipo = 0.12;
-    else if(base <= 37000) tipo = 0.16;
-    else if(base <= 48000) tipo = 0.20;
-    else tipo = 0.25;
-  } else { // casado 2 ingresos
-    if(base <= 12450) tipo = 0;
-    else if(base <= 16000) tipo = 0.09;
-    else if(base <= 20000) tipo = 0.13;
-    else if(base <= 25000) tipo = 0.16;
-    else if(base <= 30000) tipo = 0.19;
-    else if(base <= 40000) tipo = 0.23;
-    else if(base <= 50000) tipo = 0.27;
-    else if(base <= 70000) tipo = 0.31;
-    else tipo = 0.34;
-  }
-
-  // Reducción por hijos
-  let red = 0;
-  if(n >= 1) red += 0.010;
-  if(n >= 2) red += 0.012;
-  if(n >= 3) red += 0.020;
-
-  return Math.max(0, tipo - red);
+// IRPF anual (escala estatal + autonómica tipo, mínimo personal y familiar)
+// situacion: soltero | soltero_hijos | casado_1ingreso | casado_2ingresos
+function familiaDe(situacion, hijos){
+  return {
+    hijos: parseInt(hijos) || 0,
+    hijosCompartidos: situacion !== 'soltero_hijos',
+    // Reducción por tributación conjunta: 3.400 € matrimonio con un solo ingreso, 2.150 € familia monoparental
+    conjunta: situacion === 'casado_1ingreso' ? 3400 : situacion === 'soltero_hijos' ? 2150 : 0,
+  };
+}
+function irpfActividad(base, situacion, hijos){
+  const fam = familiaDe(situacion, hijos);
+  return F.cuotaIRPF(Math.max(0, base - fam.conjunta), F.minimoPersonalFamiliar(fam));
+}
+function irpfTrabajo(bruto, cotizaciones, situacion, hijos){
+  const fam = familiaDe(situacion, hijos);
+  const rn = bruto - cotizaciones;
+  const base = Math.max(0, rn - 2000 - F.reduccionTrabajo(rn) - fam.conjunta);
+  return Math.max(0, F.cuotaIRPF(base, F.minimoPersonalFamiliar(fam)) - F.deduccionSMI(bruto));
 }
 
 function fmt(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
@@ -432,8 +404,7 @@ function calcular(){
   const aut_rdto_neto = Math.max(0, aut_rdto_previo - aut_dj);
 
   // IRPF autónomo
-  const aut_irpf_pct = calcIRPF(aut_rdto_neto, aut_sit, aut_hijos);
-  const aut_irpf = aut_rdto_neto * aut_irpf_pct;
+  const aut_irpf = irpfActividad(aut_rdto_neto, aut_sit, aut_hijos);
 
   // Neto autónomo = ingresos - gastos - cuota SS - IRPF
   const aut_neto = aut_ing - aut_gtos - aut_cuota_anual - aut_irpf;
@@ -444,10 +415,9 @@ function calcular(){
   const asal_sit = document.getElementById('asal-situacion').value;
   const asal_hijos = document.getElementById('asal-hijos').value;
 
-  const asal_ss = asal_bruto * SS_TRAB_PCT;
+  const asal_ss = Math.min(asal_bruto, F.RG.baseMaxima * 12) * SS_TRAB_PCT;
   const asal_base = Math.max(0, asal_bruto - asal_ss);
-  const asal_irpf_pct = calcIRPF(asal_base, asal_sit, asal_hijos);
-  const asal_irpf = asal_base * asal_irpf_pct;
+  const asal_irpf = irpfTrabajo(asal_bruto, asal_ss, asal_sit, asal_hijos);
   const asal_neto = asal_bruto - asal_ss - asal_irpf;
   const asal_neto_mes = asal_neto / 12;
 
@@ -571,7 +541,7 @@ function exportPDF(){
   <table>
     <tr><th>Concepto</th><th class="r">Importe</th></tr>
     <tr><td>Salario bruto anual</td><td class="r">${document.getElementById('s-bruto').textContent}</td></tr>
-    <tr><td>− SS trabajador (6,35%)</td><td class="r">${document.getElementById('s-ss').textContent}</td></tr>
+    <tr><td>− SS trabajador (6,50%)</td><td class="r">${document.getElementById('s-ss').textContent}</td></tr>
     <tr><td>= Base IRPF</td><td class="r">${document.getElementById('s-base').textContent}</td></tr>
     <tr><td>− IRPF</td><td class="r">${document.getElementById('s-irpf').textContent}</td></tr>
     <tr class="tot"><td>NETO ANUAL</td><td class="r">${asal_neto}</td></tr>

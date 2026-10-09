@@ -514,61 +514,9 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
 
 </div>
 
+<script src="/js/ia.js"></script>
 <script>
-const SYSTEM_PROMPT = `Eres un experto en fiscalidad española especializado en autónomos y pymes. Tu función es realizar una auditoría fiscal personalizada basándose en los datos que el usuario proporciona sobre su situación fiscal del año.
-
-INSTRUCCIONES:
-Analiza la situación fiscal completa del usuario y genera un informe estructurado en JSON con este formato EXACTO:
-
-{
-  "puntuacion": <número del 0 al 100 — salud fiscal general>,
-  "nivel": <"excelente" | "buena" | "mejorable" | "preocupante">,
-  "resumen": <frase corta describiendo la situación general>,
-  "ahorro_potencial": <número en euros — ahorro estimado aplicando recomendaciones, 0 si no hay>,
-  "hallazgos": [
-    {
-      "tipo": <"ahorro" | "riesgo" | "error" | "bien">,
-      "icono": <emoji>,
-      "titulo": <título corto del hallazgo>,
-      "descripcion": <explicación clara en lenguaje no técnico>,
-      "ahorro_estimado": <número en euros o 0>
-    }
-  ],
-  "acciones": [
-    {
-      "titulo": <acción concreta>,
-      "descripcion": <cómo hacerlo, con detalle práctico>,
-      "urgencia": <"urgente" | "pronto" | "cuando_puedas">
-    }
-  ]
-}
-
-CRITERIOS DE ANÁLISIS (revisa todos estos puntos):
-1. Gastos deducibles no aplicados (vehículo, oficina en casa, seguro médico hasta 500€/persona, formación, móvil 50%, colegios profesionales, gestoría)
-2. Coherencia entre ingresos y gastos declarados
-3. Ajuste de la base de cotización al RETA según ingresos reales
-4. Obligación de presentar modelos (303, 130, 111, 115...)
-5. Libros de registro obligatorios en estimación directa
-6. Retenciones: si tiene más del 70% de ingresos con retención, puede estar exento del 130
-7. Gastos de difícil justificación (5% del rdto previo, máximo 2.000€ en ED Simplificada)
-8. Riesgo de inspección según los datos (variaciones, coherencia, efectivo)
-9. Oportunidades de planificación fiscal fin de año
-10. Situación de la base de cotización
-
-NORMATIVA 2026:
-- IRPF tramos: 19% hasta 12.450€, 24% hasta 20.200€, 30% hasta 35.200€, 37% hasta 60.000€, 45% hasta 300.000€, 47% resto
-- Seguro médico deducible: hasta 500€/persona/año (art. 30.2.g LIRPF)
-- Gastos difícil justificación: 5% rdto previo, máx 2.000€ (solo ED Simplificada)
-- Cuota autónomo 2026: 12 tramos según ingresos reales
-- SMI 2026: 1.221€/mes
-- Verifactu aplazado hasta julio 2027
-
-IMPORTANTE:
-- Sé específico y concreto — no generalices
-- Incluye importes estimados siempre que sea posible
-- Si hay riesgos reales, menciónalos claramente pero sin alarmar innecesariamente
-- Máximo 6 hallazgos y 5 acciones — prioriza los más importantes
-- Responde SOLO con el JSON, sin texto adicional, sin markdown`;
+// Las instrucciones del asistente están en el servidor (lib/prompts.js)
 
 const KEY_AUDITORIA = 'na_auditoria_usada_v1';
 
@@ -685,23 +633,11 @@ NOTAS ADICIONALES: ${datos.notas || 'Ninguna'}
 Analiza todos estos datos y genera el informe JSON siguiendo exactamente el formato especificado.`;
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: SYSTEM_PROMPT,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-
-    const data = await response.json();
-    const texto = data.content?.[0]?.text || '';
+    const texto = await NAIA.llamarIA('auditoria', [{ role: 'user', content: prompt }]);
 
     // Parsear JSON
     const clean = texto.replace(/```json|```/g, '').trim();
-    const informe = JSON.parse(clean);
+    const informe = JSON.parse(clean.slice(clean.indexOf('{'), clean.lastIndexOf('}') + 1));
 
     // Marcar auditoría como usada
     marcarUsada();
@@ -725,7 +661,7 @@ Analiza todos estos datos y genera el informe JSON siguiendo exactamente el form
 
 function renderInforme(inf){
   // Score
-  const score = inf.puntuacion || 50;
+  const score = Math.max(0, Math.min(100, parseInt(inf.puntuacion, 10) || 50));
   const scoreEl = document.getElementById('score-num');
   const fillEl = document.getElementById('score-fill');
   const nivelEl = document.getElementById('score-nivel');
@@ -753,7 +689,7 @@ function renderInforme(inf){
   // Ahorro potencial
   if(inf.ahorro_potencial && inf.ahorro_potencial > 0){
     document.getElementById('ahorro-box').style.display = 'block';
-    document.getElementById('ahorro-num').textContent = inf.ahorro_potencial.toLocaleString('es-ES') + ' €';
+    document.getElementById('ahorro-num').textContent = Number(inf.ahorro_potencial).toLocaleString('es-ES') + ' €';
   }
 
   // Hallazgos
@@ -761,13 +697,13 @@ function renderInforme(inf){
   h.innerHTML = (inf.hallazgos || []).map(hall => {
     const tagClase = {ahorro:'ht-ahorro', riesgo:'ht-riesgo', error:'ht-riesgo', bien:'ht-ok'}[hall.tipo] || 'ht-ok';
     const tagTexto = {ahorro:'💰 Ahorro potencial', riesgo:'⚠️ Riesgo detectado', error:'❌ Error detectado', bien:'✅ Correcto'}[hall.tipo] || '';
-    const ahorro = hall.ahorro_estimado > 0 ? `<span class="h-ahorro">+${hall.ahorro_estimado.toLocaleString('es-ES')} €</span>` : '';
+    const ahorro = hall.ahorro_estimado > 0 ? `<span class="h-ahorro">+${Number(hall.ahorro_estimado).toLocaleString('es-ES')} €</span>` : '';
     return `<div class="hallazgo">
       <div class="hallazgo-header">
-        <span class="h-icon">${hall.icono || '📋'}</span>
+        <span class="h-icon">${NAIA.escaparHTML(hall.icono || '📋')}</span>
         <div class="h-content">
-          <div class="h-titulo">${hall.titulo}</div>
-          <div class="h-desc">${hall.descripcion}</div>
+          <div class="h-titulo">${NAIA.escaparHTML(hall.titulo)}</div>
+          <div class="h-desc">${NAIA.escaparHTML(hall.descripcion)}</div>
           <span class="h-tag ${tagClase}">${tagTexto}</span>
         </div>
         ${ahorro}
@@ -783,8 +719,8 @@ function renderInforme(inf){
     return `<div class="accion-item">
       <div class="accion-num">${i+1}</div>
       <div class="accion-content">
-        <div class="accion-titulo">${acc.titulo}</div>
-        <div class="accion-desc">${acc.descripcion}</div>
+        <div class="accion-titulo">${NAIA.escaparHTML(acc.titulo)}</div>
+        <div class="accion-desc">${NAIA.escaparHTML(acc.descripcion)}</div>
         <span class="accion-urgencia ${urgClase}">${urgTexto}</span>
       </div>
     </div>`;

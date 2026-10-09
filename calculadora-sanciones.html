@@ -140,6 +140,13 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
             <option value="requerimiento">Tras requerimiento de la AEAT</option>
           </select>
         </div>
+        <div class="field">
+          <label>¿Pagarás en plazo y sin recurrir?</label>
+          <select id="reduccion" onchange="calcular()">
+            <option value="si">Sí — aplicar reducciones legales</option>
+            <option value="no">No</option>
+          </select>
+        </div>
       </div>
       <div class="info-box green">✅ <span><strong>Importante:</strong> Si presentas voluntariamente antes de recibir un requerimiento de la AEAT, solo pagas el recargo por extemporaneidad (sin sanción). Si esperas al requerimiento, la sanción es mucho mayor.</span></div>
     </div>
@@ -172,10 +179,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
       <table class="tipos-table">
         <thead><tr><th>Retraso</th><th>Tipo recargo</th><th>Intereses de demora</th><th>Base legal</th></tr></thead>
         <tbody>
-          <tr><td>Hasta 3 meses</td><td>5% sobre cuota</td><td>No aplica</td><td>Art. 27.2 a) LGT</td></tr>
-          <tr><td>3 a 6 meses</td><td>10% sobre cuota</td><td>No aplica</td><td>Art. 27.2 b) LGT</td></tr>
-          <tr><td>6 a 12 meses</td><td>15% sobre cuota</td><td>No aplica</td><td>Art. 27.2 c) LGT</td></tr>
-          <tr><td>Más de 12 meses</td><td>20% sobre cuota</td><td>Sí aplica (desde mes 12)</td><td>Art. 27.2 d) LGT</td></tr>
+          <tr><td>Menos de 1 mes</td><td>1% sobre cuota</td><td>No aplica</td><td>Art. 27.2 LGT</td></tr><tr><td>Entre 1 y 2 meses</td><td>2% sobre cuota</td><td>No aplica</td><td>Art. 27.2 LGT</td></tr><tr><td>Entre 6 y 7 meses</td><td>7% sobre cuota</td><td>No aplica</td><td>Art. 27.2 LGT</td></tr><tr><td>Entre 11 y 12 meses</td><td>12% sobre cuota</td><td>No aplica</td><td>Art. 27.2 LGT</td></tr><tr><td>Más de 12 meses</td><td>15% sobre cuota</td><td>Sí, desde el mes 13</td><td>Art. 27.2 LGT</td></tr><tr><td colspan="4" style="font-size:12px;color:var(--ink3)">Regla general: 1% + 1% por cada mes completo de retraso. Si pagas en plazo (o con aplazamiento sin garantía), el recargo se reduce un 25% (art. 27.5 LGT, redacción Ley 11/2021).</td></tr>
         </tbody>
       </table>
       <div style="margin-top:.875rem">
@@ -186,7 +190,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
             <tr><td>Dejar de ingresar (cuota ≤ 3.000€ sin ocultación)</td><td><span class="badge-tipo bt-leve">Leve</span></td><td>50% de la cuota</td></tr>
             <tr><td>Dejar de ingresar con ocultación</td><td><span class="badge-tipo bt-grave">Grave</span></td><td>50-100% de la cuota</td></tr>
             <tr><td>Uso de facturas falsas o fraude</td><td><span class="badge-tipo bt-muy-grave">Muy grave</span></td><td>100-150% de la cuota</td></tr>
-            <tr><td>Mínimo sanción cualquier infracción</td><td>—</td><td><strong>150€</strong></td></tr>
+            <tr><td>Reducciones de la sanción</td><td>—</td><td>−30% por conformidad y −40% por pronto pago (art. 188 LGT)</td></tr>
           </tbody>
         </table>
       </div>
@@ -208,47 +212,57 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
     </div>
   </div>
 </div>
+<script src="/js/fiscal-2026.js"></script>
 <script>
 function fmt(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
 function fmtN(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function v(id){return parseFloat(document.getElementById(id)?.value)||0;}
 function set(id,val){const el=document.getElementById(id);if(el)el.textContent=fmt(val);}
-const INTERES_DEMORA=0.040625;
+const F=window.NA2026;
+const INTERES_DEMORA=F.INTERES_DEMORA;
 function calcular(){
   const cuota=v('importe'),dias=Math.max(1,v('dias')),tipo=document.getElementById('tipo').value;
+  const reduce=(document.getElementById('reduccion')||{}).value==='si';
   let recargo=0,intereses=0,sancion=0,recargo_pct=0,recargo_desc='';
   if(tipo==='voluntaria'){
-    if(dias<=90){recargo_pct=0.05;recargo_desc='5% — retraso hasta 3 meses (art. 27.2.a LGT)';}
-    else if(dias<=180){recargo_pct=0.10;recargo_desc='10% — retraso 3 a 6 meses (art. 27.2.b LGT)';}
-    else if(dias<=365){recargo_pct=0.15;recargo_desc='15% — retraso 6 a 12 meses (art. 27.2.c LGT)';}
-    else{recargo_pct=0.20;recargo_desc='20% — retraso más de 12 meses (art. 27.2.d LGT)';intereses=cuota*INTERES_DEMORA*((dias-365)/365);}
-    recargo=cuota*recargo_pct;
+    const r=F.recargoExtemporaneo(dias);
+    recargo_pct=r.pct;
+    if(r.intereses){
+      recargo_desc='15% — más de 12 meses de retraso, más intereses de demora (art. 27.2 LGT)';
+      intereses=cuota*INTERES_DEMORA*((dias-365)/365);
+    } else {
+      recargo_desc=`${(recargo_pct*100).toFixed(0)}% — 1% + 1% por cada mes completo de retraso (${r.meses} ${r.meses===1?'mes':'meses'}) · art. 27.2 LGT`;
+    }
+    recargo=cuota*recargo_pct*(reduce?0.75:1);
+    if(reduce) recargo_desc+=' · reducción del 25% por pagar en plazo (art. 27.5 LGT)';
     document.getElementById('row-sancion').style.display='none';
     const infoEl=document.getElementById('info-recargo');
     infoEl.style.display='flex';infoEl.className='info-box green';
     infoEl.innerHTML=`✅ <span>Presentación <strong>voluntaria</strong>: ${recargo_desc}. No hay sanción adicional.</span>`;
   } else {
     intereses=cuota*INTERES_DEMORA*(dias/365);
-    sancion=Math.max(cuota*0.50,150);
+    // Infracción leve (art. 191 LGT): 50 %. Reducciones: 30 % conformidad y 40 % pronto pago (art. 188 LGT)
+    const factor=reduce?0.7*0.6:1;
+    sancion=cuota*0.50*factor;
     document.getElementById('row-sancion').style.display='table-row';
-    document.getElementById('d-sancion-label').textContent='Sanción leve mínima (50%, mín. 150€)';
+    document.getElementById('d-sancion-label').textContent=reduce?'Sanción leve 50% con reducciones (−30% conformidad, −40% pronto pago)':'Sanción leve (50% de la cuota)';
     set('d-sancion',sancion);
     const infoEl=document.getElementById('info-recargo');
     infoEl.style.display='flex';infoEl.className='info-box red';
-    infoEl.innerHTML=`⚠️ <span>Tras <strong>requerimiento</strong>: sanción del 50% (mín. 150€) más intereses desde el primer día. Consulta con tu gestor.</span>`;
+    infoEl.innerHTML=`⚠️ <span>Tras <strong>requerimiento</strong>: sanción mínima del 50% (infracción leve) más intereses de demora desde el fin del plazo. Si hay ocultación o facturas falsas puede ser grave (50–100%) o muy grave (100–150%). Consulta con tu gestor.</span>`;
   }
   const total=cuota+recargo+intereses+sancion;
   set('d-cuota',cuota);
-  document.getElementById('d-recargo-label').textContent=tipo==='voluntaria'?`Recargo extemporaneidad (${(recargo_pct*100).toFixed(0)}%)`:'Recargo — no aplica';
+  document.getElementById('d-recargo-label').textContent=tipo==='voluntaria'?`Recargo extemporaneidad (${(recargo_pct*100).toFixed(0)}%${reduce?' −25%':''})`:'Recargo — no aplica';
   document.getElementById('d-recargo-base').textContent=tipo==='voluntaria'?'Art. 27 LGT':'—';
   set('d-recargo',tipo==='voluntaria'?recargo:0);
   set('d-intereses',intereses);
   set('d-total',total);
   document.getElementById('resultado-num').textContent=fmtN(total)+' €';
-  document.getElementById('resultado-sub').textContent=tipo==='voluntaria'?`${recargo_desc}`:'Cuota + sanción 50% + intereses desde día 1';
+  document.getElementById('resultado-sub').textContent=tipo==='voluntaria'?`${recargo_desc}`:'Cuota + sanción + intereses de demora';
   set('rc-cuota',cuota);set('rc-recargo',tipo==='voluntaria'?recargo:sancion);set('rc-intereses',intereses);
 }
-function resetForm(){document.getElementById('importe').value=1000;document.getElementById('dias').value=30;document.getElementById('tipo').value='voluntaria';document.getElementById('modelo').value='303';calcular();}
+function resetForm(){document.getElementById('importe').value=1000;document.getElementById('dias').value=30;document.getElementById('tipo').value='voluntaria';document.getElementById('modelo').value='303';if(document.getElementById('reduccion'))document.getElementById('reduccion').value='si';calcular();}
 function exportPDF(){
   const cuota=v('importe'),dias=v('dias');
   const modelo=document.getElementById('modelo').options[document.getElementById('modelo').selectedIndex].text;
@@ -281,7 +295,7 @@ function exportPDF(){
     <tr><td>Cuota original</td><td>—</td><td class="r">${document.getElementById('d-cuota').textContent}</td></tr>
     <tr><td>${document.getElementById('d-recargo-label').textContent}</td><td>${document.getElementById('d-recargo-base').textContent}</td><td class="r">${document.getElementById('d-recargo').textContent}</td></tr>
     <tr><td>Intereses de demora (4,0625% anual)</td><td>Art. 26 LGT</td><td class="r">${document.getElementById('d-intereses').textContent}</td></tr>
-    ${tipo!=='voluntaria'?`<tr><td>Sanción leve mínima (50%, mín. 150€)</td><td>Art. 191 LGT</td><td class="r">${document.getElementById('d-sancion').textContent}</td></tr>`:''}
+    ${tipo!=='voluntaria'?`<tr><td>${document.getElementById('d-sancion-label').textContent}</td><td>Art. 191 LGT</td><td class="r">${document.getElementById('d-sancion').textContent}</td></tr>`:''}
     <tr class="tot"><td colspan="2">TOTAL A PAGAR</td><td class="r">${document.getElementById('d-total').textContent}</td></tr>
   </table>
   <div class="res"><div style="font-size:10px;opacity:.5;text-transform:uppercase;margin-bottom:3px">Total a pagar</div>

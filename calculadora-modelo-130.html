@@ -176,7 +176,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
   <div class="section" id="s-ing">
     <div class="section-header" onclick="toggleSection(this)">
       <div class="section-icon si-green">💰</div>
-      <div><div class="section-title">Ingresos y gastos acumulados</div><div class="section-subtitle">Casillas 01 a 08 — importes desde 1 de enero</div></div>
+      <div><div class="section-title">Ingresos y gastos acumulados</div><div class="section-subtitle">Casillas 01 a 03 — importes acumulados desde el 1 de enero</div></div>
       <span class="section-total" id="tot-rdto-label">0,00 €</span>
       <span class="chevron">▾</span>
     </div>
@@ -187,44 +187,34 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
         </thead>
         <tbody>
           <tr>
-            <td><div class="row-label">Ingresos íntegros de la actividad económica</div><div class="row-info">Total facturas emitidas SIN IVA, acumulado desde 1 enero</div></td>
+            <td><div class="row-label">Ingresos íntegros de la actividad económica</div><div class="row-info">Total facturado SIN IVA, acumulado desde el 1 de enero</div></td>
             <td><div class="row-casilla">01</div></td>
             <td><div class="input-wrap"><input type="number" id="c01" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
           </tr>
           <tr>
-            <td><div class="row-label">Gastos fiscalmente deducibles (excl. amortizaciones)</div><div class="row-info">Todos los gastos afectos a la actividad: alquiler, suministros, material, seguros, gestoría...</div></td>
-            <td><div class="row-casilla">02</div></td>
+            <td><div class="row-label">Gastos fiscalmente deducibles (sin amortizaciones)</div><div class="row-info">Alquiler, suministros, material, seguros, gestoría, cuota de autónomo… acumulados desde el 1 de enero</div></td>
+            <td><div class="row-casilla">02 (parte)</div></td>
             <td><div class="input-wrap"><input type="number" id="c02" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
           </tr>
           <tr>
-            <td><div class="row-label">Amortizaciones del inmovilizado afecto</div><div class="row-info">Según tablas de amortización oficiales AEAT (Orden HAP/2612/2014)</div></td>
-            <td><div class="row-casilla">03</div></td>
+            <td><div class="row-label">Amortizaciones del inmovilizado afecto</div><div class="row-info">Tablas oficiales de amortización. Se incluyen en la casilla 02</div></td>
+            <td><div class="row-casilla">02 (parte)</div></td>
             <td><div class="input-wrap"><input type="number" id="c03" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
           </tr>
-          <tr class="calc-row">
-            <td><div class="row-label">Rendimiento neto previo (01 − 02 − 03)</div><div class="row-info">Cálculo automático</div></td>
-            <td><div class="row-casilla">04</div></td>
-            <td><div class="auto-val" id="c04">0,00 €</div></td>
-          </tr>
           <tr id="row-simp" style="display:none">
-            <td><div class="row-label">Gastos difícil justificación 5% (solo Est. Simplificada)</div><div class="row-info">5% del rendimiento neto previo positivo, máximo 2.000 € anuales (art. 30.2 RIRPF)</div></td>
-            <td><div class="row-casilla">04b</div></td>
+            <td><div class="row-label">Gastos de difícil justificación 5% (solo Est. Simplificada)</div><div class="row-info">5% del rendimiento neto positivo, máximo 2.000 € al año (art. 30.2 RIRPF). Se incluyen en la casilla 02</div></td>
+            <td><div class="row-casilla">02 (parte)</div></td>
             <td><div class="auto-val" id="c04b">0,00 €</div></td>
           </tr>
-          <tr>
-            <td><div class="row-label">Reducción por inicio de actividad (20%)</div><div class="row-info">Solo primeros 2 años naturales con rendimiento neto positivo — art. 32.3 LIRPF</div></td>
-            <td><div class="row-casilla">05</div></td>
-            <td><div class="input-wrap"><input type="number" id="c05" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
-          </tr>
-          <tr>
-            <td><div class="row-label">Reducción por rendimientos irregulares y otras reducciones</div><div class="row-info">Art. 32.1 LIRPF — rendimientos con período generación >2 años u obtenidos de forma notoriamente irregular</div></td>
-            <td><div class="row-casilla">06</div></td>
-            <td><div class="input-wrap"><input type="number" id="c06" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+          <tr class="calc-row">
+            <td><div class="row-label">Total gastos deducibles</div><div class="row-info">Suma automática</div></td>
+            <td><div class="row-casilla">02</div></td>
+            <td><div class="auto-val" id="c02t">0,00 €</div></td>
           </tr>
           <tr class="subtotal-row">
-            <td><div class="row-label">Rendimiento neto reducido (casilla 07)</div></td>
-            <td><div class="row-casilla">07</div></td>
-            <td><div class="auto-val" id="c07" style="font-size:16px">0,00 €</div></td>
+            <td><div class="row-label">Rendimiento neto (01 − 02)</div><div class="row-info">Cálculo automático</div></td>
+            <td><div class="row-casilla">03</div></td>
+            <td><div class="auto-val" id="c04" style="font-size:16px">0,00 €</div></td>
           </tr>
         </tbody>
       </table>
@@ -235,40 +225,57 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
   <div class="section" id="s-calc">
     <div class="section-header" onclick="toggleSection(this)">
       <div class="section-icon si-amber">🧮</div>
-      <div><div class="section-title">Cálculo del pago fraccionado</div><div class="section-subtitle">Casillas 08 a 20</div></div>
+      <div><div class="section-title">Cálculo del pago fraccionado</div><div class="section-subtitle">Casillas 04 a 19</div></div>
       <span class="chevron">▾</span>
     </div>
     <div class="section-body">
       <table class="field-table">
         <tbody>
           <tr class="calc-row">
-            <td style="width:55%"><div class="row-label">Base del pago fraccionado (20% del rdto. neto reducido positivo)</div><div class="row-info">Si el rendimiento neto es negativo, la base es 0</div></td>
-            <td><div class="row-casilla">08</div></td>
+            <td><div class="row-label">20% del rendimiento neto positivo</div><div class="row-info">Si el rendimiento neto es negativo, es 0</div></td>
+            <td><div class="row-casilla">04</div></td>
             <td><div class="auto-val" id="c08">0,00 €</div></td>
           </tr>
           <tr>
-            <td><div class="row-label">Retenciones e ingresos a cuenta ACUMULADOS desde 1 enero</div><div class="row-info">IRPF retenido que aparece en tus facturas emitidas a clientes</div></td>
-            <td><div class="row-casilla">09</div></td>
-            <td><div class="input-wrap"><input type="number" id="c09" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
-          </tr>
-          <tr>
-            <td><div class="row-label">Pagos fraccionados del mismo ejercicio ya presentados</div><div class="row-info">Suma de resultados de modelos 130 de trimestres anteriores del mismo año</div></td>
-            <td><div class="row-casilla">10</div></td>
+            <td><div class="row-label">Pagos fraccionados de trimestres anteriores del ejercicio</div><div class="row-info">Suma de las casillas 07 positivas de tus modelos 130 anteriores de este año</div></td>
+            <td><div class="row-casilla">05</div></td>
             <td><div class="input-wrap"><input type="number" id="c10" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
           </tr>
           <tr>
-            <td><div class="row-label">Minoración por discapacidad del declarante</div><div class="row-info">Si tiene reconocida discapacidad ≥33%: 300€/trim | ≥65%: 900€/trim</div></td>
-            <td><div class="row-casilla">11</div></td>
-            <td><div class="input-wrap"><input type="number" id="c11" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+            <td><div class="row-label">Retenciones e ingresos a cuenta ACUMULADOS desde el 1 de enero</div><div class="row-info">IRPF que te han retenido tus clientes en las facturas</div></td>
+            <td><div class="row-casilla">06</div></td>
+            <td><div class="input-wrap"><input type="number" id="c09" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
           </tr>
           <tr class="calc-row">
-            <td><div class="row-label">Resultado previo (08 − 09 − 10 − 11)</div></td>
-            <td><div class="row-casilla">12</div></td>
+            <td><div class="row-label">Pago fraccionado previo (04 − 05 − 06)</div></td>
+            <td><div class="row-casilla">07</div></td>
+            <td><div class="auto-val" id="c07">0,00 €</div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Minoración por rendimientos bajos (art. 110.3.c RIRPF)</div><div class="row-info">Según tu rendimiento neto de actividades del año anterior: hasta 9.000 € → 100 €; hasta 10.000 € → 75 €; hasta 11.000 € → 50 €; hasta 12.000 € → 25 € por trimestre</div>
+              <select id="rdto_ant" onchange="calc()" style="margin-top:.35rem;font-size:12px">
+                <option value="0">Más de 12.000 € (sin minoración)</option>
+                <option value="100">Hasta 9.000 €</option>
+                <option value="75">9.000,01 € – 10.000 €</option>
+                <option value="50">10.000,01 € – 11.000 €</option>
+                <option value="25">11.000,01 € – 12.000 €</option>
+              </select></td>
+            <td><div class="row-casilla">13</div></td>
+            <td><div class="auto-val" id="c11">0,00 €</div></td>
+          </tr>
+          <tr class="calc-row">
+            <td><div class="row-label">Diferencia (07 − 13)</div></td>
+            <td><div class="row-casilla">14</div></td>
             <td><div class="auto-val" id="c12">0,00 €</div></td>
           </tr>
           <tr>
-            <td><div class="row-label">Declaración complementaria — importe ingresado anteriormente</div><div class="row-info">Solo si se presenta una declaración complementaria al mismo período</div></td>
-            <td><div class="row-casilla">13</div></td>
+            <td><div class="row-label">Resultados negativos de trimestres anteriores pendientes de deducir</div><div class="row-info">Solo si en algún trimestre anterior de este año la casilla 19 salió negativa</div></td>
+            <td><div class="row-casilla">15</div></td>
+            <td><div class="input-wrap"><input type="number" id="c15" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Declaración complementaria — importe ingresado anteriormente</div><div class="row-info">Solo si complementas una declaración ya presentada de este periodo</div></td>
+            <td><div class="row-casilla">18</div></td>
             <td><div class="input-wrap"><input type="number" id="c13" value="0" min="0" step="0.01" oninput="calc()"><span class="input-euro">€</span></div></td>
           </tr>
         </tbody>
@@ -281,14 +288,14 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 
   <!-- RESULTADO -->
   <div class="resultado">
-    <div class="resultado-label">Resultado final — Casilla 20</div>
+    <div class="resultado-label">Resultado — Casilla 19</div>
     <div class="resultado-num" id="resultado-num">0,00 €</div>
     <div class="resultado-status" id="resultado-status">Rellena los campos para ver el resultado</div>
     <div class="resultado-grid">
       <div class="resultado-card"><div class="rc-label">Ingresos acumulados</div><div class="rc-val" id="rc-ing">0,00 €</div></div>
       <div class="resultado-card"><div class="rc-label">Gastos acumulados</div><div class="rc-val" id="rc-gto">0,00 €</div></div>
       <div class="resultado-card"><div class="rc-label">Rdto. neto reducido</div><div class="rc-val" id="rc-rdto">0,00 €</div></div>
-      <div class="resultado-card"><div class="rc-label">Base (20% Rdto.)</div><div class="rc-val" id="rc-base">0,00 €</div></div>
+      <div class="resultado-card"><div class="rc-label">20% Rdto. (cas. 04)</div><div class="rc-val" id="rc-base">0,00 €</div></div>
     </div>
     <div class="export-row">
       <button class="btn-export btn-pdf" onclick="exportPDF()">⬇ Descargar PDF</button>
@@ -298,6 +305,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
   </div>
 </div>
 
+<script src="/js/fiscal-2026.js"></script>
 <script>
 let modalidad='normal';
 function fmt(n){return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
@@ -314,46 +322,50 @@ function setModalidad(m,btn){
 
 function calc(){
   const ing=v('c01'), gtos=v('c02'), amor=v('c03');
-  const rdto_previo=ing-gtos-amor;
-  set('c04',rdto_previo);
-  document.getElementById('tot-rdto-label').textContent=fmt(rdto_previo);
-
+  const previo=ing-gtos-amor;
   let gastos_dj=0;
-  if(modalidad==='simplificada' && rdto_previo>0){
-    gastos_dj=Math.min(rdto_previo*0.05, 2000);
+  if(modalidad==='simplificada' && previo>0){
+    gastos_dj=Math.min(previo*0.05, 2000);
   }
   set('c04b',gastos_dj);
+  const gastos_total=gtos+amor+gastos_dj;           // casilla 02
+  const rdto=ing-gastos_total;                      // casilla 03
+  set('c02t',gastos_total); set('c04',rdto);
+  document.getElementById('tot-rdto-label').textContent=fmt(rdto);
 
-  const red_inicio=v('c05'), red_otros=v('c06');
-  const rdto_reducido=rdto_previo-gastos_dj-red_inicio-red_otros;
-  set('c07',rdto_reducido);
-
-  const base=Math.max(0,rdto_reducido)*0.20;
-  set('c08',base);
-
-  const ret=v('c09'), pagos_ant=v('c10'), discap=v('c11');
-  const resultado_previo=base-ret-pagos_ant-discap;
-  set('c12',resultado_previo);
-
-  const complementaria=v('c13');
-  const resultado_final=Math.max(0,resultado_previo)-complementaria;
+  const c04=Math.max(0,rdto)*0.20;                   // casilla 04
+  set('c08',c04);
+  const c05=v('c10'), c06=v('c09');
+  const c07=c04-c05-c06;                            // casilla 07
+  set('c07',c07);
+  const c13=parseFloat(document.getElementById('rdto_ant').value)||0; // minoración art. 110.3.c
+  set('c11',c13);
+  const c14=c07-c13;                                // casilla 14
+  set('c12',c14);
+  const c15=c14>0?Math.min(v('c15'),c14):0;         // solo se deduce si 14 es positiva
+  const c17=c14-c15;
+  const c18=v('c13');
+  const c19=c17-c18;                                // casilla 19
+  resultadoActual=c19;
 
   const numEl=document.getElementById('resultado-num');
   const statusEl=document.getElementById('resultado-status');
-  numEl.textContent=fmt(Math.max(0,resultado_previo));
-
-  if(resultado_previo>0.005){
+  numEl.textContent=fmt(Math.max(0,c19));
+  if(c19>0.005){
     numEl.className='resultado-num positivo';
-    const plazos={'1T':'20 de abril','2T':'20 de julio','3T':'20 de octubre','4T':'30 de enero'};
+    const plazos=window.NA2026?NA2026.PLAZOS.trimestral:{'1T':'20 de abril','2T':'20 de julio','3T':'20 de octubre','4T':'30 de enero'};
     const p=document.getElementById('periodo').value;
     statusEl.innerHTML=`<strong>A ingresar</strong> — Plazo máximo: ${plazos[p]||'fecha oficial'}`;
   } else {
     numEl.className='resultado-num';
-    statusEl.innerHTML=`<strong>Resultado cero o negativo</strong> — No hay cantidad a ingresar. Se recomienda presentar igualmente marcando "Negativo"`;
+    statusEl.innerHTML=c19<-0.005
+      ? `<strong>Resultado negativo (${fmt(c19)})</strong> — No hay que ingresar. Presenta el modelo igualmente; podrás deducir este importe en la casilla 15 de los siguientes trimestres del año`
+      : `<strong>Resultado cero</strong> — No hay cantidad a ingresar, pero debes presentar el modelo`;
   }
 
-  set('rc-ing',ing); set('rc-gto',gtos+amor); set('rc-rdto',rdto_reducido); set('rc-base',base);
+  set('rc-ing',ing); set('rc-gto',gastos_total); set('rc-rdto',rdto); set('rc-base',c04);
 }
+let resultadoActual=0;
 
 function toggleSection(header){
   const body=header.nextElementSibling;
@@ -365,6 +377,7 @@ function toggleSection(header){
 function resetForm(){
   if(!confirm('¿Limpiar todos los datos?')) return;
   document.querySelectorAll('input[type=number]').forEach(i=>i.value=0);
+  document.getElementById('rdto_ant').value='0';
   calc();
 }
 
@@ -395,26 +408,26 @@ function exportPDF(){
   <h2>Ingresos y gastos acumulados</h2>
   <table><tr><th style="width:55%">Concepto</th><th>Cas.</th><th>Importe (€)</th></tr>
   <tr><td>Ingresos íntegros</td><td class="r">01</td><td class="r">${v('c01').toFixed(2)}</td></tr>
-  <tr><td>Gastos deducibles</td><td class="r">02</td><td class="r">${v('c02').toFixed(2)}</td></tr>
-  <tr><td>Amortizaciones</td><td class="r">03</td><td class="r">${v('c03').toFixed(2)}</td></tr>
-  <tr><td>Rendimiento neto previo</td><td class="r">04</td><td class="r">${document.getElementById('c04').textContent}</td></tr>
-  ${modalidad==='simplificada'?`<tr><td>Gastos difícil justificación 5%</td><td class="r">04b</td><td class="r">${document.getElementById('c04b').textContent}</td></tr>`:''}
-  <tr class="sub"><td>Rendimiento neto reducido</td><td class="r">07</td><td class="r">${document.getElementById('c07').textContent}</td></tr></table>
+  <tr><td>Gastos deducibles (incl. amortizaciones${modalidad==='simplificada'?' y difícil justificación':''})</td><td class="r">02</td><td class="r">${document.getElementById('c02t').textContent}</td></tr>
+  <tr class="sub"><td>Rendimiento neto</td><td class="r">03</td><td class="r">${document.getElementById('c04').textContent}</td></tr></table>
   <h2>Cálculo del pago fraccionado</h2>
   <table><tr><th style="width:55%">Concepto</th><th>Cas.</th><th>Importe (€)</th></tr>
-  <tr><td>Base (20% rdto. neto reducido positivo)</td><td class="r">08</td><td class="r">${document.getElementById('c08').textContent}</td></tr>
-  <tr><td>Retenciones soportadas acumuladas</td><td class="r">09</td><td class="r">${v('c09').toFixed(2)}</td></tr>
-  <tr><td>Pagos fraccionados anteriores</td><td class="r">10</td><td class="r">${v('c10').toFixed(2)}</td></tr>
-  <tr><td>Minoración por discapacidad</td><td class="r">11</td><td class="r">${v('c11').toFixed(2)}</td></tr>
-  <tr class="sub"><td>Resultado (casilla 20)</td><td class="r">20</td><td class="r">${document.getElementById('resultado-num').textContent}</td></tr></table>
-  <div class="res"><div><div style="font-size:11px;opacity:.5;text-transform:uppercase;margin-bottom:4px">Resultado — Casilla 20</div><div class="n">${document.getElementById('resultado-num').textContent}</div><div style="font-size:12px;opacity:.6;margin-top:4px">${document.getElementById('resultado-status').innerText}</div></div></div>
+  <tr><td>20% del rendimiento neto</td><td class="r">04</td><td class="r">${document.getElementById('c08').textContent}</td></tr>
+  <tr><td>Pagos fraccionados anteriores</td><td class="r">05</td><td class="r">${v('c10').toFixed(2)}</td></tr>
+  <tr><td>Retenciones acumuladas</td><td class="r">06</td><td class="r">${v('c09').toFixed(2)}</td></tr>
+  <tr><td>Pago fraccionado previo</td><td class="r">07</td><td class="r">${document.getElementById('c07').textContent}</td></tr>
+  <tr><td>Minoración art. 110.3.c RIRPF</td><td class="r">13</td><td class="r">${document.getElementById('c11').textContent}</td></tr>
+  <tr><td>Resultados negativos anteriores</td><td class="r">15</td><td class="r">${v('c15').toFixed(2)}</td></tr>
+  <tr><td>Complementaria</td><td class="r">18</td><td class="r">${v('c13').toFixed(2)}</td></tr>
+  <tr class="sub"><td>Resultado</td><td class="r">19</td><td class="r">${fmt(resultadoActual)}</td></tr></table>
+  <div class="res"><div><div style="font-size:11px;opacity:.5;text-transform:uppercase;margin-bottom:4px">Resultado — Casilla 19</div><div class="n">${document.getElementById('resultado-num').textContent}</div><div style="font-size:12px;opacity:.6;margin-top:4px">${document.getElementById('resultado-status').innerText}</div></div></div>
   <div class="ftr">Generado con NormaAlerta · normaalerta.com · Documento orientativo. Presentación oficial en sede.agenciatributaria.gob.es</div>
   <script>window.onload=()=>window.print()<\/script></body></html>`);
   w.document.close();
 }
 
 function exportCSV(){
-  const rows=[['MODELO 130 — PAGO FRACCIONADO IRPF'],['Ejercicio',document.getElementById('ejercicio').value],['Período',document.getElementById('periodo').value],['NIF',document.getElementById('nif').value],['Declarante',document.getElementById('nombre').value],['Modalidad',modalidad],[''],['Concepto','Casilla','Importe (€)'],['Ingresos íntegros','01',v('c01').toFixed(2)],['Gastos deducibles','02',v('c02').toFixed(2)],['Amortizaciones','03',v('c03').toFixed(2)],['Rdto. neto previo','04',document.getElementById('c04').textContent],['Rdto. neto reducido','07',document.getElementById('c07').textContent],['Base 20%','08',document.getElementById('c08').textContent],['Retenciones acumuladas','09',v('c09').toFixed(2)],['Pagos fraccionados ant.','10',v('c10').toFixed(2)],['RESULTADO','20',document.getElementById('resultado-num').textContent]];
+  const rows=[['MODELO 130 — PAGO FRACCIONADO IRPF'],['Ejercicio',document.getElementById('ejercicio').value],['Período',document.getElementById('periodo').value],['NIF',document.getElementById('nif').value],['Declarante',document.getElementById('nombre').value],['Modalidad',modalidad],[''],['Concepto','Casilla','Importe (€)'],['Ingresos íntegros','01',v('c01').toFixed(2)],['Gastos deducibles','02',document.getElementById('c02t').textContent],['Rendimiento neto','03',document.getElementById('c04').textContent],['20% rendimiento','04',document.getElementById('c08').textContent],['Pagos fraccionados ant.','05',v('c10').toFixed(2)],['Retenciones acumuladas','06',v('c09').toFixed(2)],['Pago previo','07',document.getElementById('c07').textContent],['Minoración','13',document.getElementById('c11').textContent],['Negativos anteriores','15',v('c15').toFixed(2)],['Complementaria','18',v('c13').toFixed(2)],['RESULTADO','19',resultadoActual.toFixed(2)]];
   let csv='sep=,\n';rows.forEach(r=>{csv+=r.map(c=>`"${c}"`).join(',')+'\n';});
   const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`Modelo130_${document.getElementById('ejercicio').value}_${document.getElementById('periodo').value}.csv`;a.click();

@@ -154,7 +154,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
         <div class="field">
           <label>Tu cuota SS mensual</label>
           <div class="field-wrap">
-            <input type="number" id="cuota_ss" value="294" min="0" step="1" oninput="calcular()">
+            <input type="number" id="cuota_ss" value="401" min="0" step="1" oninput="calcular()">
             <span class="suffix">€</span>
           </div>
           <span class="input-note">Ya incluida en gastos o por separado — evita contarla dos veces</span>
@@ -356,15 +356,17 @@ function calcular(){
     { label:'1T', plazo:'20 abril', modelos:'303 · 130 · 111 · 115' },
     { label:'2T', plazo:'20 julio', modelos:'303 · 130 · 111 · 115' },
     { label:'3T', plazo:'20 octubre', modelos:'303 · 130 · 111 · 115' },
-    { label:'4T', plazo:'30 enero', modelos:'303 · 130 · 111 · 115' },
+    { label:'4T', plazo:'30 enero (111 y 115: 20 enero)', modelos:'303 · 130 · 111 · 115' },
   ];
   const cal = document.getElementById('cal-grid');
   const hoy = new Date();
-  const mesActual = hoy.getMonth() + 1;
-  const proximoT = mesActual <= 3 ? 0 : mesActual <= 6 ? 1 : mesActual <= 9 ? 2 : 3;
+  // Próximo vencimiento: 4T hasta el 30 de enero, 1T hasta el 20 de abril, 2T hasta el 20 de julio, 3T hasta el 20 de octubre
+  const md = (hoy.getMonth() + 1) * 100 + hoy.getDate();
+  const proximoT = md <= 130 ? 3 : md <= 420 ? 0 : md <= 720 ? 1 : md <= 1020 ? 2 : 3;
+  const anioT = (i) => (i === 3 && md <= 130) ? hoy.getFullYear() - 1 : hoy.getFullYear();
   cal.innerHTML = trimestres.map((t, i) => `
     <div class="cal-card ${i === proximoT ? 'proximo' : ''}">
-      <div class="cc-trimestre">${t.label} 2026${i === proximoT ? ' · Próximo' : ''}</div>
+      <div class="cc-trimestre">${t.label} ${anioT(i)}${i === proximoT ? ' · Próximo' : ''}</div>
       <div class="cc-plazo">📅 ${t.plazo}</div>
       <div class="cc-importe">${fmt(modelo130_trim)}</div>
       <div class="cc-modelos">${t.modelos}</div>
@@ -375,7 +377,7 @@ function calcular(){
 function resetForm(){
   document.getElementById('facturacion').value = 3000;
   document.getElementById('gastos').value = 600;
-  document.getElementById('cuota_ss').value = 294;
+  document.getElementById('cuota_ss').value = 401;
   document.getElementById('irpf_pct').value = 20;
   document.getElementById('retenciones').value = 0;
   document.getElementById('ss_en_gastos').value = 'si';
