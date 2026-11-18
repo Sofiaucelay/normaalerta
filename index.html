@@ -215,19 +215,19 @@ footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08); p
 </section>
 
 <div class="ticker-section">
-  <div class="ticker-track">
-    <span class="ticker-item"><span class="ticker-dot td-g"></span><span class="ticker-label tl-benefit">Beneficio</span> Deducción del 25% en digitalización para pymes — IS 2025</span>
-    <span class="ticker-item"><span class="ticker-dot td-r"></span><span class="ticker-label tl-risk">Riesgo</span> Ley de Morosidad: sanciones hasta 6.000€ desde el 1 de julio</span>
-    <span class="ticker-item"><span class="ticker-dot td-a"></span><span class="ticker-label tl-change">Cambio</span> Nueva base de cotización contratos parciales — nómina de mayo</span>
-    <span class="ticker-item"><span class="ticker-dot td-g"></span><span class="ticker-label tl-benefit">Beneficio</span> Bonificación 50% cuota SS — contratación indefinida sub-30</span>
-    <span class="ticker-item"><span class="ticker-dot td-a"></span><span class="ticker-label tl-change">Cambio</span> Modelo 347: umbral reducido a 3.000€ por operación</span>
-    <span class="ticker-item"><span class="ticker-dot td-r"></span><span class="ticker-label tl-risk">Riesgo</span> IVA en servicios digitales: nuevas obligaciones para marketplaces</span>
-    <span class="ticker-item"><span class="ticker-dot td-g"></span><span class="ticker-label tl-benefit">Beneficio</span> Deducción del 25% en digitalización para pymes — IS 2025</span>
-    <span class="ticker-item"><span class="ticker-dot td-r"></span><span class="ticker-label tl-risk">Riesgo</span> Ley de Morosidad: sanciones hasta 6.000€ desde el 1 de julio</span>
-    <span class="ticker-item"><span class="ticker-dot td-a"></span><span class="ticker-label tl-change">Cambio</span> Nueva base de cotización contratos parciales — nómina de mayo</span>
-    <span class="ticker-item"><span class="ticker-dot td-g"></span><span class="ticker-label tl-benefit">Beneficio</span> Bonificación 50% cuota SS — contratación indefinida sub-30</span>
-    <span class="ticker-item"><span class="ticker-dot td-a"></span><span class="ticker-label tl-change">Cambio</span> Modelo 347: umbral reducido a 3.000€ por operación</span>
-    <span class="ticker-item"><span class="ticker-dot td-r"></span><span class="ticker-label tl-risk">Riesgo</span> IVA en servicios digitales: nuevas obligaciones para marketplaces</span>
+  <div class="ticker-track" id="ticker-track">
+    <span class="ticker-item"><span class="ticker-dot td-r"></span><span class="ticker-label tl-risk">Riesgo</span> Módulos 2027: sin prórroga, el límite baja a 150.000 € · renuncia hasta el 31 de diciembre</span>
+    <span class="ticker-item"><span class="ticker-dot td-a"></span><span class="ticker-label tl-change">Cambio</span> El MEI sube al 1 % de la base de cotización en 2027</span>
+    <span class="ticker-item"><span class="ticker-dot td-a"></span><span class="ticker-label tl-change">Cambio</span> Alquileres de hasta 30 noches: IVA del 10 % desde el 1 de diciembre</span>
+    <span class="ticker-item"><span class="ticker-dot td-r"></span><span class="ticker-label tl-risk">Riesgo</span> Coche eléctrico y autoconsumo: las deducciones vencen el 31 de diciembre</span>
+    <span class="ticker-item"><span class="ticker-dot td-g"></span><span class="ticker-label tl-benefit">Beneficio</span> Nueva deducción del 10 % por alquiler de vivienda habitual (RDL 29/2026)</span>
+    <span class="ticker-item"><span class="ticker-dot td-a"></span><span class="ticker-label tl-change">Cambio</span> Factura electrónica B2B obligatoria desde el 6 de octubre de 2027 para > 8 M€</span>
+    <span class="ticker-item"><span class="ticker-dot td-r"></span><span class="ticker-label tl-risk">Riesgo</span> Módulos 2027: sin prórroga, el límite baja a 150.000 € · renuncia hasta el 31 de diciembre</span>
+    <span class="ticker-item"><span class="ticker-dot td-a"></span><span class="ticker-label tl-change">Cambio</span> El MEI sube al 1 % de la base de cotización en 2027</span>
+    <span class="ticker-item"><span class="ticker-dot td-a"></span><span class="ticker-label tl-change">Cambio</span> Alquileres de hasta 30 noches: IVA del 10 % desde el 1 de diciembre</span>
+    <span class="ticker-item"><span class="ticker-dot td-r"></span><span class="ticker-label tl-risk">Riesgo</span> Coche eléctrico y autoconsumo: las deducciones vencen el 31 de diciembre</span>
+    <span class="ticker-item"><span class="ticker-dot td-g"></span><span class="ticker-label tl-benefit">Beneficio</span> Nueva deducción del 10 % por alquiler de vivienda habitual (RDL 29/2026)</span>
+    <span class="ticker-item"><span class="ticker-dot td-a"></span><span class="ticker-label tl-change">Cambio</span> Factura electrónica B2B obligatoria desde el 6 de octubre de 2027 para > 8 M€</span>
   </div>
 </div>
 
@@ -445,6 +445,21 @@ function toggleFaq(el) {
   document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
   if (!isOpen) item.classList.add('open');
 }
+</script>
+
+<script>
+// Ticker: muestra las 6 alertas publicadas más recientes de Airtable (si falla, se quedan las de respaldo del HTML)
+(async function(){
+  try{
+    const r = await fetch('/api/alertas'); if(!r.ok) return;
+    const { alertas } = await r.json(); if(!alertas || alertas.length < 3) return;
+    const estilo = { Beneficio:['g','benefit'], Riesgo:['r','risk'], Cambio:['a','change'] };
+    const esc = t => String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const html = alertas.slice(0,6).map(a => { const [d,c] = estilo[a.tipo] || estilo.Cambio;
+      return `<span class="ticker-item"><span class="ticker-dot td-${d}"></span><span class="ticker-label tl-${c}">${esc(a.tipo||'Cambio')}</span> ${esc(a.titulo)}</span>`; }).join('');
+    document.getElementById('ticker-track').innerHTML = html + html; // duplicado para el bucle continuo
+  }catch(e){}
+})();
 </script>
 </body>
 </html>
