@@ -110,6 +110,9 @@ textarea::placeholder{color:var(--ink3)}
   .burbuja{max-width:92%}
 }
 </style>
+  <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  <script defer src="/js/cta.js"></script>
 </head>
 <body>
 
@@ -277,7 +280,7 @@ async function enviar(){
     const cont = document.getElementById('mensajes');
     const aviso = document.createElement('div');
     aviso.className = 'limite-aviso';
-    aviso.innerHTML = '⏰ Has alcanzado el límite de <strong>' + MAX_CONSULTAS + ' consultas diarias</strong>. Vuelve mañana o actualiza tu plan para consultas ilimitadas.';
+    aviso.innerHTML = '⏰ Has alcanzado el límite de <strong>' + MAX_CONSULTAS + ' consultas diarias</strong>. Vuelve mañana. Durante la beta el número de consultas es limitado.';
     cont.appendChild(aviso);
     return;
   }

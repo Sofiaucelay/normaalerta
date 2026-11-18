@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Alertas del BOE — NormaAlerta</title>
-<meta name="description" content="Alertas del BOE en lenguaje claro: qué cambia, si te afecta y qué hacer. Actualizado automáticamente.">
+<meta name="description" content="Alertas del BOE y de Hacienda en lenguaje claro: qué cambia, a quién afecta y qué hacer. Para autónomos y pymes.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -222,6 +222,28 @@
     color: var(--green-dark);
   }
 
+  .alerta-fuente {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #6B6B63;
+  }
+  .alerta-fuente a { color: var(--green-dark); }
+
+  .suscribir-box {
+    margin: 40px 0 0;
+    padding: 24px;
+    border-radius: 12px;
+    background: var(--cream-soft);
+    border: 1px solid rgba(26,122,74,.2);
+    text-align: center;
+  }
+  .suscribir-box h2 { font-size: 20px; margin: 0 0 8px; }
+  .suscribir-box p { font-size: 15px; margin: 0 0 16px; color: #4A4A44; }
+  .suscribir-box a {
+    display: inline-block; padding: 12px 22px; border-radius: 10px;
+    background: var(--green); color: #fff; text-decoration: none; font-weight: 600;
+  }
+
   .alerta-afecta strong {
     font-weight: 600;
   }
@@ -254,6 +276,8 @@
     .alerta-card { padding: 20px; }
   }
 </style>
+  <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -267,11 +291,12 @@
 </header>
 
 <main>
-  <div class="eyebrow">Actualizado automáticamente desde el BOE</div>
+  <div class="eyebrow">Seleccionadas del BOE y de Hacienda · En lenguaje claro</div>
   <h1>Esto es lo que <em>cambia</em><br>para tu negocio</h1>
   <p class="subtitle">
-    Filtramos el BOE para que no tengas que leerlo tú. Cada alerta te dice qué ha cambiado,
-    si te afecta y qué hacer al respecto — sin jerga legal.
+    Seleccionamos los cambios que afectan a autónomos y pymes para que no tengas que leer el BOE.
+    Cada alerta te dice qué ha cambiado, a quién afecta y qué conviene hacer, sin jerga legal.
+    Es información general: para tu caso concreto, consulta con tu gestor.
   </p>
 
   <div class="filters" id="filters">
@@ -290,6 +315,12 @@
       <div class="spinner"></div>
       Cargando alertas del BOE…
     </div>
+  </div>
+
+  <div class="suscribir-box">
+    <h2>Recíbelas cada semana en tu email</h2>
+    <p>Un resumen breve con los cambios y los plazos que importan a autónomos y pymes. Gratis, sin spam.</p>
+    <a href="/lista-espera.html">Apuntarme gratis →</a>
   </div>
 </main>
 
@@ -321,6 +352,19 @@
     return fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
   }
 
+  // Fuente oficial y fecha de comprobación (campos "Fuente oficial" y "Comprobado el" en Airtable)
+  function fuenteHTML(a) {
+    const partes = [];
+    if (a.fuente && /^https:\/\//.test(a.fuente)) {
+      const url = a.fuente.replace(/"/g, '%22');
+      let host = '';
+      try { host = new URL(a.fuente).hostname.replace(/^www\./, ''); } catch (e) {}
+      partes.push(`Fuente oficial: <a href="${url}" target="_blank" rel="noopener">${host || 'ver documento'}</a>`);
+    }
+    if (a.comprobado) partes.push(`Comprobado el ${formatearFecha(a.comprobado)}`);
+    return partes.length ? `<div class="alerta-fuente">${partes.join(' · ')}</div>` : '';
+  }
+
   function renderAlertas() {
     const contenido = document.getElementById('contenido');
     const contador = document.getElementById('contador');
@@ -346,6 +390,7 @@
         <h2 class="alerta-titulo">${a.titulo}</h2>
         <p class="alerta-desc">${a.descripcion}</p>
         ${a.queHacer ? `<div class="alerta-afecta"><strong>Qué hacer:</strong> ${a.queHacer}</div>` : ''}
+        ${fuenteHTML(a)}
       </article>
     `).join('')}</div>`;
   }
