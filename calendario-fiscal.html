@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendario Fiscal Personalizado 2027 para Autónomos y Pymes | NormaAlerta</title>
+  <meta name="description" content="Tu calendario fiscal con solo los modelos que te tocan (303, 130, 111, 115, 390, 347, Renta, 200, 202…), con fechas ajustadas a festivos, último día para domiciliar y recordatorios para tu calendario. Gratis.">
+  <meta name="keywords" content="calendario fiscal 2027 autónomos, calendario del contribuyente 2027, plazos modelo 303 2027, cuándo se presenta el modelo 130, fechas impuestos autónomos, recordatorio impuestos trimestrales">
+  <meta name="author" content="NormaAlerta">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://normaalerta.com/calendario-fiscal.html">
+  <meta property="og:title" content="Calendario Fiscal Personalizado 2027 | NormaAlerta">
+  <meta property="og:description" content="Solo los modelos que te tocan, con las fechas reales y recordatorios para tu calendario.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://normaalerta.com/calendario-fiscal.html">
+  <meta property="og:site_name" content="NormaAlerta">
+  <meta property="og:locale" content="es_ES">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Calendario Fiscal Personalizado 2027 | NormaAlerta">
+  <meta name="twitter:description" content="Solo los modelos que te tocan, con las fechas reales y recordatorios para tu calendario.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{--green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;--ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;--paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;--border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);--amber-light:#fef3c7;--red:#dc2626;--red-light:#fef2f2;--blue-light:#eff6ff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.page{max-width:860px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-header{margin-bottom:2rem;text-align:center}
+.modelo-badge{display:inline-block;background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;font-family:'DM Mono',monospace;margin-bottom:.75rem}
+.page-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;letter-spacing:-.5px;margin-bottom:.5rem}
+.page-title em{font-style:italic;color:var(--green)}
+.page-subtitle{font-size:14px;color:var(--ink3);max-width:580px;margin:0 auto}
+.section{background:var(--white);border:1px solid var(--border);border-radius:14px;margin-bottom:1rem;overflow:hidden}
+.section-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--green-light)}
+.section-title{font-size:15px;font-weight:500;flex:1}
+.section-subtitle{font-size:12px;color:var(--ink3);margin-top:1px}
+.section-body{padding:1.25rem}
+.input-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field[hidden]{display:none}
+.field label{font-size:12px;font-weight:500;color:var(--ink3)}
+.field select{padding:.5rem .75rem;border:1px solid var(--border2);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--white);width:100%}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.check{display:flex;gap:9px;align-items:flex-start;padding:.55rem .7rem;border:1px solid var(--border2);border-radius:9px;font-size:13px;cursor:pointer;background:var(--white)}
+.check[hidden]{display:none}
+.check input{margin-top:3px;accent-color:var(--green)}
+.check small{display:block;color:var(--ink3);font-size:11.5px}
+.hero{background:var(--ink);color:var(--white);border-radius:14px;padding:1.4rem;margin:1rem 0}
+.hero .k{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.5)}
+.hero .t{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;line-height:1.25;margin:.2rem 0}
+.hero .s{font-size:13px;color:rgba(255,255,255,.65)}
+.hero .dias{font-family:'DM Mono',monospace;color:#6ee7b7}
+.acciones{display:flex;gap:8px;flex-wrap:wrap;margin-top:1rem}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:.55rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:1px solid rgba(255,255,255,.25);background:transparent;color:var(--white)}
+.btn-primary{background:var(--green);border-color:var(--green)}
+.mes{margin-bottom:1rem}
+.mes-t{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3);font-weight:500;margin:0 0 .4rem .2rem}
+.ev{display:grid;grid-template-columns:64px 1fr;gap:12px;padding:.75rem .9rem;background:var(--white);border:1px solid var(--border);border-radius:10px;margin-bottom:6px}
+.ev-d{text-align:center;border-right:1px solid var(--border);padding-right:10px}
+.ev-d .n{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;line-height:1.1}
+.ev-d .w{font-size:11px;color:var(--ink3)}
+.ev-t{font-size:14px;font-weight:500}
+.ev-x{font-size:12.5px;color:var(--ink2)}
+.ev-dom{font-size:12px;color:var(--green-dark);margin-top:2px}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:4px;margin-right:6px;font-weight:500;vertical-align:1px}
+.tag.iva{background:#dbeafe;color:#1e40af}.tag.irpf{background:#fef3c7;color:#92400e}.tag.ret{background:#ede9fe;color:#5b21b6}
+.tag.info{background:var(--paper2);color:var(--ink2)}.tag.is{background:#fce7f3;color:#9d174d}.tag.ss{background:var(--green-light);color:var(--green-dark)}
+.tag.mercantil{background:#e0e7ff;color:#3730a3}.tag.censal{background:#ffedd5;color:#9a3412}
+.info-box{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:.7rem 1rem;margin:.5rem 0;font-size:12.5px;color:#92400e;display:flex;gap:8px;align-items:flex-start}
+.info-box.blue{background:var(--blue-light);border-color:rgba(37,99,235,.2);color:#1e3a8a}
+.fuentes{font-size:12px;color:var(--ink3)}
+.fuentes a{color:var(--green)}
+.fuentes li{margin:.2rem 0 .2rem 1rem}
+.revisado{font-size:11.5px;color:var(--ink3);text-align:center;margin-top:1rem}
+@media(max-width:640px){.input-grid,.checks{grid-template-columns:1fr}nav{padding:0 1rem}}
+@media print{nav,.no-print{display:none}.ev{break-inside:avoid}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="/">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/><circle cx="74" cy="22" r="13" fill="#f59e0b"/><text x="74" y="27" font-family="Arial" font-size="15" font-weight="700" fill="white" text-anchor="middle">!</text></svg>
+    NormaAlerta <span class="nav-badge">Calendario fiscal</span>
+  </a>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="modelo-badge">CALENDARIO PERSONALIZADO</div>
+    <h1 class="page-title">Tu calendario fiscal,<br><em>solo con lo que te toca</em></h1>
+    <p class="page-subtitle">Marca tu situación y te sale la lista de modelos de los próximos 12 meses, con la fecha real (si cae en festivo o fin de semana, se corre), el último día para domiciliar el pago y un archivo para añadirlo a tu calendario con aviso 5 días antes.</p>
+  </div>
+
+  <div class="section no-print">
+    <div class="section-header"><div class="section-icon">👤</div><div><div class="section-title">Tu situación</div><div class="section-subtitle">Se guarda en este navegador para la próxima vez</div></div></div>
+    <div class="section-body">
+      <div class="input-grid">
+        <div class="field">
+          <label for="forma">Forma jurídica</label>
+          <select id="forma">
+            <option value="autonomo">Autónomo (persona física)</option>
+            <option value="sociedad">Sociedad (SL, SA, cooperativa…)</option>
+            <option value="cb">Comunidad de bienes o sociedad civil</option>
+          </select>
+        </div>
+        <div class="field" id="f-irpf">
+          <label for="irpf">Cómo tributas en el IRPF</label>
+          <select id="irpf">
+            <option value="ed">Estimación directa (normal o simplificada)</option>
+            <option value="modulos">Módulos (estimación objetiva)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="iva">Régimen de IVA</label>
+          <select id="iva">
+            <option value="general">Régimen general</option>
+            <option value="simplificado">Régimen simplificado (módulos de IVA)</option>
+            <option value="recargo">Recargo de equivalencia (comercio minorista)</option>
+            <option value="exento">Actividad exenta de IVA (sanitaria, formación, seguros…)</option>
+          </select>
+        </div>
+      </div>
+      <div class="checks">
+        <label class="check" id="c-ret70"><input type="checkbox" id="ret70"> <span>Soy profesional y el año pasado al menos el 70 % de mis ingresos llevaron retención<small>Entonces no presentas el modelo 130</small></span></label>
+        <label class="check"><input type="checkbox" id="retenciones111"> <span>Tengo empleados o pago a profesionales con retención<small>Modelos 111 y 190</small></span></label>
+        <label class="check"><input type="checkbox" id="alquiler115"> <span>Pago el alquiler de un local con retención<small>Modelos 115 y 180</small></span></label>
+        <label class="check"><input type="checkbox" id="terceros347"> <span>Algún cliente o proveedor me supera 3.005,06 € al año<small>Modelo 347</small></span></label>
+        <label class="check"><input type="checkbox" id="intracom"> <span>Compro o vendo a empresas de otros países de la UE<small>Modelo 349</small></span></label>
+        <label class="check"><input type="checkbox" id="reta"> <span>Cotizo como autónomo (RETA)<small>Fechas para cambiar la base de cotización</small></span></label>
+        <label class="check" id="c-202" hidden><input type="checkbox" id="pagos202"> <span>Mi último Impuesto sobre Sociedades salió a pagar<small>Pagos fraccionados, modelo 202</small></span></label>
+        <label class="check" id="c-merc" hidden><input type="checkbox" id="mercantil"> <span>Recuérdame también las cuentas anuales y los libros<small>Registro Mercantil</small></span></label>
+        <label class="check"><input type="checkbox" id="grande"> <span>Facturo más de 6 millones o estoy en el SII o el REDEME<small>Tus modelos son mensuales</small></span></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero" id="hero"></div>
+  <div id="avisos"></div>
+  <div id="lista"></div>
+
+  <div class="info-box blue">ℹ️ <span>Las fechas se calculan con las reglas de cada modelo y los días inhábiles de la Agencia Tributaria (sábados, domingos, festivos nacionales y de la Comunidad de Madrid, donde está su departamento de informática). Para 2027 ya están publicados los festivos nacionales y autonómicos. Cuando la AEAT publique su calendario del contribuyente de 2027, compruébalo con él.</span></div>
+
+  <div class="section">
+    <div class="section-header"><div class="section-icon">📚</div><div><div class="section-title">Fuentes</div><div class="section-subtitle">Revisadas el 23 de noviembre de 2026</div></div></div>
+    <div class="section-body fuentes">
+      <ul>
+        <li><a href="https://sede.agenciatributaria.gob.es/Sede/ayuda/calendario-contribuyente.html" target="_blank" rel="noopener">Calendario del contribuyente de la Agencia Tributaria</a>, incluidos los plazos de domiciliación bancaria de 2026, con los que se ha contrastado el cálculo.</li>
+        <li>Plazos de cada modelo: art. 71 del Reglamento del IVA (303 y 390), arts. 108 a 110 del Reglamento del IRPF (111, 115, 130 y 131) y art. 40 de la Ley del Impuesto sobre Sociedades (202).</li>
+        <li>Festivos 2027: Resolución de 8 de octubre de 2026 de la Dirección General de Trabajo (BOE de 13 de octubre) y Decreto 82/2026 de la Comunidad de Madrid.</li>
+        <li>Cambio de base de cotización: art. 45 del Real Decreto 2064/1995, en la redacción del Real Decreto-ley 13/2022.</li>
+        <li>Cuentas anuales: arts. 164, 253 y 279 de la Ley de Sociedades de Capital.</li>
+      </ul>
+      <p style="margin-top:.5rem">Herramienta orientativa. No sustituye a tu gestoría ni al calendario oficial de la AEAT.</p>
+    </div>
+  </div>
+  <p class="revisado">Revisado el 23 de noviembre de 2026 · NormaAlerta</p>
+</div>
+
+<script src="/js/calendario-fiscal.js"></script>
+<script>
+const C = window.NACal;
+const CAMPOS_SELECT = ['forma', 'irpf', 'iva'];
+const CAMPOS_CHECK = ['ret70', 'retenciones111', 'alquiler115', 'terceros347', 'intracom', 'reta', 'pagos202', 'mercantil', 'grande'];
+const CLAVE = 'na_calendario_perfil_v1';
+const ETIQUETA = { iva: 'IVA', irpf: 'IRPF', ret: 'Retenciones', info: 'Informativa', is: 'Sociedades', ss: 'Seg. Social', mercantil: 'Mercantil', censal: 'Censal' };
+const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const DSEM = ['dom','lun','mar','mié','jue','vie','sáb'];
+let eventosActuales = [];
+
+function hoyUTC(){ const n = new Date(); return C.D(n.getFullYear(), n.getMonth() + 1, n.getDate()); }
+
+function leerPerfil(){
+  const p = {};
+  CAMPOS_SELECT.forEach(k => p[k] = document.getElementById(k).value);
+  CAMPOS_CHECK.forEach(k => p[k] = document.getElementById(k).checked);
+  // Coherencia: módulos e IVA simplificado/recargo solo para personas físicas y entidades en atribución
+  if (p.forma === 'sociedad') { p.irpf = 'ed'; p.ret70 = false; if (p.iva === 'simplificado' || p.iva === 'recargo') p.iva = 'general'; }
+  if (p.forma !== 'autonomo') p.ret70 = false;
+  if (p.forma !== 'sociedad') { p.pagos202 = false; p.mercantil = false; }
+  if (p.irpf === 'modulos') p.ret70 = false;
+  return p;
+}
+function ajustarFormulario(){
+  const forma = document.getElementById('forma').value;
+  document.getElementById('f-irpf').hidden = forma !== 'autonomo';
+  document.getElementById('c-ret70').hidden = !(forma === 'autonomo' && document.getElementById('irpf').value === 'ed');
+  document.getElementById('c-202').hidden = forma !== 'sociedad';
+  document.getElementById('c-merc').hidden = forma !== 'sociedad';
+  const iva = document.getElementById('iva');
+  ['simplificado', 'recargo'].forEach(v => { const o = iva.querySelector(`option[value=${v}]`); o.disabled = forma === 'sociedad'; });
+  if (forma === 'sociedad' && (iva.value === 'simplificado' || iva.value === 'recargo')) iva.value = 'general';
+}
+function guardar(p){ try { localStorage.setItem(CLAVE, JSON.stringify(p)); } catch (e) {} }
+function cargar(){
+  let p = null;
+  try { p = JSON.parse(localStorage.getItem(CLAVE) || 'null'); } catch (e) {}
+  if (!p) p = { forma: 'autonomo', irpf: 'ed', iva: 'general', reta: true };
+  CAMPOS_SELECT.forEach(k => { if (p[k]) document.getElementById(k).value = p[k]; });
+  CAMPOS_CHECK.forEach(k => document.getElementById(k).checked = !!p[k]);
+}
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c])); }
+
+function pintar(){
+  ajustarFormulario();
+  const p = leerPerfil(); guardar(p);
+  const hoy = hoyUTC();
+  const hasta = C.D(hoy.getUTCFullYear() + 1, hoy.getUTCMonth() + 1, Math.min(hoy.getUTCDate(), 28));
+  eventosActuales = C.generar(p, hoy, hasta);
+
+  // Próximo vencimiento
+  const prox = eventosActuales[0];
+  const hero = document.getElementById('hero');
+  if (prox) {
+    const dias = Math.round((prox.fecha - hoy) / 86400000);
+    const mismos = eventosActuales.filter(e => +e.fecha === +prox.fecha);
+    hero.innerHTML = `<div class="k">Próximo vencimiento</div>
+      <div class="t">${esc(mismos.map(e => e.titulo).join(' · '))}</div>
+      <div class="s">${esc(C.fechaLarga(prox.fecha))} · <span class="dias">${dias === 0 ? 'hoy' : dias === 1 ? 'mañana' : 'dentro de ' + dias + ' días'}</span>${prox.domiciliacion ? ' · domiciliación hasta el ' + esc(C.fechaCorta(prox.domiciliacion)) : ''}</div>
+      <div class="acciones no-print">
+        <button class="btn btn-primary" onclick="descargarICS()">📅 Añadir a mi calendario (.ics)</button>
+        <button class="btn" onclick="window.print()">🖨 Imprimir o guardar en PDF</button>
+      </div>`;
+  } else {
+    hero.innerHTML = '<div class="k">Próximo vencimiento</div><div class="t">No hay vencimientos con estos datos</div>';
+  }
+
+  document.getElementById('avisos').innerHTML = C.avisos(p).map(a => `<div class="info-box">⚠️ <span>${esc(a)}</span></div>`).join('');
+
+  // Lista por meses
+  const grupos = new Map();
+  eventosActuales.forEach(e => {
+    const k = `${MESES[e.fecha.getUTCMonth()]} ${e.fecha.getUTCFullYear()}`;
+    if (!grupos.has(k)) grupos.set(k, []);
+    grupos.get(k).push(e);
+  });
+  let html = '';
+  grupos.forEach((evs, mes) => {
+    html += `<div class="mes"><div class="mes-t">${mes}</div>` + evs.map(e => `
+      <div class="ev">
+        <div class="ev-d"><div class="n">${e.fecha.getUTCDate()}</div><div class="w">${DSEM[e.fecha.getUTCDay()]}</div></div>
+        <div>
+          <div class="ev-t"><span class="tag ${e.cat}">${ETIQUETA[e.cat] || ''}</span>${esc(e.titulo)}</div>
+          <div class="ev-x">${esc(e.detalle)} · ${esc(e.plazo)}</div>
+          ${e.domiciliacion ? `<div class="ev-dom">Si domicilias el pago: hasta el ${esc(C.fechaLarga(e.domiciliacion))}</div>` : ''}
+        </div>
+      </div>`).join('') + '</div>';
+  });
+  document.getElementById('lista').innerHTML = html;
+}
+
+function descargarICS(){
+  const blob = new Blob([C.aICS(eventosActuales)], { type: 'text/calendar;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'calendario-fiscal-normaalerta.ics';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+cargar();
+document.querySelectorAll('select, input[type=checkbox]').forEach(el => el.addEventListener('change', pintar));
+pintar();
+</script>
+</body>
+</html>

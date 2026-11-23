@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>¿Cuánto Apartar Cada Mes para Impuestos? Calculadora Autónomo | NormaAlerta</title>
-  <meta name="description" content="Calcula exactamente cuánto apartar cada mes para no llevarte sustos con Hacienda. SS, IRPF trimestral y ajuste anual. Para autónomos en España 2026. Gratis.">
+  <meta name="description" content="Calcula exactamente cuánto apartar cada mes para no llevarte sustos con Hacienda. SS, IVA, IRPF trimestral y ajuste anual. Para autónomos en España 2026. Gratis.">
   <meta name="keywords" content="cuánto apartar para impuestos autónomo, provisión impuestos autónomos, cuánto guardar para hacienda autónomo, reserva trimestral autónomos 2026">
   <meta name="author" content="NormaAlerta">
   <meta name="robots" content="index, follow">
@@ -66,7 +66,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
 .rh-label{font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.375rem}
 .rh-num{font-family:'DM Mono',monospace;font-size:52px;font-weight:500;color:#4ade80;line-height:1;margin-bottom:.25rem}
 .rh-sub{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:1.5rem}
-.rh-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1rem}
+.rh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1rem}
 .rhc{background:rgba(255,255,255,.07);border-radius:8px;padding:.75rem}
 .rhc-label{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:3px}
 .rhc-val{font-size:13px;font-weight:500;font-family:'DM Mono',monospace;color:rgba(255,255,255,.9)}
@@ -121,7 +121,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
   <div class="page-header">
     <div class="modelo-badge">PROVISIÓN TRIMESTRAL</div>
     <h1 class="page-title">¿Cuánto tengo que apartar<br>cada mes para <em>no llevarte sustos</em>?</h1>
-    <p class="page-subtitle">La herramienta que todo autónomo necesita. Introduce lo que facturas y calcula exactamente cuánto apartar para SS, IRPF trimestral y la declaración anual.</p>
+    <p class="page-subtitle">La herramienta que todo autónomo necesita. Introduce lo que facturas y calcula cuánto apartar para la cuota de autónomo, el IVA del 303 y el IRPF (pagos del 130 y Renta).</p>
   </div>
 
   <!-- INPUTS -->
@@ -149,7 +149,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
             <input type="number" id="gastos" value="600" min="0" step="50" oninput="calcular()">
             <span class="suffix">€</span>
           </div>
-          <span class="input-note">Gestoría, SS, software, material, teléfono...</span>
+          <span class="input-note">Sin IVA: gestoría, SS, software, material, teléfono...</span>
         </div>
         <div class="field">
           <label>Tu cuota SS mensual</label>
@@ -160,12 +160,12 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
           <span class="input-note">Ya incluida en gastos o por separado — evita contarla dos veces</span>
         </div>
         <div class="field">
-          <label>IRPF estimado anual (%)</label>
+          <label>Tipo efectivo de IRPF que esperas en la Renta (%)</label>
           <div class="field-wrap">
             <input type="number" id="irpf_pct" value="20" min="0" max="45" step="1" oninput="calcular()">
             <span class="suffix">%</span>
           </div>
-          <span class="input-note">Tu tipo efectivo estimado — entre 15% y 30% para la mayoría</span>
+          <span class="input-note">Lo que de verdad pagarás en la Renta sobre tu beneficio. El pago trimestral del 130 es siempre un 20 %</span>
         </div>
         <div class="field">
           <label>¿Tienes retenciones en tus facturas?</label>
@@ -174,6 +174,23 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
             <span class="suffix">€</span>
           </div>
           <span class="input-note">Suma de retenciones del 15% o 7% que te retienen tus clientes este mes</span>
+        </div>
+        <div class="field">
+          <label>Tipo de IVA de tus facturas</label>
+          <select id="iva_tipo" onchange="calcular()" style="padding:.55rem .75rem;border:1px solid var(--border2);border-radius:8px;font-size:14px;color:var(--ink);background:var(--white);outline:none;width:100%">
+            <option value="21">21 % (general)</option>
+            <option value="10">10 % (reducido)</option>
+            <option value="4">4 % (superreducido)</option>
+            <option value="0">Sin IVA (actividad exenta o clientes de fuera de España)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>IVA de tus gastos del mes</label>
+          <div class="field-wrap">
+            <input type="number" id="iva_soportado" value="63" min="0" step="1" oninput="calcular()">
+            <span class="suffix">€</span>
+          </div>
+          <span class="input-note">El IVA que pagas en facturas de gastos de la actividad (deducible en el 303)</span>
         </div>
         <div class="field">
           <label>¿Incluiste la SS en los gastos arriba?</label>
@@ -197,6 +214,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
     <div class="rh-grid">
       <div class="rhc"><div class="rhc-label">Cuota SS</div><div class="rhc-val" id="rhc-ss">—</div></div>
       <div class="rhc"><div class="rhc-label">IRPF mensual</div><div class="rhc-val" id="rhc-irpf">—</div></div>
+      <div class="rhc"><div class="rhc-label">IVA (modelo 303)</div><div class="rhc-val" id="rhc-iva">—</div></div>
       <div class="rhc"><div class="rhc-label">Retenciones ya pagadas</div><div class="rhc-val" id="rhc-ret">—</div></div>
       <div class="rhc"><div class="rhc-label">Lo que es tuyo</div><div class="rhc-val" id="rhc-neto">—</div></div>
     </div>
@@ -258,7 +276,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
     <div class="section-body">
       <div class="cal-grid" id="cal-grid"></div>
       <div class="info-box amber" style="margin-top:1rem">
-        ⚠️ <span>El Modelo 130 se calcula sobre el <strong>acumulado anual</strong>, no solo del trimestre. Si en el 1T pagaste de más, el 2T puede salir a 0€. Esta estimación asume que es el primer trimestre del año o que partes de cero.</span>
+        ⚠️ <span>El Modelo 130 es el 20 % del rendimiento neto <strong>acumulado</strong> desde enero, menos retenciones y pagos de trimestres anteriores. Con un nivel de facturación estable sale aproximadamente lo mismo cada trimestre, que es lo que muestra esta estimación. Si al menos el 70 % de tus ingresos profesionales del año pasado llevaron retención, no presentas el 130.</span>
       </div>
       <div class="info-box blue" style="margin-top:.75rem">
         ℹ️ <span>Si tus clientes te retienen el 15% en factura, esas retenciones ya son anticipos del IRPF y se descuentan del 130. Si tienes más retenciones que cuota del 130, <strong>puede salirte a 0€ a pagar trimestralmente</strong> y ajustar en la renta anual.</span>
@@ -268,6 +286,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
 
 </div>
 
+<script src="/js/fiscal-2026.js"></script>
 <script>
 function fmt(n){ return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €'; }
 function fmtPct(n){ return (parseFloat(n)||0).toFixed(1)+'%'; }
@@ -282,25 +301,32 @@ function calcular(){
   const retenciones = v('retenciones');
   const ss_en_gastos = document.getElementById('ss_en_gastos').value;
 
+  const F = window.NA2026;
+  const iva_tipo = parseFloat(document.getElementById('iva_tipo').value)/100;
+  const iva_sop = v('iva_soportado');
+  // IVA del 303: repercutido en tus facturas menos el soportado deducible
+  const iva_rep = facturacion * iva_tipo;
+  const iva_neto = iva_rep - iva_sop;
+  const iva_apartar = Math.max(0, iva_neto);
+
   // Si la SS ya está en gastos, no sumarla de nuevo
   const gastos_totales = ss_en_gastos === 'si' ? gastos_raw : gastos_raw + cuota_ss;
 
   // Rendimiento neto del mes
   const rn_mes = Math.max(0, facturacion - gastos_totales);
 
-  // GDJ estimado mensual (5% anual / 12 meses, máx 2000/12)
-  const gdj_mes = Math.min(rn_mes * 0.05, 2000/12);
+  // Gastos de difícil justificación (estimación directa simplificada): 5 % del rendimiento neto, máx. 2.000 €/año
+  const gdj_mes = Math.min(rn_mes * F.GDJ.pct, F.GDJ.limiteAnual/12);
   const rn_neto = Math.max(0, rn_mes - gdj_mes);
 
-  // IRPF mensual que deberías apartar
+  // IRPF que pagarás de verdad (tipo efectivo que indica el usuario)
   const irpf_mes = rn_neto * irpf_pct;
 
-  // Neto que ya te han retenido los clientes (no tienes que apartar esto)
-  // Las retenciones ya son anticipos — las descontamos de lo que debes apartar
+  // Las retenciones de tus clientes ya son anticipos del IRPF
   const irpf_a_apartar = Math.max(0, irpf_mes - retenciones);
 
   // Total a apartar
-  const total_apartar = cuota_ss + irpf_a_apartar;
+  const total_apartar = cuota_ss + irpf_a_apartar + iva_apartar;
 
   // Lo que es tuyo
   const neto_real = facturacion - gastos_totales - irpf_mes;
@@ -312,7 +338,8 @@ function calcular(){
 
   // ── ACTUALIZAR UI ──
   setText('rh-total', fmt(total_apartar));
-  setText('rh-sub', `SS ${fmt(cuota_ss)} + IRPF ${fmt(irpf_a_apartar)}${retenciones > 0 ? ` (ya te retienen ${fmt(retenciones)})` : ''}`);
+  setText('rh-sub', `SS ${fmt(cuota_ss)} + IVA ${fmt(iva_apartar)} + IRPF ${fmt(irpf_a_apartar)}${retenciones > 0 ? ` (ya te retienen ${fmt(retenciones)})` : ''}${iva_neto < 0 ? ` · este mes el IVA te sale a tu favor (${fmt(-iva_neto)})` : ''}`);
+  setText('rhc-iva', fmt(iva_apartar));
   setText('rhc-ss', fmt(cuota_ss));
   setText('rhc-irpf', fmt(irpf_a_apartar));
   setText('rhc-ret', retenciones > 0 ? fmt(retenciones) : '—');
@@ -348,15 +375,14 @@ function calcular(){
   }
   setText('consejo-texto', consejo);
 
-  // Calendario trimestral
-  const irpf_trimestral = irpf_mes * 3;
-  const retenciones_trim = retenciones * 3;
-  const modelo130_trim = Math.max(0, irpf_trimestral - retenciones_trim);
+  // Calendario trimestral: 303 = IVA neto del trimestre; 130 = 20 % del rendimiento neto − retenciones
+  const iva_trim = iva_neto * 3;
+  const modelo130_trim = Math.max(0, rn_neto * 3 * F.PAGO_FRACCIONADO_130 - retenciones * 3);
   const trimestres = [
     { label:'1T', plazo:'20 abril', modelos:'303 · 130 · 111 · 115' },
     { label:'2T', plazo:'20 julio', modelos:'303 · 130 · 111 · 115' },
     { label:'3T', plazo:'20 octubre', modelos:'303 · 130 · 111 · 115' },
-    { label:'4T', plazo:'30 enero (111 y 115: 20 enero)', modelos:'303 · 130 · 111 · 115' },
+    { label:'4T', plazo:'30 enero, o siguiente día hábil (111 y 115: 20 enero)', modelos:'303 · 130 · 111 · 115' },
   ];
   const cal = document.getElementById('cal-grid');
   const hoy = new Date();
@@ -368,7 +394,8 @@ function calcular(){
     <div class="cal-card ${i === proximoT ? 'proximo' : ''}">
       <div class="cc-trimestre">${t.label} ${anioT(i)}${i === proximoT ? ' · Próximo' : ''}</div>
       <div class="cc-plazo">📅 ${t.plazo}</div>
-      <div class="cc-importe">${fmt(modelo130_trim)}</div>
+      <div class="cc-importe">${fmt(Math.max(0, iva_trim) + modelo130_trim)}</div>
+      <div class="cc-modelos">303: ${iva_trim >= 0 ? fmt(iva_trim) : 'a compensar ' + fmt(-iva_trim)} · 130: ${fmt(modelo130_trim)}</div>
       <div class="cc-modelos">${t.modelos}</div>
     </div>
   `).join('');
@@ -381,6 +408,8 @@ function resetForm(){
   document.getElementById('irpf_pct').value = 20;
   document.getElementById('retenciones').value = 0;
   document.getElementById('ss_en_gastos').value = 'si';
+  document.getElementById('iva_tipo').value = '21';
+  document.getElementById('iva_soportado').value = 63;
   calcular();
 }
 

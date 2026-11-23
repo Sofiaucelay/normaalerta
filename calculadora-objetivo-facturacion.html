@@ -252,6 +252,8 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
     </div>
   </div>
 
+  <div id="aviso-reta" style="display:none;background:#fef3c7;border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12.5px;color:#92400e"></div>
+
   <!-- RESULTADO PRINCIPAL -->
   <div class="resultado-principal" id="resultado-box">
     <div class="rp-label">Facturación mensual que necesitas</div>
@@ -402,6 +404,7 @@ nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:ce
 
 </div>
 
+<script src="/js/fiscal-2026.js"></script>
 <script>
 function fmt(n){ return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €'; }
 function fmtN(n){ return (parseFloat(n)||0).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}); }
@@ -434,6 +437,20 @@ function calcular(){
     : sueldo + gastos + ss;
 
   facturacionNecesaria = facturacion;
+
+  // Coherencia con la cuota de autónomo 2026: el tramo depende del rendimiento neto
+  // (rendimiento + cuotas, menos un 7 % de gastos genéricos; art. 308 LGSS)
+  const avisoReta = document.getElementById('aviso-reta');
+  if (window.NA2026 && avisoReta) {
+    const F = window.NA2026;
+    const rdtoReta = F.rendimientoComputableReta((facturacion - gastos - ss) * 12, ss * 12, false) / 12;
+    const tramo = F.tramoReta(rdtoReta);
+    const cuotaMin = F.cuotaReta(tramo.baseMin);
+    if (ss > 0 && ss + 0.5 < cuotaMin) {
+      avisoReta.style.display = 'block';
+      avisoReta.innerHTML = `⚠️ Con esta facturación tu rendimiento para la Seguridad Social sería de unos ${fmt(rdtoReta)} al mes (tramo ${tramo.num} de 2026), y la cuota mínima de ese tramo es de ${fmt(cuotaMin)}. Has puesto ${fmt(ss)}: sube la cuota para que el cálculo sea realista (salvo que tengas tarifa plana u otra bonificación).`;
+    } else { avisoReta.style.display = 'none'; }
+  }
 
   const beneficio = facturacion - gastos - ss;
   const irpf_euro = beneficio * irpf_pct;

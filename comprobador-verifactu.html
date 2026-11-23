@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Me Afecta Verifactu? Comprobador 2027 | NormaAlerta</title>
+  <meta name="description" content="Comprueba en 1 minuto si te afecta Verifactu y desde cuándo: fechas vigentes en el BOE (enero y julio de 2027), el aplazamiento anunciado a 2028, Excel y Word, y factura electrónica B2B. Gratis.">
+  <meta name="keywords" content="me afecta verifactu, verifactu autónomos 2027, verifactu excel word, cuándo es obligatorio verifactu, verifactu aplazamiento 2028, factura electrónica obligatoria b2b">
+  <meta name="author" content="NormaAlerta">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://normaalerta.com/comprobador-verifactu.html">
+  <meta property="og:title" content="¿Me Afecta Verifactu? Comprobador 2027 | NormaAlerta">
+  <meta property="og:description" content="Comprueba en 1 minuto si te afecta Verifactu y desde cuándo, con las fechas vigentes del BOE y el aplazamiento anunciado.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://normaalerta.com/comprobador-verifactu.html">
+  <meta property="og:site_name" content="NormaAlerta">
+  <meta property="og:locale" content="es_ES">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="¿Me Afecta Verifactu? Comprobador 2027 | NormaAlerta">
+  <meta name="twitter:description" content="Comprueba en 1 minuto si te afecta Verifactu y desde cuándo, con las fechas vigentes del BOE y el aplazamiento anunciado.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root{--green:#1a7a4a;--green-mid:#22a07a;--green-light:#e0f0ea;--green-dark:#0f5235;--ink:#1c1b18;--ink2:#4a4944;--ink3:#8c8b84;--paper:#f7f5ee;--paper2:#edeae0;--white:#ffffff;--border:rgba(28,27,24,0.1);--border2:rgba(28,27,24,0.18);--amber:#b45309;--amber-light:#fef3c7;--red:#dc2626;--red-light:#fef2f2;--blue-light:#eff6ff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh}
+nav{background:var(--ink);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{font-size:17px;font-weight:500;color:var(--white);display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo svg{width:24px;height:24px}
+.nav-badge{font-size:11px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.7)}
+.page{max-width:800px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.page-header{margin-bottom:2rem;text-align:center}
+.modelo-badge{display:inline-block;background:var(--green);color:var(--white);font-size:12px;font-weight:500;padding:4px 12px;border-radius:6px;font-family:'DM Mono',monospace;margin-bottom:.75rem}
+.page-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;letter-spacing:-.5px;margin-bottom:.5rem}
+.page-title em{font-style:italic;color:var(--green)}
+.page-subtitle{font-size:14px;color:var(--ink3);max-width:560px;margin:0 auto}
+.section{background:var(--white);border:1px solid var(--border);border-radius:14px;margin-bottom:1rem;overflow:hidden}
+.section-header{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.section-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--green-light)}
+.section-title{font-size:15px;font-weight:500;flex:1}
+.section-subtitle{font-size:12px;color:var(--ink3);margin-top:1px}
+.section-body{padding:1.25rem}
+.q{padding:1rem 0;border-bottom:1px solid var(--border)}
+.q:last-child{border-bottom:none}
+.q[hidden]{display:none}
+.q-title{font-size:14px;font-weight:500;margin-bottom:.15rem}
+.q-help{font-size:12px;color:var(--ink3);margin-bottom:.6rem}
+.opts{display:grid;gap:6px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:.6rem .75rem;border:1px solid var(--border2);border-radius:9px;cursor:pointer;font-size:13px;background:var(--white);transition:all .12s}
+.opt:hover{border-color:var(--green)}
+.opt input{margin-top:3px;accent-color:var(--green)}
+.opt.sel{border-color:var(--green);background:var(--green-light)}
+.opt small{display:block;color:var(--ink3);font-size:11.5px}
+.result{border-radius:14px;padding:1.4rem;margin:1rem 0;border:1px solid var(--border)}
+.result.si{background:#fff7ed;border-color:rgba(180,83,9,.3)}
+.result.no{background:var(--green-light);border-color:rgba(26,122,74,.25)}
+.result.info{background:var(--blue-light);border-color:rgba(37,99,235,.2)}
+.r-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:.2rem}
+.r-title{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:300;line-height:1.25;margin-bottom:.5rem}
+.r-body{font-size:13.5px;color:var(--ink2)}
+.r-body p{margin-bottom:.55rem}
+.r-body ul{margin:.3rem 0 .6rem 1.1rem}
+.r-body li{margin-bottom:.3rem}
+.fechas{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:.75rem 0}
+.fecha{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:.75rem}
+.fecha .k{font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em}
+.fecha .v{font-family:'DM Mono',monospace;font-size:16px;font-weight:500}
+.fecha .s{font-size:11.5px;color:var(--ink3)}
+.info-box{background:var(--amber-light);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:.75rem 1rem;margin:.75rem 0;font-size:12.5px;color:#92400e;display:flex;gap:8px;align-items:flex-start}
+.info-box.green{background:var(--green-light);border-color:rgba(26,122,74,.2);color:var(--green-dark)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:.5rem 1rem;border-radius:8px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border:1px solid var(--border2);background:var(--white);color:var(--ink)}
+.btn-primary{background:var(--green);border-color:var(--green);color:var(--white)}
+.fuentes{font-size:12px;color:var(--ink3)}
+.fuentes a{color:var(--green)}
+.fuentes li{margin:.2rem 0 .2rem 1rem}
+.revisado{font-size:11.5px;color:var(--ink3);text-align:center;margin-top:1rem}
+@media(max-width:640px){.fechas{grid-template-columns:1fr}nav{padding:0 1rem}}
+@media print{nav,.no-print{display:none}}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="/">
+    <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#22a07a" stroke-width="3"/><path d="M50 18C38 18 28 28 28 40L28 57 22 63 22 66 78 66 78 63 72 57 72 40C72 28 62 18 50 18Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/><ellipse cx="50" cy="70" rx="8" ry="8" stroke="white" stroke-width="2.5" fill="none"/><circle cx="74" cy="22" r="13" fill="#f59e0b"/><text x="74" y="27" font-family="Arial" font-size="15" font-weight="700" fill="white" text-anchor="middle">!</text></svg>
+    NormaAlerta <span class="nav-badge">Comprobador</span>
+  </a>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="modelo-badge">VERI*FACTU · RD 1007/2023</div>
+    <h1 class="page-title">¿Me afecta <em>Verifactu</em>?<br>Y si me afecta, ¿desde cuándo?</h1>
+    <p class="page-subtitle">Responde a 5 preguntas y te decimos si tienes que adaptar tu forma de facturar, qué fecha está hoy en el BOE y qué pasa con el aplazamiento que ha anunciado Hacienda.</p>
+  </div>
+
+  <div class="info-box">⚠️ <span><strong>Situación a 23 de noviembre de 2026.</strong> Las fechas vigentes en el BOE son el <strong>1 de enero de 2027</strong> (sociedades) y el <strong>1 de julio de 2027</strong> (autónomos y resto). Hacienda anunció el 5 de octubre de 2026 que quiere aplazarlo a <strong>octubre de 2028</strong>, pero ese cambio <strong>todavía no se ha publicado en el BOE</strong>. Mientras no se publique, mandan las fechas de 2027.</span></div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon">🧾</div>
+      <div><div class="section-title">Tu situación</div><div class="section-subtitle">Las preguntas siguen los criterios de la Agencia Tributaria (preguntas frecuentes sobre SIF y VERI*FACTU)</div></div>
+    </div>
+    <div class="section-body" id="preguntas">
+
+      <div class="q" data-q="territorio">
+        <div class="q-title">1. ¿Dónde tributas?</div>
+        <div class="q-help">Por tus impuestos directos (IRPF o Sociedades).</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="territorio" value="comun"> <span>Territorio común<small>Resto de España, incluidas Canarias, Ceuta y Melilla</small></span></label>
+          <label class="opt"><input type="radio" name="territorio" value="vasco"> <span>País Vasco (Álava, Bizkaia o Gipuzkoa)</span></label>
+          <label class="opt"><input type="radio" name="territorio" value="navarra"> <span>Navarra</span></label>
+        </div>
+      </div>
+
+      <div class="q" data-q="tipo" hidden>
+        <div class="q-title">2. ¿Qué eres?</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="tipo" value="sociedad"> <span>Sociedad o entidad que paga el Impuesto sobre Sociedades<small>SL, SA, cooperativa, sociedad patrimonial, asociación con actividad…</small></span></label>
+          <label class="opt"><input type="radio" name="tipo" value="autonomo"> <span>Autónomo o profesional con actividad económica<small>Incluido el alquiler turístico con servicios de tipo hotelero</small></span></label>
+          <label class="opt"><input type="radio" name="tipo" value="atribucion"> <span>Comunidad de bienes, sociedad civil o herencia con actividad económica</span></label>
+          <label class="opt"><input type="radio" name="tipo" value="no_residente"> <span>No residente con establecimiento permanente en España</span></label>
+          <label class="opt"><input type="radio" name="tipo" value="particular"> <span>Particular que solo alquila un inmueble, sin actividad económica</span></label>
+        </div>
+      </div>
+
+      <div class="q" data-q="sii" hidden>
+        <div class="q-title">3. ¿Llevas los libros de IVA por el SII (Suministro Inmediato de Información)?</div>
+        <div class="q-help">Es obligatorio para grandes empresas, inscritos en el REDEME y grupos de IVA, y voluntario para el resto. Si no sabes qué es, casi seguro que no estás.</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="sii" value="no"> <span>No</span></label>
+          <label class="opt"><input type="radio" name="sii" value="si"> <span>Sí, estoy en el SII</span></label>
+        </div>
+      </div>
+
+      <div class="q" data-q="emite" hidden>
+        <div class="q-title">4. ¿Emites facturas, aunque sean simplificadas (tiques)?</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="emite" value="si"> <span>Sí</span></label>
+          <label class="opt"><input type="radio" name="emite" value="no"> <span>No, nunca emito facturas<small>Por ejemplo, comercio en recargo de equivalencia que solo vende a particulares y no le piden factura</small></span></label>
+        </div>
+      </div>
+
+      <div class="q" data-q="como" hidden>
+        <div class="q-title">5. ¿Cómo haces tus facturas?</div>
+        <div class="q-help">Si usas un programa para una sola factura, toda tu facturación tiene que hacerse con programa: no se puede mezclar.</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="como" value="mano"> <span>Todas a mano, en papel o talonario</span></label>
+          <label class="opt"><input type="radio" name="como" value="ofimatica"> <span>En Word o Excel, solo para escribirlas, imprimirlas o guardarlas<small>Sin macros que generen libros registro, contabilidad o declaraciones</small></span></label>
+          <label class="opt"><input type="radio" name="como" value="ofimatica_avanzada"> <span>En Excel con macros o fórmulas que me sacan el libro de facturas, la contabilidad o los datos de los impuestos</span></label>
+          <label class="opt"><input type="radio" name="como" value="programa"> <span>Con un programa, app, web de facturación, TPV o caja registradora</span></label>
+          <label class="opt"><input type="radio" name="como" value="gestoria"> <span>Me las hace la gestoría con su programa</span></label>
+          <label class="opt"><input type="radio" name="como" value="aeat"> <span>Con la aplicación gratuita de facturación de la Agencia Tributaria</span></label>
+        </div>
+      </div>
+
+      <div class="q" data-q="b2b" hidden>
+        <div class="q-title">6. ¿Facturas a otras empresas o autónomos?</div>
+        <div class="q-help">Para decirte también desde cuándo tendrás que emitir factura electrónica (es otra obligación distinta de Verifactu).</div>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="b2b" value="no"> <span>No, solo a particulares</span></label>
+          <label class="opt"><input type="radio" name="b2b" value="pequeno"> <span>Sí, y mi volumen de operaciones es de 8 millones de euros o menos</span></label>
+          <label class="opt"><input type="radio" name="b2b" value="grande"> <span>Sí, y mi volumen de operaciones supera los 8 millones de euros</span></label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="resultado" aria-live="polite"></div>
+  <div id="resultado-b2b" aria-live="polite"></div>
+
+  <div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:1rem 0">
+    <button class="btn" onclick="reiniciar()">↺ Empezar de nuevo</button>
+    <button class="btn btn-primary" onclick="window.print()">🖨 Imprimir o guardar en PDF</button>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><div class="section-icon">📚</div><div><div class="section-title">De dónde salen estas respuestas</div><div class="section-subtitle">Normativa y criterios oficiales</div></div></div>
+    <div class="section-body fuentes">
+      <ul>
+        <li><a href="https://www.boe.es/buscar/act.php?id=BOE-A-2023-24840" target="_blank" rel="noopener">Real Decreto 1007/2023</a> (Reglamento de requisitos de los sistemas informáticos de facturación), arts. 1, 3 y 7, y su disposición final cuarta, en la redacción del Real Decreto-ley 15/2025.</li>
+        <li><a href="https://sede.agenciatributaria.gob.es/Sede/iva/sistemas-informaticos-facturacion-verifactu/preguntas-frecuentes/cuestiones-generales-ambitos-aplicacion.html" target="_blank" rel="noopener">Agencia Tributaria: preguntas frecuentes sobre el ámbito de aplicación</a> (Word y Excel, facturación manual, SII, País Vasco, Navarra y regímenes especiales).</li>
+        <li>Artículo 201 bis de la Ley General Tributaria: multa de 50.000 € por cada ejercicio por tener un programa de facturación que no cumpla.</li>
+        <li>Factura electrónica entre empresas: Ley 18/2022 (Crea y Crece), Real Decreto 238/2026 y Orden HAC/1028/2026 (BOE de 5 de octubre de 2026, en vigor desde el 6 de octubre de 2026).</li>
+        <li>Nota informativa del Ministerio de Hacienda de 5 de octubre de 2026 sobre el aplazamiento de Verifactu a octubre de 2028 (sin publicar en el BOE a la fecha de revisión).</li>
+      </ul>
+      <p style="margin-top:.5rem">Herramienta orientativa: no sustituye el asesoramiento de tu gestoría. Si te ha salido «No te afecta» por una exoneración concreta, confírmalo con tu asesor.</p>
+    </div>
+  </div>
+  <p class="revisado">Revisado el 23 de noviembre de 2026 · NormaAlerta</p>
+</div>
+
+<script>
+const ORDEN = ['territorio','tipo','sii','emite','como','b2b'];
+const resp = {};
+const $ = s => document.querySelector(s);
+
+document.querySelectorAll('#preguntas input[type=radio]').forEach(inp => {
+  inp.addEventListener('change', () => {
+    resp[inp.name] = inp.value;
+    // Borrar respuestas posteriores a la cambiada
+    const i = ORDEN.indexOf(inp.name);
+    ORDEN.slice(i + 1).forEach(k => { delete resp[k]; document.querySelectorAll(`input[name=${k}]`).forEach(x => x.checked = false); });
+    pintarSeleccion();
+    evaluar();
+  });
+});
+
+function pintarSeleccion(){
+  document.querySelectorAll('.opt').forEach(o => o.classList.toggle('sel', o.querySelector('input').checked));
+}
+function mostrar(q, visible){ const el = document.querySelector(`.q[data-q=${q}]`); if (el) el.hidden = !visible; }
+
+/* Devuelve {estado:'si'|'no'|'pendiente', motivo, siguiente} */
+function decidir(r){
+  if (!r.territorio) return { estado:'pendiente', siguiente:'territorio' };
+  if (r.territorio === 'vasco') return { estado:'no', motivo:'vasco' };
+  if (r.territorio === 'navarra') return { estado:'no', motivo:'navarra' };
+  if (!r.tipo) return { estado:'pendiente', siguiente:'tipo' };
+  if (r.tipo === 'particular') return { estado:'no', motivo:'particular' };
+  if (!r.sii) return { estado:'pendiente', siguiente:'sii' };
+  if (r.sii === 'si') return { estado:'no', motivo:'sii' };
+  if (!r.emite) return { estado:'pendiente', siguiente:'emite' };
+  if (r.emite === 'no') return { estado:'no', motivo:'no_emite' };
+  if (!r.como) return { estado:'pendiente', siguiente:'como' };
+  if (r.como === 'mano') return { estado:'no', motivo:'mano' };
+  if (r.como === 'ofimatica') return { estado:'no', motivo:'ofimatica' };
+  return { estado:'si', motivo:r.como };
+}
+
+function evaluar(){
+  const d = decidir(resp);
+  // Visibilidad de preguntas: se enseñan hasta la siguiente pendiente
+  const idxSig = d.estado === 'pendiente' ? ORDEN.indexOf(d.siguiente) : ORDEN.indexOf('b2b');
+  ORDEN.forEach((k, i) => mostrar(k, i <= idxSig));
+  // La pregunta 6 solo tiene sentido si ya hay resultado y no es "particular"
+  mostrar('b2b', d.estado !== 'pendiente' && resp.tipo !== 'particular' && resp.territorio === 'comun');
+  $('#resultado').innerHTML = d.estado === 'pendiente' ? '' : (d.estado === 'si' ? htmlSi(d.motivo) : htmlNo(d.motivo));
+  $('#resultado-b2b').innerHTML = htmlB2B();
+}
+
+function htmlSi(motivo){
+  const sociedad = resp.tipo === 'sociedad';
+  const fecha = sociedad ? '1 de enero de 2027' : '1 de julio de 2027';
+  const quien = sociedad ? 'contribuyentes del Impuesto sobre Sociedades' : 'autónomos y resto de obligados';
+  const extra = {
+    ofimatica_avanzada: '<p>Para la Agencia Tributaria, una hoja de cálculo que procesa los datos de las facturas para sacar el libro registro, la contabilidad o los datos de los impuestos <strong>es un sistema informático de facturación</strong>, y tiene que cumplir el reglamento. Lo más sencillo suele ser pasar a un programa adaptado o a la aplicación gratuita de la AEAT.</p>',
+    programa: '<p>Tu programa, app o TPV tiene que estar adaptado. Pide a tu proveedor su <strong>declaración responsable</strong> de que cumple el Real Decreto 1007/2023: es lo que te protege.</p>',
+    gestoria: '<p>Si la gestoría emite tus facturas con su programa, ese programa tiene que cumplir el reglamento (y, en modalidad VERI*FACTU, enviar los registros a Hacienda). <strong>La responsabilidad de la factura sigue siendo tuya</strong>: pídele confirmación por escrito.</p>',
+    aeat: '<p>La aplicación gratuita de la Agencia Tributaria ya está pensada para cumplir el reglamento. Sigue usándola y guarda las facturas.</p>',
+  }[motivo] || '';
+  return `<div class="result si">
+    <div class="r-label">Resultado</div>
+    <div class="r-title">Sí, te afecta Verifactu</div>
+    <div class="r-body">
+      <p>Usas un sistema informático para facturar, así que tu forma de facturar tiene que cumplir el reglamento de sistemas informáticos de facturación (RD 1007/2023).</p>
+      ${extra}
+      <div class="fechas">
+        <div class="fecha"><div class="k">Fecha vigente en el BOE</div><div class="v">${fecha}</div><div class="s">Para ${quien} (RDL 15/2025)</div></div>
+        <div class="fecha"><div class="k">Fecha anunciada por Hacienda</div><div class="v">Octubre de 2028</div><div class="s">Nota de 5-10-2026 · pendiente de publicarse en el BOE</div></div>
+      </div>
+      <p><strong>Qué hacer ahora:</strong></p>
+      <ul>
+        <li>Prepárate para la fecha del BOE (${fecha}). Si el aplazamiento se publica, tendrás más margen, pero hoy no está aprobado.</li>
+        <li>Elige modalidad: <strong>VERI*FACTU</strong> (el programa envía cada registro a Hacienda al momento) o <strong>no VERI*FACTU</strong> (el programa guarda los registros firmados y encadenados y los entrega si Hacienda los pide).</li>
+        <li>Las facturas llevarán un <strong>código QR</strong> y, en modalidad VERI*FACTU, la mención «VERI*FACTU».</li>
+        <li>No mezcles: si facturas con programa, todas tus facturas deben salir del programa.</li>
+      </ul>
+      <p style="font-size:12.5px;color:#92400e">⚠️ Tener un programa de facturación que no cumpla se sanciona con <strong>50.000 € por cada ejercicio</strong> (art. 201 bis de la Ley General Tributaria).</p>
+    </div>
+  </div>`;
+}
+
+function htmlNo(motivo){
+  const t = {
+    vasco: ['No te afecta este reglamento', '<p>Si tributas por los impuestos directos de las Haciendas Forales vascas, el reglamento estatal no se te aplica (art. 1.3 RRSIF). Pero tienes tu propio sistema, <strong>TicketBAI</strong>, con requisitos parecidos: consulta con tu Diputación Foral.</p>'],
+    navarra: ['En general, no te afecta este reglamento', '<p>Si tu IRPF o tu Impuesto sobre Sociedades se rigen por la normativa foral de Navarra, el reglamento estatal no se te aplica con carácter general. Revisa las obligaciones propias de la Hacienda Foral de Navarra.</p>'],
+    particular: ['No te afecta', '<p>Alquilar un inmueble sin que sea una actividad económica (sin una persona empleada a jornada completa para gestionarlo) no entra en el reglamento.</p><p>Ojo: el <strong>alquiler turístico con servicios de tipo hotelero</strong> sí es actividad económica. En ese caso, vuelve a la pregunta 2 y marca «autónomo».</p>'],
+    sii: ['No te afecta este reglamento', '<p>Quien lleva los libros de IVA por el SII queda fuera del reglamento por sus propias facturas (art. 3.3 RRSIF). Son obligaciones distintas: sigues teniendo que cumplir el SII.</p><p>Ojo: si estás en el SII no puedes usar la modalidad VERI*FACTU ni poner el QR en tus facturas.</p>'],
+    no_emite: ['No te afecta', '<p>Si no expides ninguna factura, el reglamento no te afecta. En cuanto emitas una sola factura con un programa, sí te afectará.</p><p>Comercio en recargo de equivalencia o en régimen simplificado: tienes que emitir factura, entre otros casos, cuando el cliente es empresario o profesional o te la pide para ejercer un derecho fiscal.</p>'],
+    mano: ['No te afecta (mientras sigas facturando a mano)', '<p>Si <strong>todas</strong> tus facturas se hacen a mano, sin ningún sistema informático, el reglamento no te afecta. Si alguna vez emites una con un programa, tendrás que pasar <strong>toda</strong> tu facturación a programa.</p><p>Si quieres pasarte al ordenador sin coste, la Agencia Tributaria tiene una aplicación gratuita de facturación.</p>'],
+    ofimatica: ['No te afecta (con un matiz importante)', '<p>Según la Agencia Tributaria, usar Word o Excel <strong>solo</strong> para escribir, imprimir y guardar las facturas no te mete en el reglamento. Incluso un listado de facturas con sumas sigue sin ser un sistema de facturación.</p><p><strong>Pero</strong> si tu Excel tiene macros o fórmulas que generan el libro registro de facturas, la contabilidad o los datos de tus impuestos, entonces sí es un sistema de facturación y te afecta. Hacienda puede comprobarlo.</p>'],
+  }[motivo];
+  return `<div class="result no">
+    <div class="r-label">Resultado</div>
+    <div class="r-title">${t[0]}</div>
+    <div class="r-body">${t[1]}</div>
+  </div>`;
+}
+
+function htmlB2B(){
+  if (!resp.b2b) return '';
+  if (resp.b2b === 'no') return `<div class="result info"><div class="r-label">Factura electrónica obligatoria</div><div class="r-title">No te afecta si solo facturas a particulares</div><div class="r-body"><p>La factura electrónica obligatoria solo se aplica a las facturas entre empresarios y profesionales. Las facturas a consumidores finales quedan fuera.</p></div></div>`;
+  const grande = resp.b2b === 'grande';
+  return `<div class="result info">
+    <div class="r-label">Factura electrónica obligatoria entre empresas</div>
+    <div class="r-title">Obligatoria desde el ${grande ? '6 de octubre de 2027' : '6 de octubre de 2028'}</div>
+    <div class="r-body">
+      <p>Es una obligación distinta de Verifactu y afecta a todos los empresarios y profesionales que facturan a otros empresarios o profesionales, uses o no un programa. El tamaño solo cambia la fecha: 12 meses (más de 8 M€ de volumen de operaciones del año anterior) o 24 meses (resto) desde el 6 de octubre de 2026, cuando entró en vigor la Orden HAC/1028/2026.</p>
+      <ul>
+        <li>Quedan fuera las facturas simplificadas (tiques), salvo las cualificadas.</li>
+        <li>La Agencia Tributaria ofrecerá una solución pública y gratuita para emitir y recibir facturas electrónicas.</li>
+        ${!grande && (resp.tipo === 'autonomo' || resp.tipo === 'atribucion') ? '<li>Como persona física o entidad en atribución de rentas de 8 M€ o menos, la obligación de informar del estado y del pago de las facturas empieza más tarde, el 6 de octubre de 2029.</li>' : ''}
+      </ul>
+    </div>
+  </div>`;
+}
+
+function reiniciar(){
+  Object.keys(resp).forEach(k => delete resp[k]);
+  document.querySelectorAll('#preguntas input').forEach(i => i.checked = false);
+  pintarSeleccion(); evaluar(); window.scrollTo({ top:0, behavior:'smooth' });
+}
+evaluar();
+if (typeof module !== 'undefined') module.exports = { decidir };
+</script>
+</body>
+</html>

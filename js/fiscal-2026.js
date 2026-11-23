@@ -3,7 +3,7 @@
    Archivo único con todas las cifras normativas que usan las herramientas.
    Para actualizar a un nuevo ejercicio, se cambia SOLO este archivo.
 
-   Fuentes (revisado 09-oct-2026):
+   Fuentes (revisado 23-nov-2026):
    - Orden PJC/297/2026, de 30 de marzo (BOE 31-03-2026): bases y tipos de
      cotización 2026 (RETA y Régimen General).
    - Ley 35/2006 IRPF y RD 439/2007 RIRPF (escala, mínimos, art. 20, art. 85).
@@ -222,6 +222,52 @@
     return { pct: Math.min(0.15, 0.01 + 0.01 * meses), intereses: false, meses };
   }
 
+  /* Recargo por fechas (art. 27.2 LGT, redacción Ley 11/2021).
+     Los meses completos se cuentan de fecha a fecha desde el día en que vence el plazo
+     (art. 5 Código Civil; DGT V0532-23): si el plazo vence el 30-06, el primer mes completo
+     se cumple el 30-07 y desde el 31-07 el recargo es del 2 %.
+     Más de 12 meses: 15 % + intereses de demora desde el día siguiente al fin de esos 12 meses. */
+  function parseFecha(s) {
+    if (s instanceof Date) return new Date(Date.UTC(s.getUTCFullYear(), s.getUTCMonth(), s.getUTCDate()));
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || ''));
+    return m ? new Date(Date.UTC(+m[1], +m[2] - 1, +m[3])) : null;
+  }
+  // Suma meses "de fecha a fecha"; si el mes de destino no tiene ese día, el último día del mes (art. 5.1 CC)
+  function sumarMeses(d, n) {
+    const y = d.getUTCFullYear(), mo = d.getUTCMonth() + n, day = d.getUTCDate();
+    const ultimo = new Date(Date.UTC(y, mo + 1, 0)).getUTCDate();
+    return new Date(Date.UTC(y, mo, Math.min(day, ultimo)));
+  }
+  function diasEntre(a, b) { return Math.round((b - a) / 86400000); }
+  function recargoPorFechas(finPlazo, presentacion) {
+    const fin = parseFecha(finPlazo), pres = parseFecha(presentacion);
+    if (!fin || !pres || pres <= fin) return { pct: 0, meses: 0, enPlazo: true, diasIntereses: 0 };
+    let meses = 0;
+    while (meses < 13 && pres > sumarMeses(fin, meses + 1)) meses++;
+    if (meses >= 12) {
+      const finDoce = sumarMeses(fin, 12);
+      return { pct: 0.15, meses, enPlazo: false, intereses: true, diasIntereses: diasEntre(finDoce, pres) };
+    }
+    return { pct: 0.01 + 0.01 * meses, meses, enPlazo: false, intereses: false, diasIntereses: 0 };
+  }
+
+  /* Sanciones sin perjuicio económico (art. 198 LGT) y reducción por pronto pago (art. 188.3, 40 %) */
+  const SANCION_198 = {
+    autoliquidacion: 200,               // autoliquidación o declaración sin importe a ingresar
+    informativaPorDato: 20, informativaMin: 300, informativaMax: 20000,
+    reduccionSinRequerimiento: 0.5,     // art. 198.2: la sanción y sus límites se reducen a la mitad
+  };
+  const REDUCCION_CONFORMIDAD = 0.30;   // art. 188.1.b LGT
+  const REDUCCION_PRONTO_PAGO = 0.40;   // art. 188.3 LGT (Ley 11/2021)
+  function sancion198(tipo, requerimiento, numDatos) {
+    const f = requerimiento ? 1 : SANCION_198.reduccionSinRequerimiento;
+    if (tipo === 'informativa') {
+      const n = Math.max(1, parseInt(numDatos || 1, 10));
+      return Math.min(SANCION_198.informativaMax * f, Math.max(SANCION_198.informativaMin * f, n * SANCION_198.informativaPorDato * f));
+    }
+    return SANCION_198.autoliquidacion * f;
+  }
+
   /* ---------------- Plazos ---------------- */
   const PLAZOS = {
     trimestral: { '1T': '20 de abril', '2T': '20 de julio', '3T': '20 de octubre', '4T': '30 de enero' }, // 303 y 130
@@ -231,7 +277,7 @@
   function round2(n) { return Math.round((n + Number.EPSILON) * 100) / 100; }
 
   const API = {
-    ejercicio: 2026, revisado: '2026-10-09',
+    ejercicio: 2026, revisado: '2026-11-23',
     RETA, rendimientoComputableReta, tramoReta, cuotaReta,
     RG, solidaridadMensual, SMI,
     ESCALA_GENERAL, ESCALA_AHORRO, aplicarEscala, MINIMOS, minimoPersonalFamiliar,
@@ -239,6 +285,11 @@
     irpfAsalariadoAnual, irpfActividadAnual, tipoRetencionNomina, LIMITES_RETENCION,
     IS, tiposIS, cuotaISMicro,
     INTERES_DEMORA, INTERES_LEGAL, recargoExtemporaneo, PLAZOS,
+    parseFecha, sumarMeses, diasEntre, recargoPorFechas,
+    SANCION_198, REDUCCION_CONFORMIDAD, REDUCCION_PRONTO_PAGO, sancion198,
+    GDJ: { pct: 0.05, limiteAnual: 2000 },   // art. 30.2.4ª RIRPF (EDS); 10 % solo Ceuta en 2026 (RDL 22/2026)
+    PAGO_FRACCIONADO_130: 0.20,              // art. 110 RIRPF
+    TIPOS_IVA: [0.21, 0.10, 0.04, 0],
     round2,
   };
   global.NA2026 = API;

@@ -3,7 +3,7 @@
 
   <url>
     <loc>https://normaalerta.com/</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -52,7 +52,7 @@
 
   <url>
     <loc>https://normaalerta.com/calculadora-sanciones.html</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -66,7 +66,7 @@
 
   <url>
     <loc>https://normaalerta.com/calculadora-objetivo-facturacion.html</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -171,7 +171,7 @@
 
   <url>
     <loc>https://normaalerta.com/calculadora-provision-impuestos.html</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-11-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -188,6 +188,20 @@
     <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://normaalerta.com/calendario-fiscal.html</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://normaalerta.com/comprobador-verifactu.html</loc>
+    <lastmod>2026-11-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
 
 </urlset>
