@@ -43,6 +43,8 @@ export default async function handler(req, res) {
       area: r.fields['Área'] || '',
       fecha: r.fields['Fecha de publicación'] || '',
       queHacer: r.fields['Qué hacer'] || '',
+      fuente: r.fields['Fuente oficial'] || '',
+      comprobado: r.fields['Comprobado el'] || '',
     }));
 
     // Cache breve en el edge para no machacar la API de Airtable
